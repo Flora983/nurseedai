@@ -23,25 +23,2186 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); padding-bottom: 70px; }
+
+    /* ── FIX 8: OFFLINE BANNER ── */
+    .offline-banner {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 3000;
+      background: #be123c; color: white;
+      padding: 10px 16px; text-align: center;
+      font-size: .85rem; font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      animation: slideDown .3s ease;
+    }
+    .online-banner {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 3000;
+      background: #15803d; color: white;
+      padding: 10px 16px; text-align: center;
+      font-size: .85rem; font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      animation: slideDown .3s ease;
+    }
+    @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+    body.is-offline header { margin-top: 42px; }
+
+    /* ── FIX 1 + 2: DISCLAIMER BAR (bottom) ── */
+    .disclaimer-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+      background: #fef3c7; border-top: 2px solid #f59e0b;
+      padding: 8px 16px; display: flex; align-items: center;
+      justify-content: space-between; gap: 10px; flex-wrap: wrap;
+      font-size: .75rem; color: #78350f; font-weight: 500;
+      box-shadow: 0 -2px 8px rgba(0,0,0,.08);
+    }
+    .disclaimer-bar span { flex: 1; min-width: 200px; line-height: 1.5; }
+    .disclaimer-bar .privacy-badge {
+      background: #fde68a; border: 1px solid #f59e0b;
+      border-radius: 6px; padding: 3px 10px;
+      font-size: .72rem; font-weight: 700; white-space: nowrap;
+    }
+
+    /* ── FIX 2: PRIVACY WARNING in forms ── */
+    .privacy-tip {
+      background: #fff7ed; border: 1.5px solid #fb923c;
+      border-radius: 10px; padding: 10px 14px;
+      font-size: .8rem; color: #7c2d12;
+      margin-bottom: 16px; line-height: 1.6;
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .privacy-tip .icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── FIX 3: TIMESTAMP BADGE on results ── */
+    .timestamp-badge {
+      background: var(--teal-pale); border: 1px solid #b2e0e6;
+      border-radius: 8px; padding: 6px 12px;
+      font-size: .75rem; color: var(--teal); font-weight: 600;
+      display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+
+    /* ── POPUP OVERLAY ── */
+    .popup-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.55);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .popup-box {
+      background: white; border-radius: 18px; padding: 32px 28px;
+      max-width: 480px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      animation: popIn .3s ease;
+    }
+    @keyframes popIn { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
+    .popup-box .popup-icon { font-size: 2.5rem; text-align: center; margin-bottom: 14px; }
+    .popup-box h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--teal); margin-bottom: 14px; text-align: center; }
+    .popup-box p { font-size: .9rem; color: var(--ink-mid); line-height: 1.7; margin-bottom: 10px; }
+    .popup-box ul { margin: 10px 0 16px 18px; }
+    .popup-box ul li { font-size: .87rem; color: var(--ink-mid); line-height: 1.7; }
+    .popup-btn {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #0a5260, var(--teal-light));
+      color: white; border: none; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 700;
+      cursor: pointer; margin-top: 8px;
+    }
+    .popup-btn:hover { opacity: .9; }
+
+    /* ── ORIGINAL STYLES ── */
+    header {
+      background: linear-gradient(135deg, #0a5260, var(--teal-light));
+      color: white; padding: 18px 28px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    }
+    .logo { font-size: 1.8rem; }
+    header h1 { font-family: 'DM Serif Display', serif; font-size: 1.45rem; }
+    header p { font-size: .78rem; opacity: .8; margin-top: 2px; }
+    .demo-badge {
+      margin-left: auto; background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.3);
+      font-size: .68rem; font-weight: 700; padding: 4px 11px;
+      border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .tabs {
+      background: white; border-bottom: 2px solid var(--border);
+      display: flex; overflow-x: auto; padding: 0 20px; gap: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .tab {
+      padding: 14px 16px; border: none; background: none;
+      font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 500;
+      color: var(--ink-light); cursor: pointer;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      white-space: nowrap; transition: color .2s; min-height: 48px;
+    }
+    .tab:hover { color: var(--teal); }
+    .tab.active { color: var(--teal); border-bottom-color: var(--teal); font-weight: 700; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 24px 16px 40px; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .card {
+      background: white; border-radius: 14px; padding: 22px;
+      border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      margin-bottom: 20px;
+    }
+    .card-title { font-family: 'DM Serif Display', serif; font-size: 1.1rem; color: var(--teal); margin-bottom: 20px; }
+
+    label {
+      display: block; font-size: .8rem; font-weight: 700; color: var(--ink-mid);
+      margin: 14px 0 5px; text-transform: uppercase; letter-spacing: .4px;
+    }
+    label:first-of-type { margin-top: 0; }
+
+    /* ── FIX 4: MOBILE — larger touch targets ── */
+    input, select, textarea {
+      width: 100%; padding: 12px 13px;
+      border: 1.5px solid var(--border); border-radius: 9px;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem;
+      background: var(--bg); color: var(--ink); outline: none; transition: border-color .2s;
+      min-height: 44px;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--teal-light); background: white; }
+    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media(max-width: 640px) {
+      .row2, .row3 { grid-template-columns: 1fr; }
+      main { padding: 16px 12px 40px; }
+      .card { padding: 16px; }
+      header { padding: 14px 16px; }
+      header h1 { font-size: 1.2rem; }
+      header p { display: none; }
+    }
+
+    .btn {
+      width: 100%; margin-top: 16px; padding: 15px;
+      background: linear-gradient(135deg, #0a5260, var(--teal-light));
+      color: white; border: none; border-radius: 10px;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700;
+      cursor: pointer; transition: opacity .2s, transform .15s; min-height: 52px;
+    }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .btn-sm {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 16px; background: var(--teal-pale); color: var(--teal);
+      border: 1.5px solid #b2e0e6; border-radius: 8px;
+      font-family: 'DM Sans', sans-serif; font-size: .85rem; font-weight: 600;
+      cursor: pointer; transition: background .2s; min-height: 44px;
+    }
+    .btn-sm:hover { background: #d0eef2; }
+
+    .loading { display: none; text-align: center; padding: 44px 20px; }
+    .spinner {
+      width: 44px; height: 44px; border: 4px solid var(--border);
+      border-top-color: var(--teal-light); border-radius: 50%;
+      animation: spin .85s linear infinite; margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading p { color: var(--teal); font-weight: 600; }
+    .loading small { color: var(--ink-light); font-size: .82rem; margin-top: 5px; display: block; }
+
+    .results { display: none; }
+
+    .result-block {
+      background: white; border: 1px solid var(--border);
+      border-left: 4px solid var(--teal-light); border-radius: 13px;
+      padding: 20px 22px; margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      animation: up .35s ease both;
+    }
+    .result-block.red { border-left-color: var(--rose); }
+    .result-block.amber { border-left-color: #d97706; }
+    .result-block.green { border-left-color: var(--green); }
+    @keyframes up { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    .result-block h3 { font-family: 'DM Serif Display', serif; font-size: .98rem; color: var(--teal); margin-bottom: 12px; }
+    .result-block.red h3 { color: var(--rose); }
+    .result-block.amber h3 { color: #b45309; }
+    .result-block.green h3 { color: var(--green); }
+    .result-content { font-size: .91rem; line-height: 1.8; color: var(--ink-mid); white-space: pre-wrap; }
+
+    .res-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      flex-wrap: wrap; gap: 10px; margin-bottom: 20px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .res-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.2rem; }
+    .res-tag { background: var(--green-pale); color: var(--green); font-size: .76rem; font-weight: 700; padding: 4px 13px; border-radius: 20px; }
+
+    .tip {
+      background: var(--amber-pale); border: 1px solid #fde68a; border-radius: 10px;
+      padding: 12px 16px; font-size: .83rem; color: #78350f; margin-bottom: 22px; line-height: 1.6;
+    }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 20px 0; }
+    @media(max-width:500px) { .stats { grid-template-columns: 1fr; } }
+    .stat { background: linear-gradient(135deg, #0a5260, var(--teal)); color: white; border-radius: 13px; padding: 18px; text-align: center; }
+    .stat .num { font-family: 'DM Serif Display', serif; font-size: 1.9rem; line-height: 1; margin-bottom: 5px; }
+    .stat .lbl { font-size: .76rem; opacity: .85; font-weight: 300; }
+
+    .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 12px; margin-top: 10px; }
+    .feat { background: white; border: 1px solid var(--border); border-radius: 11px; padding: 16px; display: flex; align-items: flex-start; gap: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.05); }
+    .feat .icon { font-size: 1.4rem; flex-shrink: 0; }
+    .feat h4 { font-size: .85rem; font-weight: 700; margin-bottom: 3px; }
+    .feat p { font-size: .76rem; color: var(--ink-light); line-height: 1.5; }
+
+    .urg-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .urg-opt { flex: 1; min-width: 80px; padding: 11px 12px; border: 2px solid var(--border); border-radius: 9px; text-align: center; cursor: pointer; font-size: .82rem; font-weight: 600; transition: all .2s; background: white; min-height: 44px; display:flex; align-items:center; justify-content:center; }
+    .urg-opt.sel-hoog { border-color: var(--rose); background: var(--rose-pale); color: var(--rose); }
+    .urg-opt.sel-medium { border-color: #d97706; background: var(--amber-pale); color: #b45309; }
+    .urg-opt.sel-laag { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+
+    /* ── FIX 5: PRINT / PDF STYLES ── */
+    @media print {
+      .disclaimer-bar, .popup-overlay, header, .tabs, .card, .tip,
+      .actions, .btn, .btn-sm, .privacy-tip { display: none !important; }
+      body { padding-bottom: 0; background: white; }
+      .results { display: block !important; }
+      .panel { display: block !important; }
+      .result-block { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-bottom: 12px; }
+      .print-header { display: block !important; }
+      .timestamp-badge { border: 1px solid #ccc; margin-bottom: 12px; }
+    }
+
+    /* Print header (hidden on screen, shown on print) */
+    .print-header {
+      display: none;
+      font-family: 'DM Sans', sans-serif;
+      border-bottom: 2px solid #0d6e7a;
+      padding-bottom: 10px;
+      margin-bottom: 16px;
+    }
+    .print-header h1 { font-size: 1.2rem; color: #0d6e7a; }
+    .print-header p { font-size: .8rem; color: #6b7280; margin-top: 4px; }
+    .print-disclaimer {
+      background: #fef3c7; border: 1px solid #f59e0b;
+      padding: 8px 12px; border-radius: 6px;
+      font-size: .75rem; color: #78350f; margin-top: 8px;
+    }
   </style>
 </head>
 <body>
-<h1>NurseEdAI wordt geladen...</h1>
+
+<!-- ════════════════════════════════════════
+     FIX 8: OFFLINE / ONLINE BANNERS
+════════════════════════════════════════ -->
+<div id="offline-banner" class="offline-banner">
+  📡 Geen internetverbinding — NurseEdAI heeft internet nodig. Controleer uw WiFi of 4G. Uw gegevens blijven bewaard.
+</div>
+<div id="online-banner" class="online-banner">
+  ✅ Verbinding hersteld — u kunt verder werken!
+</div>
+
+<!-- ════════════════════════════════════════
+     FIX 1: FIRST-LOAD POPUP DISCLAIMER
+════════════════════════════════════════ -->
+<div class="popup-overlay" id="disclaimerPopup">
+  <div class="popup-box">
+    <div class="popup-icon">⚕️</div>
+    <h2>Belangrijke mededeling</h2>
+    <p>Welkom bij <strong>NurseEdAI</strong> — uw AI-documentatieassistent voor woonzorgcentra.</p>
+    <p>Voordat u start, bevestig dat u begrijpt:</p>
+    <ul>
+      <li>✅ NurseEdAI <strong>ondersteunt documentatie</strong> — geen medisch advies</li>
+      <li>✅ Gebruik <strong>initialen of kamernummers</strong> — nooit echte patiëntnamen</li>
+      <li>✅ Controleer medicatie altijd met de <strong>apotheker</strong></li>
+      <li>✅ Medische beslissingen altijd met de <strong>behandelende arts</strong></li>
+      <li>✅ Wondzorgprotocollen altijd met de <strong>hoofdverpleegkundige</strong></li>
+      <li>✅ Dit hulpmiddel vereist een <strong>internetverbinding</strong></li>
+    </ul>
+    <button class="popup-btn" onclick="closePopup()">✓ Ik begrijp dit — verder gaan</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header>
+  <div class="logo">🏥</div>
+  <div>
+    <h1>NurseEdAI</h1>
+    <p>De complete AI-assistent voor woonzorgcentra — gebouwd door een verpleegkundige</p>
+  </div>
+  <div class="demo-badge">Demo</div>
+</header>
+
+<!-- ════════════════════════════════════════
+     TABS
+════════════════════════════════════════ -->
+<div class="tabs">
+  <button class="tab active" id="tab-home"      onclick="showTab('home',this)">🏠 Overzicht</button>
+  <button class="tab"        id="tab-education" onclick="showTab('education',this)">📄 Patiënteducatie</button>
+  <button class="tab"        id="tab-handover"  onclick="showTab('handover',this)">🔄 Overdracht</button>
+  <button class="tab"        id="tab-family"    onclick="showTab('family',this)">👨‍👩‍👧 Familie</button>
+  <button class="tab"        id="tab-meds"      onclick="showTab('meds',this)">💊 Medicatie</button>
+  <button class="tab"        id="tab-doctor"    onclick="showTab('doctor',this)">🩺 Doktersbezoek</button>
+  <button class="tab"        id="tab-food"      onclick="showTab('food',this)">🍽️ Voeding</button>
+  <button class="tab"        id="tab-wound"     onclick="showTab('wound',this)">🩹 Wondzorg</button>
+  <button class="tab"        id="tab-appt"      onclick="showTab('appt',this)">📅 Afspraken</button>
+  <button class="tab"        id="tab-pallia"    onclick="showTab('pallia',this)">💜 Palliatief</button>
+  <button class="tab"        id="tab-incident"  onclick="showTab('incident',this)">😰 Incident</button>
+  <button class="tab"        id="tab-dagrapp"   onclick="showTab('dagrapp',this)">📊 Dagrapport</button>
+  <button class="tab"        id="tab-dementia"  onclick="showTab('dementia',this)">🧠 Dementie</button>
+</div>
+
+<main>
+
+  <!-- ════ HOME ════ -->
+  <div class="panel active" id="panel-home">
+    <div class="card">
+      <div class="card-title">✨ Welkom bij NurseEdAI</div>
+      <p style="color:var(--ink-mid);line-height:1.7;font-size:.92rem;">
+        NurseEdAI is de AI-assistent speciaal gebouwd voor verpleegkundigen in woonzorgcentra.
+        Geen technische kennis nodig — gewoon typen en de AI doet de rest.
+        Bespaar tot <strong>2 uur per dag</strong> op communicatie en documentatie.
+      </p>
+      <div class="stats">
+        <div class="stat"><div class="num">~2u</div><div class="lbl">Tijdsbesparing per dag</div></div>
+        <div class="stat"><div class="num">50+</div><div class="lbl">Talen ondersteund</div></div>
+        <div class="stat"><div class="num">12</div><div class="lbl">Modules beschikbaar</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">🛠️ Wat kan NurseEdAI doen?</div>
+      <div class="features">
+        <div class="feat"><div class="icon">📄</div><div><h4>Patiënteducatie</h4><p>Diagnose uitleg in eenvoudige taal, afdrukbaar</p></div></div>
+        <div class="feat"><div class="icon">🔄</div><div><h4>Overdrachtsrapport</h4><p>Ruwe notities worden professionele overdrachten</p></div></div>
+        <div class="feat"><div class="icon">👨‍👩‍👧</div><div><h4>Familie updates</h4><p>WhatsApp of e-mail voor families in elke taal</p></div></div>
+        <div class="feat"><div class="icon">💊</div><div><h4>Medicatie uitleg</h4><p>Elk medicijn simpel uitgelegd voor bewoner en familie</p></div></div>
+        <div class="feat"><div class="icon">🌍</div><div><h4>Vertaling</h4><p>Medische documenten instant vertaald</p></div></div>
+        <div class="feat"><div class="icon">💬</div><div><h4>Moeilijke gesprekken</h4><p>Scripts voor gevoelige gesprekken met families</p></div></div>
+      </div>
+    </div>
+    <div class="tip">💡 <strong>Hoe te starten:</strong> Gebruik altijd <strong>initialen of kamernummer</strong> — nooit echte namen. Klik op een tabblad en begin!</div>
+  </div>
+
+  <!-- ════ EDUCATION ════ -->
+  <div class="panel" id="panel-education">
+    <div class="tip">📄 Vul de gegevens in en klik op <strong>Genereer</strong>. De AI maakt een volledig document klaar om af te drukken.</div>
+    <!-- FIX 2: Privacy warning -->
+    <div class="privacy-tip">
+      <span class="icon">🔒</span>
+      <span><strong>Privacy:</strong> Gebruik initialen (bv. "M.J.") of kamernummer (bv. "Kamer 12") — nooit volledige namen van bewoners.</span>
+    </div>
+    <div class="card">
+      <div class="card-title">👤 Bewonersgegevens</div>
+      <div class="row2">
+        <div><label>Initialen / Code bewoner</label><input id="edu-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Leeftijd</label><input id="edu-age" type="number" placeholder="bv. 82"/></div>
+      </div>
+      <div class="row3">
+        <div>
+          <label>Taal</label>
+          <select id="edu-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option>
+            <option>Swahili</option><option>Yoruba</option>
+          </select>
+        </div>
+        <div>
+          <label>Taalniveau</label>
+          <select id="edu-literacy">
+            <option value="zeer eenvoudig zonder medische termen">Zeer laag</option>
+            <option value="eenvoudig en duidelijk" selected>Laag</option>
+            <option value="gemiddeld">Gemiddeld</option>
+            <option value="gedetailleerd">Hoog</option>
+          </select>
+        </div>
+        <div><label>Kamer</label><input id="edu-room" placeholder="bv. Kamer 14"/></div>
+      </div>
+      <label>Diagnose / Aandoening</label>
+      <input id="edu-diagnosis" placeholder="bv. Type 2 Diabetes, Hartfalen, Heupoperatie..."/>
+      <label>Medicatie (optioneel)</label>
+      <textarea id="edu-meds" placeholder="bv. Metformine 500mg tweemaal daags..."></textarea>
+      <label>Bijzondere aandachtspunten (optioneel)</label>
+      <textarea id="edu-notes" placeholder="bv. Dochter is mantelzorger, angst voor naalden..."></textarea>
+      <!-- FIX 3: Nurse name field -->
+      <label>Naam verpleegkundige</label>
+      <input id="edu-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="edu-btn" onclick="generateEducation()">✨ Genereer Patiënteducatie</button>
+    </div>
+    <div class="loading" id="edu-loading"><div class="spinner"></div><p>Patiënteducatie wordt aangemaakt...</p><small>Dit duurt gewoonlijk 15–25 seconden</small></div>
+    <div class="results" id="edu-results">
+      <!-- FIX 5: Print header -->
+      <div class="print-header">
+        <h1>🏥 NurseEdAI — Patiënteducatiemap</h1>
+        <p id="edu-print-meta"></p>
+        <div class="print-disclaimer">⚠️ Dit document is gegenereerd met AI ter ondersteuning van documentatie. Geen medisch advies. Controleer altijd met behandelende arts.</div>
+      </div>
+      <div class="res-header">
+        <h2>📄 Patiënteducatiemap</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="edu-tag"></span>
+          <!-- FIX 3: Timestamp -->
+          <span class="timestamp-badge" id="edu-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block"><h3>🩺 Uw aandoening begrijpen</h3><div class="result-content" id="edu-r1"></div></div>
+      <div class="result-block"><h3>📋 Uw thuiszorginstructies</h3><div class="result-content" id="edu-r2"></div></div>
+      <div class="result-block" id="edu-med-block"><h3>💊 Uw medicijnen uitgelegd</h3><div class="result-content" id="edu-r3"></div></div>
+      <div class="result-block amber"><h3>👨‍👩‍👧 Samenvatting voor familie</h3><div class="result-content" id="edu-r4"></div></div>
+      <div class="result-block red"><h3>🚨 Wanneer dringend hulp zoeken</h3><div class="result-content" id="edu-r5"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken / PDF opslaan</button>
+        <button class="btn-sm" onclick="copyAll('edu-results')">📋 Alles kopiëren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ HANDOVER ════ -->
+  <div class="panel" id="panel-handover">
+    <div class="tip">🔄 Typ gewoon ruwe notities zoals u ze normaal schrijft. De AI maakt er een professioneel overdrachtsrapport van.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummers — geen volledige namen.</span></div>
+    <div class="card">
+      <div class="card-title">🔄 Overdrachtsgegevens</div>
+      <div class="row3">
+        <div><label>Verpleegkundige</label><input id="ho-nurse" placeholder="bv. Amara Diallo"/></div>
+        <div><label>Van dienst</label><select id="ho-from"><option>Nachtdienst</option><option selected>Dagdienst</option><option>Avonddienst</option></select></div>
+        <div><label>Naar dienst</label><select id="ho-to"><option>Nachtdienst</option><option>Dagdienst</option><option selected>Avonddienst</option></select></div>
+      </div>
+      <div class="row2">
+        <div><label>Afdeling</label><input id="ho-ward" placeholder="bv. Afdeling B — Dementiezorg"/></div>
+        <div><label>Datum</label><input type="date" id="ho-date"/></div>
+      </div>
+      <label>Urgentieniveau</label>
+      <div class="urg-row">
+        <div class="urg-opt" id="urg-hoog" onclick="selectUrg('hoog')">🔴 Hoog</div>
+        <div class="urg-opt sel-medium" id="urg-medium" onclick="selectUrg('medium')">🟡 Medium</div>
+        <div class="urg-opt" id="urg-laag" onclick="selectUrg('laag')">🟢 Laag</div>
+      </div>
+      <label>Ruwe notities over bewoners</label>
+      <textarea id="ho-notes" style="min-height:150px" placeholder="Schrijf gewoon wat er is gebeurd — hoeft niet netjes te zijn!&#10;&#10;bv:&#10;- M.J. kamer 12 — slechte nacht, pijn heup, dokter komt morgen&#10;- P.D. kamer 7 — goed gegeten, familie belde&#10;- A.P. kamer 3 — gevallen bij toilet, geen letsel"></textarea>
+      <label>Openstaande acties (optioneel)</label>
+      <textarea id="ho-actions" placeholder="bv. Bloeddruk meten kamer 5, Familie kamer 12 terugbellen..."></textarea>
+      <button class="btn" id="ho-btn" onclick="generateHandover()">🔄 Genereer Overdrachtsrapport</button>
+    </div>
+    <div class="loading" id="ho-loading"><div class="spinner"></div><p>Overdrachtsrapport wordt aangemaakt...</p><small>Dit duurt gewoonlijk 10–20 seconden</small></div>
+    <div class="results" id="ho-results">
+      <div class="print-header"><h1>🏥 NurseEdAI — Overdrachtsrapport</h1><p id="ho-print-meta"></p><div class="print-disclaimer">⚠️ AI-ondersteunde documentatie. Geen medisch advies.</div></div>
+      <div class="res-header">
+        <h2>🔄 Overdrachtsrapport</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="ho-tag"></span>
+          <span class="timestamp-badge" id="ho-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block green"><h3>📋 Overzicht dienst</h3><div class="result-content" id="ho-r1"></div></div>
+      <div class="result-block green"><h3>⚠️ Prioriteiten & aandachtspunten</h3><div class="result-content" id="ho-r2"></div></div>
+      <div class="result-block green"><h3>👥 Update per bewoner</h3><div class="result-content" id="ho-r3"></div></div>
+      <div class="result-block green"><h3>✅ Acties voor volgende dienst</h3><div class="result-content" id="ho-r4"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken / PDF</button>
+        <button class="btn-sm" onclick="copyAll('ho-results')">📋 Alles kopiëren</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ FAMILY ════ -->
+  <div class="panel" id="panel-family">
+    <div class="tip">👨‍👩‍👧 Genereer een warm, persoonlijk bericht voor de familie — klaar om te versturen via WhatsApp of e-mail.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> U mag de naam van de bewoner gebruiken voor familiecommunicatie — maar deel geen medische details met derden.</span></div>
+    <div class="card">
+      <div class="card-title">👨‍👩‍👧 Familiecommunicatie</div>
+      <div class="row2">
+        <div><label>Naam bewoner</label><input id="fam-resident" placeholder="bv. Maria of Kamer 12"/></div>
+        <div><label>Naam familielid</label><input id="fam-family" placeholder="bv. Anna (dochter)"/></div>
+      </div>
+      <div class="row2">
+        <div>
+          <label>Type bericht</label>
+          <select id="fam-type">
+            <option value="wekelijkse update">📅 Wekelijkse update</option>
+            <option value="update na doktersbezoek">🩺 Na doktersbezoek</option>
+            <option value="geruststelling na incident">⚠️ Na incident</option>
+            <option value="uitnodiging voor gesprek">💬 Uitnodiging gesprek</option>
+            <option value="slecht nieuws over achteruitgang">😔 Slecht nieuws</option>
+          </select>
+        </div>
+        <div>
+          <label>Taal van de familie</label>
+          <select id="fam-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option><option>Swahili</option>
+          </select>
+        </div>
+      </div>
+      <label>Hoe gaat het met de bewoner?</label>
+      <textarea id="fam-status" placeholder="bv. Maria heeft goed gegeten, deelgenomen aan muziekactiviteit, slaapt beter."></textarea>
+      <label>Bijzondere punten (optioneel)</label>
+      <textarea id="fam-notes" placeholder="bv. Nieuwe medicatie gestart, vraagt regelmatig naar haar dochter."></textarea>
+      <label>Contactgegevens woonzorgcentrum</label>
+      <input id="fam-contact" placeholder="bv. 03 456 78 90 of info@woonzorgcentrum.be"/>
+      <label>Naam verpleegkundige</label>
+      <input id="fam-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="fam-btn" onclick="generateFamily()">💬 Genereer Familiebericht</button>
+    </div>
+    <div class="loading" id="fam-loading"><div class="spinner"></div><p>Familiebericht wordt aangemaakt...</p><small>Dit duurt gewoonlijk 10–15 seconden</small></div>
+    <div class="results" id="fam-results">
+      <div class="res-header">
+        <h2>💬 Familiebericht</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="fam-tag"></span>
+          <span class="timestamp-badge" id="fam-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block amber"><h3>📱 WhatsApp / E-mail bericht</h3><div class="result-content" id="fam-r1"></div></div>
+      <div class="result-block amber"><h3>📞 Telefoongesprek script</h3><div class="result-content" id="fam-r2"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyText('fam-r1')">📋 Kopieer bericht</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ MEDICATION ════ -->
+  <div class="panel" id="panel-meds">
+    <div class="tip">💊 Voer de medicijnen van de bewoner in. De AI genereert uitleg voor de bewoner, voor de verpleegkundige, voor de familie én een dagelijks innameschema.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer. Medicatiegegevens zijn gevoelige data.</span></div>
+    <div class="card">
+      <div class="card-title">💊 Medicatiegegevens</div>
+      <div class="row2">
+        <div><label>Initialen / Code bewoner</label><input id="med-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Leeftijd</label><input id="med-age" type="number" placeholder="bv. 82"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Taal bewoner</label>
+          <select id="med-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option><option>Swahili</option>
+          </select>
+        </div>
+        <div><label>Diagnose / Aandoening</label><input id="med-diag" placeholder="bv. Type 2 Diabetes, Hartfalen..."/></div>
+      </div>
+      <label>Medicijnen (één per regel — naam, dosis, frequentie)</label>
+      <textarea id="med-list" style="min-height:140px" placeholder="bv:&#10;Metformine 500mg — tweemaal daags na het eten&#10;Lisinopril 10mg — eenmaal daags 's ochtends&#10;Aspirine 100mg — eenmaal daags bij ontbijt"></textarea>
+      <label>Bijzondere aandachtspunten (optioneel)</label>
+      <textarea id="med-notes" placeholder="bv. Nierproblemen, allergisch voor penicilline, heeft moeite met slikken..."></textarea>
+      <label>Naam verpleegkundige</label>
+      <input id="med-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="med-btn" onclick="generateMedication()">💊 Genereer Medicatiegids</button>
+    </div>
+    <div class="loading" id="med-loading"><div class="spinner"></div><p>Medicatiegids wordt aangemaakt...</p><small>Dit duurt gewoonlijk 15–25 seconden</small></div>
+    <div class="results" id="med-results">
+      <div class="print-header"><h1>🏥 NurseEdAI — Medicatiegids</h1><p id="med-print-meta"></p><div class="print-disclaimer">⚠️ AI-ondersteunde documentatie. Controleer altijd met apotheker of arts. Geen medisch advies.</div></div>
+      <div class="res-header">
+        <h2>💊 Medicatiegids</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="med-tag"></span>
+          <span class="timestamp-badge" id="med-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block"><h3>📅 Dagelijks Innameschema</h3><div class="result-content" id="med-r1"></div></div>
+      <div class="result-block"><h3>👤 Uitleg voor Bewoner — Eenvoudige Taal</h3><div class="result-content" id="med-r2"></div></div>
+      <div class="result-block amber"><h3>👩‍⚕️ Uitleg voor Verpleegkundige — Klinische Details</h3><div class="result-content" id="med-r3"></div></div>
+      <div class="result-block amber"><h3>👨‍👩‍👧 Uitleg voor Familie</h3><div class="result-content" id="med-r4"></div></div>
+      <div class="result-block red"><h3>⚠️ Bijwerkingen & Waarschuwingen</h3><div class="result-content" id="med-r5"></div></div>
+      <div class="result-block red"><h3>🚫 Mogelijke Interacties — Let Op!</h3><div class="result-content" id="med-r6"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyText('med-r1')">📋 Kopieer Schema</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken / PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ DOCTOR VISIT ════ -->
+  <div class="panel" id="panel-doctor">
+    <div class="tip">🩺 Noteer snel wat de dokter zegt tijdens het bezoek. De AI maakt er een volledig professioneel verslag van.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer voor de bewoner.</span></div>
+    <div class="card">
+      <div class="card-title">🩺 Doktersbezoek Registratie</div>
+      <div class="row3">
+        <div><label>Initialen / Code bewoner</label><input id="doc-resident" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Kamer</label><input id="doc-room" placeholder="bv. Kamer 12"/></div>
+        <div><label>Leeftijd</label><input id="doc-age" type="number" placeholder="bv. 82"/></div>
+      </div>
+      <div class="row3">
+        <div><label>Naam dokter</label><input id="doc-doctor" placeholder="bv. Dr. Vermeersch"/></div>
+        <div><label>Specialisatie</label><input id="doc-spec" placeholder="bv. Huisarts, Cardioloog..."/></div>
+        <div><label>Datum & tijdstip</label><input type="datetime-local" id="doc-date"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Type bezoek</label>
+          <select id="doc-type">
+            <option value="routine controle">📅 Routine controle</option>
+            <option value="dringend bezoek">🚨 Dringend bezoek</option>
+            <option value="opvolgbezoek">🔄 Opvolgbezoek</option>
+            <option value="eerste bezoek nieuwe dokter">👋 Eerste bezoek nieuwe dokter</option>
+            <option value="specialist consultatie">🔬 Specialist consultatie</option>
+          </select>
+        </div>
+        <div><label>Taal verslag</label>
+          <select id="doc-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option>
+          </select>
+        </div>
+      </div>
+      <label>Ruwe notities tijdens het bezoek</label>
+      <textarea id="doc-notes" style="min-height:160px" placeholder="Schrijf snel alles wat de dokter zegt — hoeft niet netjes!&#10;&#10;bv:&#10;- bloeddruk te hoog 160/95, medicatie aanpassen&#10;- metformine verhogen naar 1000mg&#10;- pijn in knie, doorsturen naar orthopeed"></textarea>
+      <label>Huidige medicatie van bewoner (optioneel)</label>
+      <textarea id="doc-meds" placeholder="bv. Metformine 500mg, Lisinopril 10mg..."></textarea>
+      <label>Voorgeschiedenis / Eerdere bezoeken (optioneel)</label>
+      <textarea id="doc-history" placeholder="bv. Vorige maand bloeddruk ook verhoogd..."></textarea>
+      <label>Naam verpleegkundige</label>
+      <input id="doc-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="doc-btn" onclick="generateDoctorVisit()">🩺 Genereer Doktersverslag</button>
+    </div>
+    <div class="loading" id="doc-loading"><div class="spinner"></div><p>Doktersverslag wordt aangemaakt...</p><small>Dit duurt gewoonlijk 15–25 seconden</small></div>
+    <div class="results" id="doc-results">
+      <div class="print-header"><h1>🏥 NurseEdAI — Doktersverslag</h1><p id="doc-print-meta"></p><div class="print-disclaimer">⚠️ AI-ondersteunde documentatie. Geen medisch advies. Controleer altijd met behandelende arts.</div></div>
+      <div class="res-header">
+        <h2>🩺 Officieel Doktersverslag</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="doc-tag"></span>
+          <span class="timestamp-badge" id="doc-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block green"><h3>📋 Officieel Medisch Verslag</h3><div class="result-content" id="doc-r1"></div></div>
+      <div class="result-block green"><h3>💊 Medicatiewijzigingen</h3><div class="result-content" id="doc-r2"></div></div>
+      <div class="result-block green"><h3>✅ Instructies & Acties na Bezoek</h3><div class="result-content" id="doc-r3"></div></div>
+      <div class="result-block"><h3>🔬 Aangevraagde Onderzoeken & Doorverwijzingen</h3><div class="result-content" id="doc-r4"></div></div>
+      <div class="result-block amber"><h3>👨‍👩‍👧 Bericht voor Familie</h3><div class="result-content" id="doc-r5"></div></div>
+      <div class="result-block amber"><h3>🔄 Overdracht naar Volgende Dienst</h3><div class="result-content" id="doc-r6"></div></div>
+      <div class="result-block red"><h3>🚨 Dringende Aandachtspunten</h3><div class="result-content" id="doc-r7"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyText('doc-r1')">📋 Kopieer Verslag</button>
+        <button class="btn-sm" onclick="copyText('doc-r6')">📋 Kopieer Overdracht</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken / PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ FOOD ════ -->
+  <div class="panel" id="panel-food">
+    <div class="tip">🍽️ Duid aan wat de bewoner heeft gegeten en gedronken. De AI maakt een professioneel voedingsverslag.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer.</span></div>
+    <div class="card">
+      <div class="card-title">🍽️ Voedingsregistratie</div>
+      <div class="row3">
+        <div><label>Initialen / Code bewoner</label><input id="food-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Kamer</label><input id="food-room" placeholder="bv. Kamer 12"/></div>
+        <div><label>Datum</label><input type="date" id="food-date"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Dieettype</label>
+          <select id="food-diet">
+            <option value="normaal dieet">🍽️ Normaal dieet</option>
+            <option value="zacht dieet">🥣 Zacht dieet</option>
+            <option value="gemalen dieet">🫕 Gemalen dieet</option>
+            <option value="vloeibaar dieet">🥤 Vloeibaar dieet</option>
+            <option value="diabetesdieet">💊 Diabetesdieet</option>
+            <option value="zoutarm dieet">🧂 Zoutarm dieet</option>
+            <option value="eiwitrijk dieet">💪 Eiwitrijk dieet</option>
+          </select>
+        </div>
+        <div><label>Taal verslag</label>
+          <select id="food-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option>
+          </select>
+        </div>
+      </div>
+      <label>🌅 Ontbijt</label>
+      <div style="background:var(--bg);border-radius:10px;padding:16px;border:1.5px solid var(--border);margin-bottom:8px;">
+        <div class="row3">
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Brood / granen</label>
+            <select id="food-b-bread">
+              <option value="niets gegeten">❌ Niets</option><option value="een kwart gegeten">¼ Kwart</option>
+              <option value="de helft gegeten">½ Helft</option><option value="driekwart gegeten">¾ Driekwart</option>
+              <option value="alles opgegeten">✅ Alles</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Drank</label>
+            <select id="food-b-drink">
+              <option value="niets gedronken">❌ Niets</option><option value="weinig gedronken">🔸 Weinig</option>
+              <option value="de helft gedronken">½ Helft</option><option value="bijna alles gedronken">¾ Bijna alles</option>
+              <option value="alles gedronken">✅ Alles</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Extra</label><input id="food-b-extra" placeholder="bv. banaan, yoghurt"/></div>
+        </div>
+        <div style="margin-top:10px;"><label style="text-transform:none;font-size:.8rem;margin-top:0;">Opmerkingen ontbijt</label><input id="food-b-notes" placeholder="bv. weigerde te eten..."/></div>
+      </div>
+      <label>☀️ Middag</label>
+      <div style="background:var(--bg);border-radius:10px;padding:16px;border:1.5px solid var(--border);margin-bottom:8px;">
+        <div class="row3">
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Soep</label>
+            <select id="food-l-soup">
+              <option value="geen soep genomen">❌ Niets</option><option value="weinig soep gegeten">🔸 Weinig</option>
+              <option value="halve kom soep gegeten">½ Helft</option><option value="bijna alle soep gegeten">¾ Bijna alles</option>
+              <option value="alle soep opgegeten">✅ Alles</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Hoofdgerecht</label>
+            <select id="food-l-main">
+              <option value="niets van hoofdgerecht gegeten">❌ Niets</option><option value="kwart van hoofdgerecht gegeten">¼ Kwart</option>
+              <option value="helft van hoofdgerecht gegeten">½ Helft</option><option value="driekwart van hoofdgerecht gegeten">¾ Driekwart</option>
+              <option value="volledig hoofdgerecht opgegeten">✅ Alles</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Drank</label>
+            <select id="food-l-drink">
+              <option value="niets gedronken bij middag">❌ Niets</option><option value="weinig gedronken bij middag">🔸 Weinig</option>
+              <option value="half glas gedronken">½ Helft</option><option value="bijna alles gedronken bij middag">¾ Bijna alles</option>
+              <option value="alles gedronken bij middag">✅ Alles</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:10px;"><label style="text-transform:none;font-size:.8rem;margin-top:0;">Menu & opmerkingen</label><input id="food-l-notes" placeholder="bv. aardappelen met groenten en kip..."/></div>
+      </div>
+      <label>🌆 Avond</label>
+      <div style="background:var(--bg);border-radius:10px;padding:16px;border:1.5px solid var(--border);margin-bottom:8px;">
+        <div class="row3">
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Brood / avondmaal</label>
+            <select id="food-d-bread">
+              <option value="niets gegeten 's avonds">❌ Niets</option><option value="kwart van avondmaal gegeten">¼ Kwart</option>
+              <option value="helft van avondmaal gegeten">½ Helft</option><option value="driekwart van avondmaal gegeten">¾ Driekwart</option>
+              <option value="volledig avondmaal opgegeten">✅ Alles</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Drank</label>
+            <select id="food-d-drink">
+              <option value="niets gedronken 's avonds">❌ Niets</option><option value="weinig gedronken 's avonds">🔸 Weinig</option>
+              <option value="half glas gedronken 's avonds">½ Helft</option><option value="bijna alles gedronken 's avonds">¾ Bijna alles</option>
+              <option value="alles gedronken 's avonds">✅ Alles</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Tussendoortje</label><input id="food-d-snack" placeholder="bv. koek, pudding..."/></div>
+        </div>
+        <div style="margin-top:10px;"><label style="text-transform:none;font-size:.8rem;margin-top:0;">Opmerkingen avond</label><input id="food-d-notes" placeholder="bv. goed gegeten..."/></div>
+      </div>
+      <label>💧 Totale vochtinname vandaag</label>
+      <div style="background:var(--bg);border-radius:10px;padding:16px;border:1.5px solid var(--border);margin-bottom:8px;">
+        <div class="row2">
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Geschatte vochtinname</label>
+            <select id="food-fluid">
+              <option value="zeer weinig vocht — minder dan 500ml">🔴 Zeer weinig — &lt;500ml</option>
+              <option value="weinig vocht — ongeveer 500-800ml">🟠 Weinig — 500-800ml</option>
+              <option value="matig vocht — ongeveer 800-1200ml" selected>🟡 Matig — 800-1200ml</option>
+              <option value="goed vocht — ongeveer 1200-1500ml">🟢 Goed — 1200-1500ml</option>
+              <option value="zeer goed vocht — meer dan 1500ml">✅ Zeer goed — +1500ml</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Vochtproblemen</label>
+            <select id="food-fluid-issue">
+              <option value="geen vochtproblemen">✅ Geen problemen</option>
+              <option value="weigert te drinken">❌ Weigert te drinken</option>
+              <option value="moeite met slikken van vocht">⚠️ Moeite met slikken</option>
+              <option value="vocht verdikt nodig">🥤 Verdikt vocht nodig</option>
+              <option value="tekenen van uitdroging">🚨 Tekenen uitdroging</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <label>Algemene opmerkingen</label>
+      <textarea id="food-general" placeholder="bv. bewoner had pijn bij het slikken, eet beter als muziek speelt..."></textarea>
+      <label>Naam verpleegkundige</label>
+      <input id="food-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="food-btn" onclick="generateFoodReport()">🍽️ Genereer Voedingsverslag</button>
+    </div>
+    <div class="loading" id="food-loading"><div class="spinner"></div><p>Voedingsverslag wordt aangemaakt...</p><small>Dit duurt gewoonlijk 10–15 seconden</small></div>
+    <div class="results" id="food-results">
+      <div class="print-header"><h1>🏥 NurseEdAI — Voedingsverslag</h1><p id="food-print-meta"></p><div class="print-disclaimer">⚠️ AI-ondersteunde documentatie. Geen medisch advies.</div></div>
+      <div class="res-header">
+        <h2>🍽️ Officieel Voedingsverslag</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="food-tag"></span>
+          <span class="timestamp-badge" id="food-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block green"><h3>📋 Officieel Voedingsverslag</h3><div class="result-content" id="food-r1"></div></div>
+      <div class="result-block"><h3>💧 Vochtbalans</h3><div class="result-content" id="food-r2"></div></div>
+      <div class="result-block amber"><h3>⚠️ Aandachtspunten & Aanbevelingen</h3><div class="result-content" id="food-r3"></div></div>
+      <div class="result-block red"><h3>🚨 Actie Vereist</h3><div class="result-content" id="food-r4"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyAll('food-results')">📋 Kopieer Verslag</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken / PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ WOUND CARE ════ -->
+  <div class="panel" id="panel-wound">
+    <div class="tip">🩹 Kies het wondtype en de details. De AI geeft u het juiste materiaal en een kort protocol.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer.</span></div>
+    <div class="card">
+      <div class="card-title">🩹 Wondzorg — Snel & Praktisch</div>
+      <div class="row3">
+        <div><label>Initialen / Code bewoner</label><input id="w-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Kamer</label><input id="w-room" placeholder="bv. Kamer 12"/></div>
+        <div><label>Datum</label><input type="date" id="w-date"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Type wond</label>
+          <select id="w-type">
+            <option value="skintear categorie 1 — ISTAP Cat 1">🩸 Skintear Cat 1 — Flap bedekt wond volledig</option>
+            <option value="skintear categorie 2 — ISTAP Cat 2">🩸 Skintear Cat 2 — Flap bedekt wond gedeeltelijk</option>
+            <option value="skintear categorie 3 — ISTAP Cat 3">🩸 Skintear Cat 3 — Geen huidflap aanwezig</option>
+            <option value="drukwonde (decubitus)">🔴 Drukwonde / Decubitus</option>
+            <option value="diabetische voetwonde">💊 Diabetische voetwonde</option>
+            <option value="postoperatieve wonde">🏥 Postoperatieve wonde</option>
+            <option value="geïnfecteerde wonde">⚠️ Geïnfecteerde wonde</option>
+            <option value="veneuze beenwonde">🦵 Veneuze beenwonde</option>
+            <option value="arteriële wonde">❤️ Arteriële wonde</option>
+            <option value="brandwonde">🔥 Brandwonde</option>
+            <option value="hematoom">🟣 Hematoom</option>
+            <option value="blaar / frictieblaar">💧 Blaar / Frictieblaar</option>
+            <option value="schaafwonde na val">🛞 Schaafwonde / Na val</option>
+            <option value="andere wonde">🩹 Andere</option>
+          </select>
+        </div>
+        <div><label>Locatie</label>
+          <select id="w-location">
+            <option>Hielen</option><option>Stuit / Sacrum</option><option>Enkels</option>
+            <option>Voeten</option><option>Been</option><option>Knieën</option>
+            <option>Ellebogen</option><option>Buik / Operatiewonde</option><option>Andere locatie</option>
+          </select>
+        </div>
+      </div>
+      <div class="row3">
+        <div><label>Stadium</label>
+          <select id="w-stage">
+            <option value="stadium 1 — rode huid niet open">1 — Rode huid</option>
+            <option value="stadium 2 — oppervlakkig open">2 — Oppervlakkig</option>
+            <option value="stadium 3 — diep tot in vet">3 — Diep</option>
+            <option value="stadium 4 — tot op bot">4 — Tot op bot</option>
+          </select>
+        </div>
+        <div><label>Wondvocht</label>
+          <select id="w-exudate">
+            <option value="geen">Geen</option><option value="weinig secreet">Weinig</option>
+            <option value="matig">Matig</option><option value="veel">Veel</option>
+            <option value="etterig — infectie">⚠️ Etterig</option>
+          </select>
+        </div>
+        <div><label>Evolutie</label>
+          <select id="w-evolution">
+            <option value="eerste verzorging">🆕 Eerste keer</option>
+            <option value="verbetert">📈 Verbetert</option>
+            <option value="stabiel">➡️ Stabiel</option>
+            <option value="verslechtert">📉 Verslechtert ⚠️</option>
+          </select>
+        </div>
+      </div>
+      <label>Infectietekenen</label>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;padding:10px 0;">
+        <label style="text-transform:none;font-size:.88rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="w-inf-geen" checked> ✅ Geen</label>
+        <label style="text-transform:none;font-size:.88rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="w-inf-rood"> 🔴 Roodheid</label>
+        <label style="text-transform:none;font-size:.88rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="w-inf-warm"> 🌡️ Warmte</label>
+        <label style="text-transform:none;font-size:.88rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="w-inf-geur"> 👃 Geur</label>
+        <label style="text-transform:none;font-size:.88rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="w-inf-koorts"> 🌡️ Koorts</label>
+      </div>
+      <label>Korte opmerking (optioneel)</label>
+      <input id="w-notes" placeholder="bv. bewoner weigerde verzorging..."/>
+      <label>Naam verpleegkundige</label>
+      <input id="w-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="w-btn" onclick="generateWoundCare()">🩹 Genereer Wondzorg Protocol</button>
+    </div>
+    <div class="loading" id="w-loading"><div class="spinner"></div><p>Wondzorg protocol wordt aangemaakt...</p><small>Duurt 10–15 seconden</small></div>
+    <div class="results" id="w-results">
+      <div class="print-header"><h1>🏥 NurseEdAI — Wondzorg Protocol</h1><p id="w-print-meta"></p><div class="print-disclaimer">⚠️ AI-ondersteunde documentatie. Controleer altijd met hoofdverpleegkundige. Geen medisch advies.</div></div>
+      <div class="res-header">
+        <h2>🩹 Wondzorg Protocol</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="w-tag"></span>
+          <span class="timestamp-badge" id="w-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block green"><h3>🩹 Materiaal & Procedure</h3><div class="result-content" id="w-r1"></div></div>
+      <div class="result-block"><h3>📋 Kort Verslag</h3><div class="result-content" id="w-r2"></div></div>
+      <div class="result-block amber"><h3>🔄 Overdracht & Opvolging</h3><div class="result-content" id="w-r3"></div></div>
+      <div class="result-block red"><h3>🚨 Let Op!</h3><div class="result-content" id="w-r4"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyText('w-r1')">📋 Kopieer Protocol</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ APPOINTMENTS ════ -->
+  <div class="panel" id="panel-appt">
+    <div class="tip">📅 Plan een afspraak voor uw bewoner. De AI maakt een checklist, familiebericht en overdracht.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer voor de bewoner.</span></div>
+    <div class="card">
+      <div class="card-title">📅 Afspraak Plannen & Opvolgen</div>
+      <div class="row3">
+        <div><label>Initialen / Code bewoner</label><input id="ap-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Kamer</label><input id="ap-room" placeholder="bv. Kamer 12"/></div>
+        <div><label>Geboortedatum</label><input type="date" id="ap-birth"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Type afspraak</label>
+          <select id="ap-type">
+            <option value="huisarts consultatie">👨‍⚕️ Huisarts</option>
+            <option value="specialist consultatie">🏥 Specialist</option>
+            <option value="tandarts">🦷 Tandarts</option>
+            <option value="ziekenhuis consultatie">🏨 Ziekenhuis</option>
+            <option value="oogarts">👁️ Oogarts</option>
+            <option value="dermatoloog">🩺 Dermatoloog</option>
+            <option value="cardioloog">❤️ Cardioloog</option>
+            <option value="neurologie">🧠 Neurologie</option>
+            <option value="andere specialist">🔬 Andere specialist</option>
+          </select>
+        </div>
+        <div><label>Naam dokter / specialist</label><input id="ap-doctor" placeholder="bv. Dr. Vermeersch"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Datum afspraak</label><input type="date" id="ap-date"/></div>
+        <div><label>Tijdstip</label><input type="time" id="ap-time"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Locatie / Ziekenhuis</label><input id="ap-location" placeholder="bv. UZ Gent, Kliniek Sint-Jan..."/></div>
+        <div><label>Taal familie</label>
+          <select id="ap-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option>
+          </select>
+        </div>
+      </div>
+      <label>Reden van de afspraak</label>
+      <input id="ap-reason" placeholder="bv. controle bloeddruk, pijn in knie..."/>
+      <label>Naam familielid / contactpersoon</label>
+      <input id="ap-family" placeholder="bv. Anna (dochter) — 0477 123 456"/>
+      <label>Bijzonderheden bewoner</label>
+      <input id="ap-notes" placeholder="bv. rolstoel nodig, nuchter komen..."/>
+      <label>Naam verpleegkundige</label>
+      <input id="ap-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="ap-btn" onclick="generateAppointment()">📅 Genereer Afspraakdossier</button>
+    </div>
+    <div class="loading" id="ap-loading"><div class="spinner"></div><p>Afspraakdossier wordt aangemaakt...</p><small>Duurt 10–15 seconden</small></div>
+    <div class="results" id="ap-results">
+      <div class="res-header">
+        <h2>📅 Afspraakdossier</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="ap-tag"></span>
+          <span class="timestamp-badge" id="ap-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block green"><h3>✅ Checklist — Wat meebrengen</h3><div class="result-content" id="ap-r1"></div></div>
+      <div class="result-block green"><h3>📋 Voorbereiding voor verpleegkundige</h3><div class="result-content" id="ap-r2"></div></div>
+      <div class="result-block amber"><h3>👨‍👩‍👧 Bericht voor familie</h3><div class="result-content" id="ap-r3"></div></div>
+      <div class="result-block amber"><h3>🔄 Overdracht naar volgende dienst</h3><div class="result-content" id="ap-r4"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyText('ap-r3')">📋 Kopieer familiebericht</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ PALLIATIVE ════ -->
+  <div class="panel" id="panel-pallia">
+    <div class="tip">💜 Ondersteuning voor palliatieve zorg. Snel, waardig en respectvol.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer. Palliatieve gegevens zijn zeer gevoelig.</span></div>
+    <div class="card">
+      <div class="card-title">💜 Palliatieve Zorg & Comfort</div>
+      <div class="row2">
+        <div><label>Initialen / Code bewoner</label><input id="pa-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Kamer</label><input id="pa-room" placeholder="bv. Kamer 12"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Fase</label>
+          <select id="pa-phase">
+            <option value="vroege palliatieve fase — nog maanden">🌅 Vroege fase — nog maanden</option>
+            <option value="gevorderde palliatieve fase — weken">🌇 Gevorderde fase — weken</option>
+            <option value="terminale fase — dagen">🌙 Terminale fase — dagen</option>
+            <option value="stervensfase — uren">🕯️ Stervensfase — uren</option>
+          </select>
+        </div>
+        <div><label>Taal familie</label>
+          <select id="pa-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option>
+          </select>
+        </div>
+      </div>
+      <label>Pijnschaal (0 = geen pijn, 10 = ergste pijn)</label>
+      <div style="background:var(--bg);border-radius:10px;padding:16px;border:1.5px solid var(--border);">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+          <span style="font-size:.85rem;font-weight:600;color:var(--ink-mid);">Pijnscore:</span>
+          <input type="range" id="pa-pain-score" min="0" max="10" value="3" style="flex:1;min-width:150px;" oninput="document.getElementById('pa-pain-val').textContent=this.value">
+          <span id="pa-pain-val" style="font-weight:700;color:var(--teal);min-width:20px;">3</span>
+        </div>
+        <div class="row2">
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Type pijn</label>
+            <select id="pa-pain-type">
+              <option value="geen pijn waarneembaar">Geen pijn</option>
+              <option value="lichaamspijn — somatisch">Lichaamspijn</option>
+              <option value="pijn bij beweging">Pijn bij beweging</option>
+              <option value="constante pijn">Constante pijn</option>
+              <option value="onrust en agitatie — mogelijk pijn">Onrust / Agitatie</option>
+            </select>
+          </div>
+          <div><label style="text-transform:none;font-size:.8rem;margin-top:0;">Huidige pijnstilling</label><input id="pa-pain-meds" placeholder="bv. Morphine 10mg..."/></div>
+        </div>
+      </div>
+      <label>Comfort checklist</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;">
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c1"> 😊 Rustig en comfortabel</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c2"> 😰 Onrustig / Angstig</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c3"> 💧 Droge mond</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c4"> 😮‍💨 Ademhalingsproblemen</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c5"> 🤢 Nausea / Misselijkheid</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c6"> 😴 Slaperig / Somnolent</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c7"> 🗣️ Wil praten / Contact</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="pa-c8"> 🙏 Spirituele nood</label>
+      </div>
+      <label>Laatste wensen / Wilsverklaring</label>
+      <textarea id="pa-wishes" placeholder="bv. geen reanimatie, wil muziek horen, familie aanwezig bij overlijden..."></textarea>
+      <label>Familiesituatie</label>
+      <textarea id="pa-family" style="min-height:60px" placeholder="bv. dochter is op de hoogte, zoon woont in Spanje..."></textarea>
+      <label>Hoe voelt u zich als verpleegkundige?</label>
+      <select id="pa-nurse">
+        <option value="ik voel me goed en ondersteund">😊 Goed en ondersteund</option>
+        <option value="ik vind het emotioneel zwaar maar ik ga ermee om">😔 Emotioneel zwaar</option>
+        <option value="ik heb ondersteuning nodig als verpleegkundige">🙏 Ik heb zelf ondersteuning nodig</option>
+        <option value="dit is mijn eerste palliatieve bewoner">🆕 Eerste palliatieve bewoner</option>
+      </select>
+      <label>Naam verpleegkundige</label>
+      <input id="pa-nurse-name" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="pa-btn" onclick="generatePalliative()">💜 Genereer Palliatief Zorgplan</button>
+    </div>
+    <div class="loading" id="pa-loading"><div class="spinner"></div><p>Palliatief zorgplan wordt aangemaakt...</p><small>Duurt 15–20 seconden</small></div>
+    <div class="results" id="pa-results">
+      <div class="res-header">
+        <h2>💜 Palliatief Zorgplan</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="pa-tag"></span>
+          <span class="timestamp-badge" id="pa-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block" style="border-left-color:#7c3aed;"><h3 style="color:#7c3aed;">💜 Comfort & Pijnbeheer Plan</h3><div class="result-content" id="pa-r1"></div></div>
+      <div class="result-block" style="border-left-color:#7c3aed;"><h3 style="color:#7c3aed;">📋 Zorgacties deze dienst</h3><div class="result-content" id="pa-r2"></div></div>
+      <div class="result-block amber"><h3>👨‍👩‍👧 Begeleiding & bericht voor familie</h3><div class="result-content" id="pa-r3"></div></div>
+      <div class="result-block amber"><h3>💬 Script moeilijk gesprek met familie</h3><div class="result-content" id="pa-r4"></div></div>
+      <div class="result-block" style="border-left-color:#7c3aed;"><h3 style="color:#7c3aed;">🙏 Laatste wensen samenvatting</h3><div class="result-content" id="pa-r5"></div></div>
+      <div class="result-block green"><h3>❤️ Ondersteuning voor u als verpleegkundige</h3><div class="result-content" id="pa-r6"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyText('pa-r4')">📋 Kopieer gesprekscript</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ INCIDENT ════ -->
+  <div class="panel" id="panel-incident">
+    <div class="tip">😰 Registreer een incident snel en correct. De AI genereert een juridisch correct incidentrapport.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer voor de bewoner in het rapport.</span></div>
+    <div class="card">
+      <div class="card-title">😰 Incident Registratie</div>
+      <div class="row3">
+        <div><label>Initialen / Code bewoner</label><input id="inc-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Kamer</label><input id="inc-room" placeholder="bv. Kamer 12"/></div>
+        <div><label>Datum & tijdstip</label><input type="datetime-local" id="inc-date"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Type incident</label>
+          <select id="inc-type">
+            <option value="valincident">🤕 Valincident</option>
+            <option value="agressie door bewoner">😠 Agressie door bewoner</option>
+            <option value="agressie naar verpleegkundige">⚠️ Agressie naar verpleegkundige</option>
+            <option value="medicatiefout">💊 Medicatiefout</option>
+            <option value="verdwijning of wegloopincident">🚶 Verdwijning / Wegloop</option>
+            <option value="letsel door onbekende oorzaak">🩹 Letsel onbekende oorzaak</option>
+            <option value="verslikking of aspiratie">🫁 Verslikking / Aspiratie</option>
+            <option value="andere incident">📋 Andere</option>
+          </select>
+        </div>
+        <div><label>Ernst</label>
+          <select id="inc-severity">
+            <option value="licht — geen letsel">🟢 Licht — geen letsel</option>
+            <option value="matig — licht letsel of medische aandacht nodig">🟡 Matig — licht letsel</option>
+            <option value="ernstig — significant letsel of ziekenhuisopname">🔴 Ernstig — significant letsel</option>
+            <option value="kritiek — levensbedreigend">⚫ Kritiek — levensbedreigend</option>
+          </select>
+        </div>
+      </div>
+      <label>Locatie van het incident</label>
+      <select id="inc-location">
+        <option value="kamer van de bewoner">🛏️ Kamer bewoner</option>
+        <option value="badkamer of toilet">🚿 Badkamer / Toilet</option>
+        <option value="gang of corridor">🚶 Gang / Corridor</option>
+        <option value="eetzaal">🍽️ Eetzaal</option>
+        <option value="buitenruimte of tuin">🌿 Buiten / Tuin</option>
+        <option value="andere locatie">📍 Andere locatie</option>
+      </select>
+      <label>Wat is er exact gebeurd?</label>
+      <textarea id="inc-what" style="min-height:100px" placeholder="bv. Bewoner gevonden op de vloer naast het bed, rechterheup pijnlijk..."></textarea>
+      <label>Acties ondernomen na het incident</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;">
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a1"> 🩺 Dokter verwittigd</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a2"> 👨‍👩‍👧 Familie verwittigd</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a3"> 🏥 Ziekenhuis / MUG gebeld</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a4"> 📸 Foto genomen van letsel</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a5"> 🛏️ Bewoner naar bed gebracht</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a6"> 💊 Pijnstilling gegeven</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a7"> 👁️ Bewoner blijft geobserveerd</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="inc-a8"> 📋 Directie verwittigd</label>
+      </div>
+      <label>Getuigen (optioneel)</label>
+      <input id="inc-witness" placeholder="bv. Collega aanwezig, bewoner kamer 11 heeft het gezien..."/>
+      <div class="row2">
+        <div><label>Naam meldende verpleegkundige</label><input id="inc-nurse" placeholder="bv. Amara Diallo"/></div>
+        <div><label>Taal verslag</label>
+          <select id="inc-lang"><option>Nederlands</option><option>Frans</option><option>Engels</option></select>
+        </div>
+      </div>
+      <button class="btn" id="inc-btn" onclick="generateIncident()">😰 Genereer Incidentrapport</button>
+    </div>
+    <div class="loading" id="inc-loading"><div class="spinner"></div><p>Incidentrapport wordt aangemaakt...</p><small>Duurt 10–15 seconden</small></div>
+    <div class="results" id="inc-results">
+      <div class="print-header"><h1>🏥 NurseEdAI — Incidentrapport</h1><p id="inc-print-meta"></p><div class="print-disclaimer">⚠️ AI-ondersteunde documentatie. Dit rapport dient als aanvulling op het officieel incidentregistratiesysteem van uw instelling.</div></div>
+      <div class="res-header">
+        <h2>😰 Officieel Incidentrapport</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="inc-tag"></span>
+          <span class="timestamp-badge" id="inc-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block green"><h3>📋 Officieel Incidentrapport</h3><div class="result-content" id="inc-r1"></div></div>
+      <div class="result-block red"><h3>🚨 Dringende Vervolgacties</h3><div class="result-content" id="inc-r2"></div></div>
+      <div class="result-block amber"><h3>👨‍👩‍👧 Bericht voor Familie</h3><div class="result-content" id="inc-r3"></div></div>
+      <div class="result-block amber"><h3>🔄 Overdracht naar Volgende Dienst</h3><div class="result-content" id="inc-r4"></div></div>
+      <div class="result-block"><h3>🛡️ Preventietips</h3><div class="result-content" id="inc-r5"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyAll('inc-results')">📋 Kopieer Rapport</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ DAGRAPPORT ════ -->
+  <div class="panel" id="panel-dagrapp">
+    <div class="tip">📊 Vul de dag van de bewoner in via snelle keuzes. De AI maakt een volledig dagrapport in 2 minuten.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer.</span></div>
+    <div class="card">
+      <div class="card-title">📊 Bewoner Dagrapport</div>
+      <div class="row3">
+        <div><label>Initialen / Code bewoner</label><input id="dr-name" placeholder="bv. M.J. of Kamer 12"/></div>
+        <div><label>Kamer</label><input id="dr-room" placeholder="bv. Kamer 12"/></div>
+        <div><label>Datum</label><input type="date" id="dr-date"/></div>
+      </div>
+      <div class="row2">
+        <div><label>Verpleegkundige</label><input id="dr-nurse" placeholder="bv. Amara Diallo"/></div>
+        <div><label>Dienst</label>
+          <select id="dr-shift"><option>Dagdienst</option><option>Avonddienst</option><option>Nachtdienst</option></select>
+        </div>
+      </div>
+      <label>🚿 Hygiëne</label>
+      <select id="dr-hygiene">
+        <option value="volledig gewassen met hulp">✅ Volledig gewassen — met hulp</option>
+        <option value="volledig gewassen zelfstandig">✅ Volledig gewassen — zelfstandig</option>
+        <option value="gedeeltelijk gewassen">🔸 Gedeeltelijk gewassen</option>
+        <option value="gewassen geweigerd">❌ Geweigerd</option>
+        <option value="enkel gezicht en handen gewassen">💧 Enkel gezicht en handen</option>
+      </select>
+      <label>🍽️ Voeding</label>
+      <select id="dr-food">
+        <option value="goed gegeten — meer dan driekwart">✅ Goed — meer dan ¾</option>
+        <option value="matig gegeten — ongeveer de helft">🔸 Matig — ongeveer de helft</option>
+        <option value="weinig gegeten — minder dan een kwart">⚠️ Weinig — minder dan ¼</option>
+        <option value="niet gegeten — weigering">❌ Niet gegeten</option>
+        <option value="aangepaste voeding gegeven">🥣 Aangepaste voeding</option>
+      </select>
+      <label>💧 Vochtinname</label>
+      <select id="dr-fluid">
+        <option value="voldoende gedronken — meer dan 1500ml">✅ Voldoende — +1500ml</option>
+        <option value="matig gedronken — 800 tot 1500ml">🔸 Matig — 800-1500ml</option>
+        <option value="weinig gedronken — minder dan 800ml">⚠️ Weinig — -800ml</option>
+        <option value="geweigerd te drinken">❌ Geweigerd</option>
+      </select>
+      <label>😴 Slaap (vorige nacht)</label>
+      <select id="dr-sleep">
+        <option value="goed geslapen — rustige nacht">✅ Goed — rustige nacht</option>
+        <option value="onrustig geslapen — meerdere keren wakker">🔸 Onrustig</option>
+        <option value="slecht geslapen — bijna niet geslapen">⚠️ Slecht</option>
+        <option value="niet geslapen">❌ Niet geslapen</option>
+      </select>
+      <label>😊 Stemming & Gedrag</label>
+      <select id="dr-mood">
+        <option value="rustig en goed gehumeurd">😊 Rustig en goed gehumeurd</option>
+        <option value="verdrietig of teruggetrokken">😔 Verdrietig / Teruggetrokken</option>
+        <option value="onrustig of geagiteerd">😰 Onrustig / Geagiteerd</option>
+        <option value="verward of gedesoriënteerd">🌀 Verward / Gedesoriënteerd</option>
+        <option value="agressief of moeilijk benaderbaar">😠 Agressief</option>
+        <option value="wisselende stemming">🔄 Wisselende stemming</option>
+      </select>
+      <label>🚶 Mobiliteit & Activiteit</label>
+      <select id="dr-mobility">
+        <option value="zelfstandig mobiel">✅ Zelfstandig mobiel</option>
+        <option value="mobiel met hulpmiddel — rollator of stok">🦽 Met rollator / stok</option>
+        <option value="transfer met hulp van verpleegkundige">🤝 Transfer met hulp</option>
+        <option value="bedlegerig — kan niet staan">🛏️ Bedlegerig</option>
+        <option value="deelgenomen aan activiteit">🎵 Deelgenomen aan activiteit</option>
+      </select>
+      <label>💊 Medicatie</label>
+      <select id="dr-meds">
+        <option value="alle medicatie ingenomen zonder problemen">✅ Alles ingenomen</option>
+        <option value="medicatie gedeeltelijk geweigerd">🔸 Gedeeltelijk geweigerd</option>
+        <option value="alle medicatie geweigerd">❌ Alles geweigerd</option>
+        <option value="moeite met slikken van medicatie">⚠️ Moeite met slikken</option>
+      </select>
+      <label>🚽 Toiletgang & Continentie</label>
+      <select id="dr-toilet">
+        <option value="zelfstandig naar toilet gegaan">✅ Zelfstandig</option>
+        <option value="toiletgang met hulp">🤝 Met hulp</option>
+        <option value="incontinent — verbandwissel nodig">⚠️ Incontinent</option>
+        <option value="constipatie — al meerdere dagen geen stoelgang">🔴 Constipatie</option>
+        <option value="diarree">⚠️ Diarree</option>
+      </select>
+      <label>💬 Contact & Communicatie</label>
+      <select id="dr-contact">
+        <option value="goed aanspreekbaar en reageert goed">✅ Goed aanspreekbaar</option>
+        <option value="minder aanspreekbaar dan gewoonlijk">🔸 Minder aanspreekbaar</option>
+        <option value="nauwelijks aanspreekbaar">⚠️ Nauwelijks aanspreekbaar</option>
+        <option value="familie heeft gebeld of bezocht">👨‍👩‍👧 Familie gebeld / bezocht</option>
+      </select>
+      <label>Extra opmerkingen (optioneel)</label>
+      <textarea id="dr-notes" placeholder="bv. klaagde over pijn in knie, dokter verwittigd..."></textarea>
+      <label>Taal verslag</label>
+      <select id="dr-lang">
+        <option>Nederlands</option><option>Frans</option><option>Engels</option>
+        <option>Arabisch</option><option>Turks</option><option>Pools</option>
+      </select>
+      <button class="btn" id="dr-btn" onclick="generateDayReport()">📊 Genereer Dagrapport</button>
+    </div>
+    <div class="loading" id="dr-loading"><div class="spinner"></div><p>Dagrapport wordt aangemaakt...</p><small>Duurt 10–15 seconden</small></div>
+    <div class="results" id="dr-results">
+      <div class="print-header"><h1>🏥 NurseEdAI — Dagrapport</h1><p id="dr-print-meta"></p><div class="print-disclaimer">⚠️ AI-ondersteunde documentatie. Geen medisch advies.</div></div>
+      <div class="res-header">
+        <h2>📊 Bewoner Dagrapport</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="dr-tag"></span>
+          <span class="timestamp-badge" id="dr-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block green"><h3>📋 Officieel Dagrapport</h3><div class="result-content" id="dr-r1"></div></div>
+      <div class="result-block amber"><h3>⚠️ Aandachtspunten & Opvolging</h3><div class="result-content" id="dr-r2"></div></div>
+      <div class="result-block amber"><h3>🔄 Overdracht naar Volgende Dienst</h3><div class="result-content" id="dr-r3"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyAll('dr-results')">📋 Kopieer Rapport</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ DEMENTIEZORG ════ -->
+  <div class="panel" id="panel-dementia">
+    <div class="tip">🧠 Ondersteuning bij dementiezorg. Beschrijf het gedrag — de AI geeft direct praktische tips.</div>
+    <div class="privacy-tip"><span class="icon">🔒</span><span><strong>Privacy:</strong> Gebruik initialen of kamernummer.</span></div>
+    <div class="card">
+      <div class="card-title">🧠 Dementiezorg Ondersteuning</div>
+      <div class="row3">
+        <div><label>Initialen / Code bewoner</label><input id="dem-name" placeholder="bv. J.D. of Kamer 7"/></div>
+        <div><label>Kamer</label><input id="dem-room" placeholder="bv. Kamer 7"/></div>
+        <div><label>Stadium dementie</label>
+          <select id="dem-stage">
+            <option value="vroeg stadium dementie — lichte geheugenproblemen">🌅 Vroeg stadium</option>
+            <option value="middel stadium dementie — matige cognitieve achteruitgang">🌇 Middel stadium</option>
+            <option value="gevorderd stadium dementie — ernstige cognitieve achteruitgang">🌙 Gevorderd stadium</option>
+          </select>
+        </div>
+      </div>
+      <label>Huidig gedrag & situatie</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;">
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b1"> 😰 Onrust / Agitatie</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b2"> 🌀 Verwardheid</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b3"> 😠 Agressie / Verzet</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b4"> 🚶 Weglopen / Dwalen</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b5"> 😢 Roepen / Huilen</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b6"> ❌ Weigert verzorging</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b7"> 🌙 Dag-nachtverwarring</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-b8"> 😊 Rustig en meewerkend</label>
+      </div>
+      <label>Wat heeft u al geprobeerd?</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 0;">
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-t1"> 🎵 Muziek</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-t2"> 🤝 Aanraking / Warmte</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-t3"> 🧩 Afleiding</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-t4"> 🍵 Drankje / Snack</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-t5"> 👨‍👩‍👧 Familie gebeld</label>
+        <label style="text-transform:none;font-size:.85rem;margin:0;display:flex;align-items:center;gap:6px;font-weight:400;cursor:pointer;"><input type="checkbox" id="dem-t6"> 🚶 Wandeling</label>
+      </div>
+      <label>Beschrijf de situatie kort</label>
+      <textarea id="dem-notes" placeholder="bv. Bewoner roept al 2 uur, wordt agressief bij verzorging..."></textarea>
+      <div class="row2">
+        <div><label>Type zorgvraag</label>
+          <select id="dem-need">
+            <option value="communicatietips voor nu">💬 Communicatietips voor nu</option>
+            <option value="aanpak van agressie of verzet">😠 Aanpak agressie / verzet</option>
+            <option value="omgaan met verwardheid en desorientatie">🌀 Omgaan met verwardheid</option>
+            <option value="tips voor verzorging weigering">❌ Verzorging weigering</option>
+            <option value="dag-nachtverwarring aanpak">🌙 Dag-nachtverwarring</option>
+            <option value="algemeen zorgplan dementie">📋 Algemeen zorgplan</option>
+          </select>
+        </div>
+        <div><label>Taal</label>
+          <select id="dem-lang">
+            <option>Nederlands</option><option>Frans</option><option>Engels</option>
+            <option>Arabisch</option><option>Turks</option><option>Pools</option>
+          </select>
+        </div>
+      </div>
+      <label>Naam verpleegkundige</label>
+      <input id="dem-nurse" placeholder="bv. Amara Diallo"/>
+      <button class="btn" id="dem-btn" onclick="generateDementia()">🧠 Genereer Dementiezorg Advies</button>
+    </div>
+    <div class="loading" id="dem-loading"><div class="spinner"></div><p>Dementiezorg advies wordt aangemaakt...</p><small>Duurt 10–15 seconden</small></div>
+    <div class="results" id="dem-results">
+      <div class="res-header">
+        <h2>🧠 Dementiezorg Advies</h2>
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;">
+          <span class="res-tag" id="dem-tag"></span>
+          <span class="timestamp-badge" id="dem-timestamp">⏱️ ...</span>
+        </div>
+      </div>
+      <div class="result-block" style="border-left-color:#7c3aed;"><h3 style="color:#7c3aed;">💬 Communicatietips — Nu Direct Toepassen</h3><div class="result-content" id="dem-r1"></div></div>
+      <div class="result-block" style="border-left-color:#7c3aed;"><h3 style="color:#7c3aed;">🛠️ Praktisch Zorgplan</h3><div class="result-content" id="dem-r2"></div></div>
+      <div class="result-block amber"><h3>👨‍👩‍👧 Tips voor Familie</h3><div class="result-content" id="dem-r3"></div></div>
+      <div class="result-block amber"><h3>🔄 Overdracht</h3><div class="result-content" id="dem-r4"></div></div>
+      <div class="result-block red"><h3>🚨 Wanneer Dokter of Specialist Inschakelen?</h3><div class="result-content" id="dem-r5"></div></div>
+      <div class="actions">
+        <button class="btn-sm" onclick="copyAll('dem-results')">📋 Kopieer Tips</button>
+        <button class="btn-sm" onclick="printResult()">🖨️ Afdrukken</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ════════════════════════════════════════
+     FIX 1+2: STICKY DISCLAIMER BAR
+════════════════════════════════════════ -->
+<div class="disclaimer-bar">
+  <span>⚠️ <strong>NurseEdAI ondersteunt documentatie — geen medisch advies.</strong> Controleer medicatie met apotheker. Wondzorg met hoofdverpleegkundige. Medische beslissingen altijd met de behandelende arts. Gebruik initialen — geen echte namen.</span>
+  <span class="privacy-badge">🔒 Gebruik initialen</span>
+</div>
+
 <script>
+// ══════════════════════════════
+// FIX 8: OFFLINE DETECTION
+// ══════════════════════════════
+function showOfflineBanner() {
+  document.getElementById('offline-banner').style.display = 'block';
+  document.getElementById('online-banner').style.display = 'none';
+  document.body.classList.add('is-offline');
+}
+
+function showOnlineBanner() {
+  document.getElementById('offline-banner').style.display = 'none';
+  var ob = document.getElementById('online-banner');
+  ob.style.display = 'block';
+  document.body.classList.remove('is-offline');
+  setTimeout(function() { ob.style.display = 'none'; }, 3000);
+}
+
+// Check on load
+if (!navigator.onLine) { showOfflineBanner(); }
+
+// Listen for changes
+window.addEventListener('offline', showOfflineBanner);
+window.addEventListener('online', showOnlineBanner);
+
+// Block generate buttons when offline
+var originalCallClaude = callClaude;
+callClaude = async function(prompt) {
+  if (!navigator.onLine) {
+    throw new Error('Geen internetverbinding. Controleer uw WiFi of 4G en probeer opnieuw.');
+  }
+  return originalCallClaude(prompt);
+};
+
+function closePopup() {
+  document.getElementById('disclaimerPopup').style.display = 'none';
+}
+
+// ══════════════════════════════
+// TIMESTAMP HELPER (FIX 3)
+// ══════════════════════════════
+function getTimestamp(nurseName) {
+  var now = new Date();
+  var d = now.toLocaleDateString('nl-BE', {day:'2-digit',month:'2-digit',year:'numeric'});
+  var t = now.toLocaleTimeString('nl-BE', {hour:'2-digit',minute:'2-digit'});
+  var nurse = nurseName ? ' · 👤 ' + nurseName : '';
+  return '📅 ' + d + ' om ' + t + nurse;
+}
+
+function setTimestamp(id, nurseName) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = getTimestamp(nurseName);
+}
+
+// ══════════════════════════════
+// TODAY'S DATE
+// ══════════════════════════════
+document.getElementById('ho-date').valueAsDate = new Date();
+document.getElementById('dr-date').valueAsDate = new Date();
+document.getElementById('inc-date').value = new Date().toISOString().slice(0,16);
+document.getElementById('food-date').valueAsDate = new Date();
+document.getElementById('w-date').valueAsDate = new Date();
+
+// ══════════════════════════════
+// TABS
+// ══════════════════════════════
+function showTab(name, btn) {
+  document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════
+// URGENCY
+// ══════════════════════════════
+var selectedUrg = 'medium';
+function selectUrg(level) {
+  selectedUrg = level;
+  ['hoog','medium','laag'].forEach(function(l) {
+    var el = document.getElementById('urg-' + l);
+    el.className = 'urg-opt';
+    if (l === level) el.classList.add('sel-' + l);
+  });
+}
+
+// ══════════════════════════════
+// COPY (FIX 5: improved)
+// ══════════════════════════════
+function copyText(id) {
+  var text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    alert('✓ Gekopieerd naar klembord!');
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✓ Gekopieerd!');
+  });
+}
+
+function copyAll(resultsId) {
+  var container = document.getElementById(resultsId);
+  var contents = container.querySelectorAll('.result-content');
+  var headers = container.querySelectorAll('.result-block h3');
+  var text = '';
+  var ts = container.querySelector('.timestamp-badge');
+  if (ts) text += ts.textContent + '\n\n';
+  contents.forEach(function(c, i) {
+    if (headers[i]) text += '── ' + headers[i].textContent + ' ──\n';
+    text += c.textContent + '\n\n';
+  });
+  text += '\n⚠️ NurseEdAI — AI-ondersteunde documentatie. Geen medisch advies.';
+  navigator.clipboard.writeText(text).then(function() {
+    alert('✓ Volledig rapport gekopieerd!');
+  }).catch(function() {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('✓ Gekopieerd!');
+  });
+}
+
+// ══════════════════════════════
+// PRINT (FIX 5: improved)
+// ══════════════════════════════
+function printResult() {
+  window.print();
+}
+
+// ══════════════════════════════
+// EXTRACT SECTION
+// ══════════════════════════════
+function extract(text, tag) {
+  var regex = new RegExp('\\[' + tag + '\\]([\\s\\S]*?)(?=\\[|$)');
+  var m = text.match(regex);
+  return m ? m[1].trim() : 'Geen informatie beschikbaar.';
+}
+
+// ══════════════════════════════
+// API CALL
+// ══════════════════════════════
 async function callClaude(prompt) {
   var r = await fetch('/api/claude', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1500,
       messages: [{ role: 'user', content: prompt }]
     })
   });
+  if (!r.ok) {
+    var errText = await r.text();
+    throw new Error('API fout ' + r.status + ': ' + errText);
+  }
   var d = await r.json();
-  if (!d || !d.content) throw new Error('Fout van server');
+  if (!d || !d.content || !Array.isArray(d.content)) {
+    throw new Error('Onverwacht antwoord. Probeer opnieuw.');
+  }
   return d.content.map(function(b) { return b.text || ''; }).join('');
 }
+
+// ══════════════════════════════
+// EDUCATION
+// ══════════════════════════════
+async function generateEducation() {
+  var name     = document.getElementById('edu-name').value.trim() || 'de bewoner';
+  var age      = document.getElementById('edu-age').value || 'volwassene';
+  var lang     = document.getElementById('edu-lang').value;
+  var literacy = document.getElementById('edu-literacy').value;
+  var room     = document.getElementById('edu-room').value;
+  var diag     = document.getElementById('edu-diagnosis').value.trim();
+  var meds     = document.getElementById('edu-meds').value.trim();
+  var notes    = document.getElementById('edu-notes').value.trim();
+  var nurse    = document.getElementById('edu-nurse').value.trim();
+
+  if (!diag) { alert('Voer een diagnose in.'); return; }
+
+  var btn = document.getElementById('edu-btn');
+  btn.disabled = true;
+  document.getElementById('edu-loading').style.display = 'block';
+  document.getElementById('edu-results').style.display = 'none';
+
+  var p = 'Je bent een expert verpleegkundig educator. Maak een gepersonaliseerde patiënteducatiemap in ' + lang + '.\n\n'
+        + 'Bewoner: ' + name + ', ' + age + ' jaar' + (room ? ', ' + room : '') + '\n'
+        + 'Taalniveau: ' + literacy + '\nDiagnose: ' + diag + '\n'
+        + 'Medicatie: ' + (meds||'niet gespecificeerd') + '\nAandachtspunten: ' + (notes||'geen') + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[DIAGNOSE]\n[THUISZORG]\n[MEDICATIE]\n[FAMILIE]\n[DRINGEND]\n\n'
+        + '[DIAGNOSE] Leg ' + diag + ' uit in ' + literacy + ' taal. Wees warm en geruststellend.\n'
+        + '[THUISZORG] Stap-voor-stap instructies: voeding, rust, activiteit, opvolgafspraken.\n'
+        + '[MEDICATIE] ' + (meds ? 'Leg elk medicijn uit: doel, wanneer, bijwerkingen.' : 'Geen medicijnen gespecificeerd.') + '\n'
+        + '[FAMILIE] Korte warme samenvatting voor familie over ' + diag + '.\n'
+        + '[DRINGEND] Duidelijke lijst van waarschuwingssignalen om onmiddellijk hulp te zoeken.';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('edu-tag').textContent = name + ' · ' + diag;
+    setTimestamp('edu-timestamp', nurse);
+    var meta = document.getElementById('edu-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + (room?' · '+room:'');
+    document.getElementById('edu-r1').textContent = extract(t,'DIAGNOSE');
+    document.getElementById('edu-r2').textContent = extract(t,'THUISZORG');
+    document.getElementById('edu-r3').textContent = extract(t,'MEDICATIE');
+    document.getElementById('edu-r4').textContent = extract(t,'FAMILIE');
+    document.getElementById('edu-r5').textContent = extract(t,'DRINGEND');
+    document.getElementById('edu-med-block').style.display = meds ? 'block' : 'none';
+    document.getElementById('edu-loading').style.display = 'none';
+    document.getElementById('edu-results').style.display = 'block';
+    document.getElementById('edu-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('edu-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// HANDOVER
+// ══════════════════════════════
+async function generateHandover() {
+  var nurse   = document.getElementById('ho-nurse').value.trim() || 'Verpleegkundige';
+  var from    = document.getElementById('ho-from').value;
+  var to      = document.getElementById('ho-to').value;
+  var ward    = document.getElementById('ho-ward').value.trim() || 'Afdeling';
+  var date    = document.getElementById('ho-date').value;
+  var notes   = document.getElementById('ho-notes').value.trim();
+  var actions = document.getElementById('ho-actions').value.trim();
+
+  if (!notes) { alert('Voer notities in over de bewoners.'); return; }
+
+  var btn = document.getElementById('ho-btn');
+  btn.disabled = true;
+  document.getElementById('ho-loading').style.display = 'block';
+  document.getElementById('ho-results').style.display = 'none';
+
+  var p = 'Je bent een verpleegkundig supervisor. Zet ruwe notities om in een professioneel Nederlands overdrachtsrapport.\n\n'
+        + 'Verpleegkundige: ' + nurse + ' | Van: ' + from + ' → ' + to + ' | Afdeling: ' + ward + ' | Datum: ' + date + ' | Urgentie: ' + selectedUrg.toUpperCase() + '\n\n'
+        + 'Ruwe notities:\n' + notes + '\n\nOpenstaande acties:\n' + (actions||'geen') + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[OVERZICHT]\n[PRIORITEITEN]\n[BEWONERS]\n[ACTIES]\n\n'
+        + '[OVERZICHT] Professionele samenvatting van de dienst.\n'
+        + '[PRIORITEITEN] Meest urgente punten.\n'
+        + '[BEWONERS] Per bewoner: situatie, actie, status.\n'
+        + '[ACTIES] Genummerde actielijst voor volgende dienst.';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('ho-tag').textContent = from + ' → ' + to + ' · ' + ward;
+    setTimestamp('ho-timestamp', nurse);
+    var meta = document.getElementById('ho-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + ' · ' + ward + ' · ' + from + ' → ' + to;
+    document.getElementById('ho-r1').textContent = extract(t,'OVERZICHT');
+    document.getElementById('ho-r2').textContent = extract(t,'PRIORITEITEN');
+    document.getElementById('ho-r3').textContent = extract(t,'BEWONERS');
+    document.getElementById('ho-r4').textContent = extract(t,'ACTIES');
+    document.getElementById('ho-loading').style.display = 'none';
+    document.getElementById('ho-results').style.display = 'block';
+    document.getElementById('ho-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('ho-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// FAMILY
+// ══════════════════════════════
+async function generateFamily() {
+  var resident = document.getElementById('fam-resident').value.trim() || 'de bewoner';
+  var family   = document.getElementById('fam-family').value.trim() || 'de familie';
+  var type     = document.getElementById('fam-type').value;
+  var lang     = document.getElementById('fam-lang').value;
+  var status   = document.getElementById('fam-status').value.trim();
+  var notes    = document.getElementById('fam-notes').value.trim();
+  var contact  = document.getElementById('fam-contact').value.trim() || 'het woonzorgcentrum';
+  var nurse    = document.getElementById('fam-nurse').value.trim();
+
+  if (!status) { alert('Beschrijf hoe het gaat met de bewoner.'); return; }
+
+  var btn = document.getElementById('fam-btn');
+  btn.disabled = true;
+  document.getElementById('fam-loading').style.display = 'block';
+  document.getElementById('fam-results').style.display = 'none';
+
+  var p = 'Je bent een warme professionele verpleegkundige in een Belgisch woonzorgcentrum.\n\n'
+        + 'Bewoner: ' + resident + ' | Familie: ' + family + ' | Type: ' + type + ' | Taal: ' + lang + '\n'
+        + 'Welbevinden: ' + status + '\nExtra: ' + (notes||'geen') + '\nContact: ' + contact + '\n\n'
+        + 'Schrijf ALLES in ' + lang + '. Wees warm, persoonlijk, professioneel.\n\n'
+        + 'Gebruik EXACT deze secties:\n[BERICHT]\n[TELEFOONGESPREK]\n\n'
+        + '[BERICHT] Volledig ' + type + ' WhatsApp/e-mail bericht. Warm, persoonlijk, max 200 woorden. Eindig met contact: ' + contact + '\n'
+        + '[TELEFOONGESPREK] Kort belscript: opening, kernpunten, afsluiting. Max 150 woorden.';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('fam-tag').textContent = resident + ' · ' + family;
+    setTimestamp('fam-timestamp', nurse);
+    document.getElementById('fam-r1').textContent = extract(t,'BERICHT');
+    document.getElementById('fam-r2').textContent = extract(t,'TELEFOONGESPREK');
+    document.getElementById('fam-loading').style.display = 'none';
+    document.getElementById('fam-results').style.display = 'block';
+    document.getElementById('fam-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('fam-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// MEDICATION
+// ══════════════════════════════
+async function generateMedication() {
+  var name  = document.getElementById('med-name').value.trim() || 'de bewoner';
+  var age   = document.getElementById('med-age').value || 'volwassene';
+  var lang  = document.getElementById('med-lang').value;
+  var diag  = document.getElementById('med-diag').value.trim() || 'niet gespecificeerd';
+  var meds  = document.getElementById('med-list').value.trim();
+  var notes = document.getElementById('med-notes').value.trim();
+  var nurse = document.getElementById('med-nurse').value.trim();
+
+  if (!meds) { alert('Voer minstens één medicijn in.'); return; }
+
+  var btn = document.getElementById('med-btn');
+  btn.disabled = true;
+  document.getElementById('med-loading').style.display = 'block';
+  document.getElementById('med-results').style.display = 'none';
+
+  var p = 'Je bent een expert verpleegkundig farmaceut. Maak een volledige medicatiegids.\n\n'
+        + 'Bewoner: ' + name + ', ' + age + ' jaar | Diagnose: ' + diag + '\n'
+        + 'Medicijnen:\n' + meds + '\nAandachtspunten: ' + (notes||'geen') + '\n\n'
+        + 'BELANGRIJK: Voeg altijd toe dat de apotheker of arts de definitieve beoordeling maakt.\n\n'
+        + 'Gebruik EXACT deze secties:\n[SCHEMA]\n[BEWONER]\n[VERPLEEGKUNDIGE]\n[FAMILIE]\n[BIJWERKINGEN]\n[INTERACTIES]\n\n'
+        + '[SCHEMA] Dagelijks innameschema: 🌅 OCHTEND / ☀️ MIDDAG / 🌆 AVOND / 🌙 NACHT\n'
+        + '[BEWONER] Leg elk medicijn uit in ' + lang + ' op eenvoudig niveau.\n'
+        + '[VERPLEEGKUNDIGE] Klinische uitleg per medicijn.\n'
+        + '[FAMILIE] Warme uitleg voor familie in ' + lang + '.\n'
+        + '[BIJWERKINGEN] Per medicijn: bijwerkingen + wanneer arts bellen.\n'
+        + '[INTERACTIES] Mogelijke interacties + voedingsinteracties. Disclaimer apotheker verplicht.';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('med-tag').textContent = name + ' · ' + meds.split('\n').length + ' medicijnen';
+    setTimestamp('med-timestamp', nurse);
+    var meta = document.getElementById('med-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + ' · ' + name;
+    document.getElementById('med-r1').textContent = extract(t,'SCHEMA');
+    document.getElementById('med-r2').textContent = extract(t,'BEWONER');
+    document.getElementById('med-r3').textContent = extract(t,'VERPLEEGKUNDIGE');
+    document.getElementById('med-r4').textContent = extract(t,'FAMILIE');
+    document.getElementById('med-r5').textContent = extract(t,'BIJWERKINGEN');
+    document.getElementById('med-r6').textContent = extract(t,'INTERACTIES');
+    document.getElementById('med-loading').style.display = 'none';
+    document.getElementById('med-results').style.display = 'block';
+    document.getElementById('med-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('med-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// DOCTOR VISIT
+// ══════════════════════════════
+async function generateDoctorVisit() {
+  var resident = document.getElementById('doc-resident').value.trim() || 'de bewoner';
+  var room     = document.getElementById('doc-room').value.trim();
+  var age      = document.getElementById('doc-age').value || 'volwassene';
+  var doctor   = document.getElementById('doc-doctor').value.trim() || 'de dokter';
+  var spec     = document.getElementById('doc-spec').value.trim() || 'Huisarts';
+  var date     = document.getElementById('doc-date').value;
+  var type     = document.getElementById('doc-type').value;
+  var lang     = document.getElementById('doc-lang').value;
+  var notes    = document.getElementById('doc-notes').value.trim();
+  var meds     = document.getElementById('doc-meds').value.trim();
+  var history  = document.getElementById('doc-history').value.trim();
+  var nurse    = document.getElementById('doc-nurse').value.trim();
+
+  if (!notes) { alert('Voer notities in over het doktersbezoek.'); return; }
+
+  var btn = document.getElementById('doc-btn');
+  btn.disabled = true;
+  document.getElementById('doc-loading').style.display = 'block';
+  document.getElementById('doc-results').style.display = 'none';
+
+  var p = 'Je bent een expert medisch secretaresse in een Belgisch woonzorgcentrum.\n\n'
+        + 'Bewoner: ' + resident + (room?', '+room:'') + ', ' + age + ' jaar\n'
+        + 'Dokter: ' + doctor + ' (' + spec + ') | Datum: ' + (date||'vandaag') + ' | Type: ' + type + '\n'
+        + 'Medicatie: ' + (meds||'niet gespecificeerd') + '\nVoorgeschiedenis: ' + (history||'niet gespecificeerd') + '\n\n'
+        + 'RUWE NOTITIES:\n' + notes + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[VERSLAG]\n[MEDICATIE]\n[ACTIES]\n[ONDERZOEKEN]\n[FAMILIE]\n[OVERDRACHT]\n[DRINGEND]\n\n'
+        + '[VERSLAG] Professioneel medisch verslag. Header: bewoner, datum, dokter, type.\n'
+        + '[MEDICATIE] Wijzigingen: 🆕 Nieuw / 📈 Verhoogd / 📉 Verlaagd / 🛑 Stopgezet / ✅ Ongewijzigd\n'
+        + '[ACTIES] Genummerde actielijst voor verpleegkundige.\n'
+        + '[ONDERZOEKEN] Aangevraagde onderzoeken en doorverwijzingen.\n'
+        + '[FAMILIE] Warm bericht voor familie in ' + lang + '. Max 150 woorden.\n'
+        + '[OVERDRACHT] Beknopt voor volgende dienst.\n'
+        + '[DRINGEND] Dringende aandachtspunten of "Geen dringende aandachtspunten."';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('doc-tag').textContent = resident + ' · ' + doctor;
+    setTimestamp('doc-timestamp', nurse);
+    var meta = document.getElementById('doc-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + ' · ' + doctor + (room?' · '+room:'');
+    document.getElementById('doc-r1').textContent = extract(t,'VERSLAG');
+    document.getElementById('doc-r2').textContent = extract(t,'MEDICATIE');
+    document.getElementById('doc-r3').textContent = extract(t,'ACTIES');
+    document.getElementById('doc-r4').textContent = extract(t,'ONDERZOEKEN');
+    document.getElementById('doc-r5').textContent = extract(t,'FAMILIE');
+    document.getElementById('doc-r6').textContent = extract(t,'OVERDRACHT');
+    document.getElementById('doc-r7').textContent = extract(t,'DRINGEND');
+    document.getElementById('doc-loading').style.display = 'none';
+    document.getElementById('doc-results').style.display = 'block';
+    document.getElementById('doc-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('doc-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// FOOD REPORT
+// ══════════════════════════════
+async function generateFoodReport() {
+  var name    = document.getElementById('food-name').value.trim() || 'de bewoner';
+  var room    = document.getElementById('food-room').value.trim();
+  var date    = document.getElementById('food-date').value;
+  var diet    = document.getElementById('food-diet').value;
+  var lang    = document.getElementById('food-lang').value;
+  var general = document.getElementById('food-general').value.trim();
+  var nurse   = document.getElementById('food-nurse').value.trim();
+
+  var breakfast = { bread: document.getElementById('food-b-bread').value, drink: document.getElementById('food-b-drink').value, extra: document.getElementById('food-b-extra').value, notes: document.getElementById('food-b-notes').value };
+  var lunch = { soup: document.getElementById('food-l-soup').value, main: document.getElementById('food-l-main').value, drink: document.getElementById('food-l-drink').value, notes: document.getElementById('food-l-notes').value };
+  var dinner = { bread: document.getElementById('food-d-bread').value, drink: document.getElementById('food-d-drink').value, snack: document.getElementById('food-d-snack').value, notes: document.getElementById('food-d-notes').value };
+  var fluid = document.getElementById('food-fluid').value;
+  var fluidIssue = document.getElementById('food-fluid-issue').value;
+
+  var btn = document.getElementById('food-btn');
+  btn.disabled = true;
+  document.getElementById('food-loading').style.display = 'block';
+  document.getElementById('food-results').style.display = 'none';
+
+  var p = 'Je bent een verpleegkundig diëtetiekassistent. Maak een professioneel voedingsverslag in ' + lang + '.\n\n'
+        + 'Bewoner: ' + name + (room?', '+room:'') + ' | Datum: ' + (date||'vandaag') + ' | Dieet: ' + diet + '\n\n'
+        + 'ONTBIJT: brood=' + breakfast.bread + ', drank=' + breakfast.drink + ', extra=' + (breakfast.extra||'geen') + ', opmerking=' + (breakfast.notes||'geen') + '\n'
+        + 'MIDDAG: soep=' + lunch.soup + ', hoofd=' + lunch.main + ', drank=' + lunch.drink + ', opmerking=' + (lunch.notes||'geen') + '\n'
+        + 'AVOND: brood=' + dinner.bread + ', drank=' + dinner.drink + ', snack=' + (dinner.snack||'geen') + ', opmerking=' + (dinner.notes||'geen') + '\n'
+        + 'VOCHT: ' + fluid + ' | Problemen: ' + fluidIssue + '\n'
+        + 'ALGEMEEN: ' + (general||'geen') + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[VERSLAG]\n[VOCHT]\n[AANDACHTSPUNTEN]\n[ACTIE]';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('food-tag').textContent = name + ' · ' + (date||'vandaag');
+    setTimestamp('food-timestamp', nurse);
+    var meta = document.getElementById('food-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + ' · ' + name + (room?' · '+room:'');
+    document.getElementById('food-r1').textContent = extract(t,'VERSLAG');
+    document.getElementById('food-r2').textContent = extract(t,'VOCHT');
+    document.getElementById('food-r3').textContent = extract(t,'AANDACHTSPUNTEN');
+    document.getElementById('food-r4').textContent = extract(t,'ACTIE');
+    document.getElementById('food-loading').style.display = 'none';
+    document.getElementById('food-results').style.display = 'block';
+    document.getElementById('food-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('food-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// WOUND CARE
+// ══════════════════════════════
+async function generateWoundCare() {
+  var name     = document.getElementById('w-name').value.trim() || 'de bewoner';
+  var room     = document.getElementById('w-room').value.trim();
+  var date     = document.getElementById('w-date').value;
+  var wtype    = document.getElementById('w-type').value;
+  var location = document.getElementById('w-location').value;
+  var stage    = document.getElementById('w-stage').value;
+  var exudate  = document.getElementById('w-exudate').value;
+  var evolution= document.getElementById('w-evolution').value;
+  var notes    = document.getElementById('w-notes').value.trim();
+  var nurse    = document.getElementById('w-nurse').value.trim();
+
+  var inf = [];
+  if (document.getElementById('w-inf-rood').checked) inf.push('roodheid');
+  if (document.getElementById('w-inf-warm').checked) inf.push('warmte');
+  if (document.getElementById('w-inf-geur').checked) inf.push('geur');
+  if (document.getElementById('w-inf-koorts').checked) inf.push('koorts');
+  var infText = inf.length > 0 ? inf.join(', ') : 'geen';
+
+  var btn = document.getElementById('w-btn');
+  btn.disabled = true;
+  document.getElementById('w-loading').style.display = 'block';
+  document.getElementById('w-results').style.display = 'none';
+
+  var p = 'Je bent een wondzorgverpleegkundige. Geef een KORT en PRAKTISCH wondzorgprotocol. Alles in bullets.\n\n'
+        + 'Bewoner: ' + name + (room?' '+room:'') + ' | Datum: ' + (date||'vandaag') + '\n'
+        + 'Wond: ' + wtype + ' op ' + location + ' | Stadium: ' + stage + '\n'
+        + 'Vocht: ' + exudate + ' | Infectie: ' + infText + ' | Evolutie: ' + evolution + '\n'
+        + (notes?'Opmerking: '+notes:'') + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[MATERIAAL]\n[VERSLAG]\n[OVERDRACHT]\n[ALARM]';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('w-tag').textContent = name + ' · ' + wtype;
+    setTimestamp('w-timestamp', nurse);
+    var meta = document.getElementById('w-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + ' · ' + name + (room?' · '+room:'');
+    document.getElementById('w-r1').textContent = extract(t,'MATERIAAL');
+    document.getElementById('w-r2').textContent = extract(t,'VERSLAG');
+    document.getElementById('w-r3').textContent = extract(t,'OVERDRACHT');
+    document.getElementById('w-r4').textContent = extract(t,'ALARM');
+    document.getElementById('w-loading').style.display = 'none';
+    document.getElementById('w-results').style.display = 'block';
+    document.getElementById('w-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('w-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// APPOINTMENTS
+// ══════════════════════════════
+async function generateAppointment() {
+  var name     = document.getElementById('ap-name').value.trim() || 'de bewoner';
+  var room     = document.getElementById('ap-room').value.trim();
+  var type     = document.getElementById('ap-type').value;
+  var doctor   = document.getElementById('ap-doctor').value.trim() || 'de dokter';
+  var date     = document.getElementById('ap-date').value;
+  var time     = document.getElementById('ap-time').value;
+  var location = document.getElementById('ap-location').value.trim();
+  var lang     = document.getElementById('ap-lang').value;
+  var reason   = document.getElementById('ap-reason').value.trim();
+  var family   = document.getElementById('ap-family').value.trim();
+  var notes    = document.getElementById('ap-notes').value.trim();
+  var nurse    = document.getElementById('ap-nurse').value.trim();
+
+  if (!date) { alert('Voer een datum in.'); return; }
+
+  var btn = document.getElementById('ap-btn');
+  btn.disabled = true;
+  document.getElementById('ap-loading').style.display = 'block';
+  document.getElementById('ap-results').style.display = 'none';
+
+  var p = 'Je bent een verpleegkundige assistent. Maak een KORT afspraakdossier in bullets.\n\n'
+        + 'Bewoner: ' + name + (room?' '+room:'') + ' | Type: ' + type + ' | Dokter: ' + doctor + '\n'
+        + 'Datum: ' + date + ' om ' + (time||'?') + ' | Locatie: ' + (location||'te bevestigen') + '\n'
+        + 'Reden: ' + (reason||'niet gespecificeerd') + ' | Familie: ' + (family||'niet gespecificeerd') + '\n'
+        + 'Bijzonderheden: ' + (notes||'geen') + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[CHECKLIST]\n[VOORBEREIDING]\n[FAMILIE]\n[OVERDRACHT]';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('ap-tag').textContent = name + ' · ' + type + ' · ' + date;
+    setTimestamp('ap-timestamp', nurse);
+    document.getElementById('ap-r1').textContent = extract(t,'CHECKLIST');
+    document.getElementById('ap-r2').textContent = extract(t,'VOORBEREIDING');
+    document.getElementById('ap-r3').textContent = extract(t,'FAMILIE');
+    document.getElementById('ap-r4').textContent = extract(t,'OVERDRACHT');
+    document.getElementById('ap-loading').style.display = 'none';
+    document.getElementById('ap-results').style.display = 'block';
+    document.getElementById('ap-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('ap-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// PALLIATIVE
+// ══════════════════════════════
+async function generatePalliative() {
+  var name      = document.getElementById('pa-name').value.trim() || 'de bewoner';
+  var room      = document.getElementById('pa-room').value.trim();
+  var phase     = document.getElementById('pa-phase').value;
+  var lang      = document.getElementById('pa-lang').value;
+  var painScore = document.getElementById('pa-pain-score').value;
+  var painType  = document.getElementById('pa-pain-type').value;
+  var painMeds  = document.getElementById('pa-pain-meds').value.trim();
+  var wishes    = document.getElementById('pa-wishes').value.trim();
+  var family    = document.getElementById('pa-family').value.trim();
+  var nurse     = document.getElementById('pa-nurse').value;
+  var nurseName = document.getElementById('pa-nurse-name').value.trim();
+
+  var comfort = [];
+  if (document.getElementById('pa-c1').checked) comfort.push('rustig en comfortabel');
+  if (document.getElementById('pa-c2').checked) comfort.push('onrustig / angstig');
+  if (document.getElementById('pa-c3').checked) comfort.push('droge mond');
+  if (document.getElementById('pa-c4').checked) comfort.push('ademhalingsproblemen');
+  if (document.getElementById('pa-c5').checked) comfort.push('nausea');
+  if (document.getElementById('pa-c6').checked) comfort.push('somnolent');
+  if (document.getElementById('pa-c7').checked) comfort.push('wil contact');
+  if (document.getElementById('pa-c8').checked) comfort.push('spirituele nood');
+
+  var btn = document.getElementById('pa-btn');
+  btn.disabled = true;
+  document.getElementById('pa-loading').style.display = 'block';
+  document.getElementById('pa-results').style.display = 'none';
+
+  var p = 'Je bent een expert palliatief verpleegkundige. Maak een waardig, warm en praktisch palliatief zorgplan.\n\n'
+        + 'Bewoner: ' + name + (room?' '+room:'') + ' | Fase: ' + phase + '\n'
+        + 'Pijnscore: ' + painScore + '/10 | Type: ' + painType + '\n'
+        + 'Pijnstilling: ' + (painMeds||'niet gespecificeerd') + '\n'
+        + 'Comfortsituatie: ' + (comfort.length>0?comfort.join(', '):'niet gespecificeerd') + '\n'
+        + 'Laatste wensen: ' + (wishes||'niet gespecificeerd') + '\n'
+        + 'Familie: ' + (family||'niet gespecificeerd') + '\n'
+        + 'Verpleegkundige voelt: ' + nurse + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[COMFORT]\n[ACTIES]\n[FAMILIE]\n[GESPREK]\n[WENSEN]\n[STEUN]';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('pa-tag').textContent = name + ' · ' + phase;
+    setTimestamp('pa-timestamp', nurseName);
+    document.getElementById('pa-r1').textContent = extract(t,'COMFORT');
+    document.getElementById('pa-r2').textContent = extract(t,'ACTIES');
+    document.getElementById('pa-r3').textContent = extract(t,'FAMILIE');
+    document.getElementById('pa-r4').textContent = extract(t,'GESPREK');
+    document.getElementById('pa-r5').textContent = extract(t,'WENSEN');
+    document.getElementById('pa-r6').textContent = extract(t,'STEUN');
+    document.getElementById('pa-loading').style.display = 'none';
+    document.getElementById('pa-results').style.display = 'block';
+    document.getElementById('pa-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('pa-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// INCIDENT
+// ══════════════════════════════
+async function generateIncident() {
+  var name     = document.getElementById('inc-name').value.trim() || 'de bewoner';
+  var room     = document.getElementById('inc-room').value.trim();
+  var date     = document.getElementById('inc-date').value;
+  var type     = document.getElementById('inc-type').value;
+  var severity = document.getElementById('inc-severity').value;
+  var location = document.getElementById('inc-location').value;
+  var what     = document.getElementById('inc-what').value.trim();
+  var witness  = document.getElementById('inc-witness').value.trim();
+  var nurse    = document.getElementById('inc-nurse').value.trim() || 'de verpleegkundige';
+  var lang     = document.getElementById('inc-lang').value;
+
+  if (!what) { alert('Beschrijf wat er is gebeurd.'); return; }
+
+  var actions = [];
+  if (document.getElementById('inc-a1').checked) actions.push('dokter verwittigd');
+  if (document.getElementById('inc-a2').checked) actions.push('familie verwittigd');
+  if (document.getElementById('inc-a3').checked) actions.push('MUG/ziekenhuis gebeld');
+  if (document.getElementById('inc-a4').checked) actions.push('foto genomen van letsel');
+  if (document.getElementById('inc-a5').checked) actions.push('bewoner naar bed gebracht');
+  if (document.getElementById('inc-a6').checked) actions.push('pijnstilling gegeven');
+  if (document.getElementById('inc-a7').checked) actions.push('bewoner onder observatie');
+  if (document.getElementById('inc-a8').checked) actions.push('directie verwittigd');
+
+  var btn = document.getElementById('inc-btn');
+  btn.disabled = true;
+  document.getElementById('inc-loading').style.display = 'block';
+  document.getElementById('inc-results').style.display = 'none';
+
+  var p = 'Je bent een expert verpleegkundig kwaliteitsmedewerker. Maak een juridisch correct incidentrapport in ' + lang + '. Bullets.\n\n'
+        + 'Bewoner: ' + name + (room?' '+room:'') + ' | Datum/tijd: ' + (date||'niet gespecificeerd') + '\n'
+        + 'Type: ' + type + ' | Ernst: ' + severity + ' | Locatie: ' + location + '\n'
+        + 'Beschrijving: ' + what + '\n'
+        + 'Acties: ' + (actions.length>0?actions.join(', '):'geen') + '\n'
+        + 'Getuigen: ' + (witness||'geen') + ' | Gemeld door: ' + nurse + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[RAPPORT]\n[ACTIES]\n[FAMILIE]\n[OVERDRACHT]\n[PREVENTIE]';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('inc-tag').textContent = name + ' · ' + type;
+    setTimestamp('inc-timestamp', nurse);
+    var meta = document.getElementById('inc-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + ' · ' + type + (room?' · '+room:'');
+    document.getElementById('inc-r1').textContent = extract(t,'RAPPORT');
+    document.getElementById('inc-r2').textContent = extract(t,'ACTIES');
+    document.getElementById('inc-r3').textContent = extract(t,'FAMILIE');
+    document.getElementById('inc-r4').textContent = extract(t,'OVERDRACHT');
+    document.getElementById('inc-r5').textContent = extract(t,'PREVENTIE');
+    document.getElementById('inc-loading').style.display = 'none';
+    document.getElementById('inc-results').style.display = 'block';
+    document.getElementById('inc-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('inc-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// DAGRAPPORT
+// ══════════════════════════════
+async function generateDayReport() {
+  var name    = document.getElementById('dr-name').value.trim() || 'de bewoner';
+  var room    = document.getElementById('dr-room').value.trim();
+  var date    = document.getElementById('dr-date').value;
+  var nurse   = document.getElementById('dr-nurse').value.trim() || 'verpleegkundige';
+  var shift   = document.getElementById('dr-shift').value;
+  var lang    = document.getElementById('dr-lang').value;
+
+  var btn = document.getElementById('dr-btn');
+  btn.disabled = true;
+  document.getElementById('dr-loading').style.display = 'block';
+  document.getElementById('dr-results').style.display = 'none';
+
+  var p = 'Je bent een verpleegkundige documentalist. Maak een professioneel dagrapport in ' + lang + '.\n\n'
+        + 'Bewoner: ' + name + (room?' '+room:'') + ' | Datum: ' + (date||'vandaag') + ' | ' + shift + ' | Verpleegkundige: ' + nurse + '\n\n'
+        + 'DAGGEGEVENS:\n'
+        + '🚿 Hygiëne: ' + document.getElementById('dr-hygiene').value + '\n'
+        + '🍽️ Voeding: ' + document.getElementById('dr-food').value + '\n'
+        + '💧 Vocht: ' + document.getElementById('dr-fluid').value + '\n'
+        + '😴 Slaap: ' + document.getElementById('dr-sleep').value + '\n'
+        + '😊 Stemming: ' + document.getElementById('dr-mood').value + '\n'
+        + '🚶 Mobiliteit: ' + document.getElementById('dr-mobility').value + '\n'
+        + '💊 Medicatie: ' + document.getElementById('dr-meds').value + '\n'
+        + '🚽 Toilet: ' + document.getElementById('dr-toilet').value + '\n'
+        + '💬 Contact: ' + document.getElementById('dr-contact').value + '\n'
+        + 'Extra: ' + (document.getElementById('dr-notes').value.trim()||'geen') + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[RAPPORT]\n[AANDACHT]\n[OVERDRACHT]';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('dr-tag').textContent = name + ' · ' + shift + ' · ' + (date||'vandaag');
+    setTimestamp('dr-timestamp', nurse);
+    var meta = document.getElementById('dr-print-meta');
+    if (meta) meta.textContent = getTimestamp(nurse) + ' · ' + name + (room?' · '+room:'') + ' · ' + shift;
+    document.getElementById('dr-r1').textContent = extract(t,'RAPPORT');
+    document.getElementById('dr-r2').textContent = extract(t,'AANDACHT');
+    document.getElementById('dr-r3').textContent = extract(t,'OVERDRACHT');
+    document.getElementById('dr-loading').style.display = 'none';
+    document.getElementById('dr-results').style.display = 'block';
+    document.getElementById('dr-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('dr-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
+
+// ══════════════════════════════
+// DEMENTIEZORG
+// ══════════════════════════════
+async function generateDementia() {
+  var name  = document.getElementById('dem-name').value.trim() || 'de bewoner';
+  var room  = document.getElementById('dem-room').value.trim();
+  var stage = document.getElementById('dem-stage').value;
+  var notes = document.getElementById('dem-notes').value.trim();
+  var need  = document.getElementById('dem-need').value;
+  var lang  = document.getElementById('dem-lang').value;
+  var nurse = document.getElementById('dem-nurse').value.trim();
+
+  var behaviors = [];
+  if (document.getElementById('dem-b1').checked) behaviors.push('onrust/agitatie');
+  if (document.getElementById('dem-b2').checked) behaviors.push('verwardheid');
+  if (document.getElementById('dem-b3').checked) behaviors.push('agressie/verzet');
+  if (document.getElementById('dem-b4').checked) behaviors.push('weglopen/dwalen');
+  if (document.getElementById('dem-b5').checked) behaviors.push('roepen/huilen');
+  if (document.getElementById('dem-b6').checked) behaviors.push('weigert verzorging');
+  if (document.getElementById('dem-b7').checked) behaviors.push('dag-nachtverwarring');
+  if (document.getElementById('dem-b8').checked) behaviors.push('rustig en meewerkend');
+
+  var tried = [];
+  if (document.getElementById('dem-t1').checked) tried.push('muziek');
+  if (document.getElementById('dem-t2').checked) tried.push('aanraking');
+  if (document.getElementById('dem-t3').checked) tried.push('afleiding');
+  if (document.getElementById('dem-t4').checked) tried.push('drankje/snack');
+  if (document.getElementById('dem-t5').checked) tried.push('familie gebeld');
+  if (document.getElementById('dem-t6').checked) tried.push('wandeling');
+
+  var btn = document.getElementById('dem-btn');
+  btn.disabled = true;
+  document.getElementById('dem-loading').style.display = 'block';
+  document.getElementById('dem-results').style.display = 'none';
+
+  var p = 'Je bent een expert dementiezorgspecialist. Geef PRAKTISCH advies in ' + lang + '. Bullets. Max 5 per sectie.\n\n'
+        + 'Bewoner: ' + name + (room?' '+room:'') + ' | Stadium: ' + stage + '\n'
+        + 'Gedrag: ' + (behaviors.length>0?behaviors.join(', '):'niet gespecificeerd') + '\n'
+        + 'Al geprobeerd: ' + (tried.length>0?tried.join(', '):'niets') + '\n'
+        + 'Situatie: ' + (notes||'geen extra info') + '\n'
+        + 'Zorgvraag: ' + need + '\n\n'
+        + 'Gebruik EXACT deze secties:\n[TIPS]\n[ZORGPLAN]\n[FAMILIE]\n[OVERDRACHT]\n[ALARM]';
+
+  try {
+    var t = await callClaude(p);
+    document.getElementById('dem-tag').textContent = name + ' · ' + stage;
+    setTimestamp('dem-timestamp', nurse);
+    document.getElementById('dem-r1').textContent = extract(t,'TIPS');
+    document.getElementById('dem-r2').textContent = extract(t,'ZORGPLAN');
+    document.getElementById('dem-r3').textContent = extract(t,'FAMILIE');
+    document.getElementById('dem-r4').textContent = extract(t,'OVERDRACHT');
+    document.getElementById('dem-r5').textContent = extract(t,'ALARM');
+    document.getElementById('dem-loading').style.display = 'none';
+    document.getElementById('dem-results').style.display = 'block';
+    document.getElementById('dem-results').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    document.getElementById('dem-loading').style.display = 'none';
+    alert('Fout: ' + e.message);
+  }
+  btn.disabled = false;
+}
 </script>
+
 </body>
 </html>
