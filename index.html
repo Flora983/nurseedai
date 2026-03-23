@@ -1,5 +1,47 @@
 <!DOCTYPE html>
-<html>
-<head><title>NurseEdAI</title></head>
-<body><h1>Test pagina</h1></body>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NurseEdAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #0d6e7a;
+      --teal-light: #13919f;
+      --teal-pale: #e6f6f8;
+      --amber-pale: #fef3c7;
+      --rose: #be123c;
+      --rose-pale: #fff1f2;
+      --green: #15803d;
+      --green-pale: #dcfce7;
+      --ink: #0f1923;
+      --ink-mid: #374151;
+      --ink-light: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f7f9fb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); padding-bottom: 70px; }
+  </style>
+</head>
+<body>
+<h1>NurseEdAI wordt geladen...</h1>
+<script>
+async function callClaude(prompt) {
+  var r = await fetch('/api/claude', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1500,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  var d = await r.json();
+  if (!d || !d.content) throw new Error('Fout van server');
+  return d.content.map(function(b) { return b.text || ''; }).join('');
+}
+</script>
+</body>
 </html>
