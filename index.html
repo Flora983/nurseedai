@@ -103,6 +103,30 @@
   .key-bar { background: #f0faf0; border-bottom: 1px solid #b6ddb6; padding: 8px 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .key-bar span { font-size: 0.82rem; color: #2d6a2d; font-weight: 600; }
   .key-bar input { flex: 1; min-width: 260px; padding: 6px 12px; border: 1.5px solid #b6ddb6; border-radius: 8px; font-family: monospace; font-size: 0.82rem; outline: none; }
+
+  /* VOICE INPUT */
+  .voice-wrapper { position: relative; }
+  .voice-wrapper textarea { padding-right: 44px; }
+  .mic-btn {
+    position: absolute;
+    right: 10px; bottom: 10px;
+    background: var(--teal-light);
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem;
+    transition: all 0.2s;
+    z-index: 2;
+  }
+  .mic-btn:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .mic-btn.listening {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
   .key-bar input:focus { border-color: var(--teal); }
   .key-bar button { background: var(--teal); color: #fff; border: none; border-radius: 8px; padding: 6px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
   .key-bar button:hover { background: var(--teal-mid); }
@@ -178,7 +202,11 @@
   .error-box.visible { display: block; }
 
   /* PRIVACY NOTE */
-  .privacy-note { background: var(--teal-light); border-radius: 8px; padding: 8px 12px; font-size: 0.77rem; color: var(--teal); margin-bottom: 14px; }
+  .privacy-note { background: #fef3c7; border: 1.5px solid #f0a500; border-radius: 8px; padding: 10px 14px; font-size: 0.78rem; color: #78350f; margin-bottom: 14px; line-height: 1.6; }
+  .privacy-note strong { display: block; margin-bottom: 3px; }
+
+  /* COPY INSTRUCTION */
+  .copy-instruction { background: var(--teal-light); border-radius: 8px; padding: 9px 14px; font-size: 0.78rem; color: var(--teal); margin-top: 10px; line-height: 1.6; }
 
   /* MODULE VISIBILITY */
   .module { display: none; }
@@ -216,14 +244,21 @@
   <div class="popup-box">
     <div class="popup-icon">⚕️</div>
     <h2>Belangrijke mededeling</h2>
-    <p>NurseEdAI is een documentatiehulpmiddel voor verpleegkundigen. De AI-gegenereerde inhoud vervangt nooit professioneel medisch oordeel. Gebruik altijd uw klinische expertise bij het nemen van beslissingen.</p>
+    <p>NurseEdAI is een <strong>persoonlijk documentatiehulpmiddel</strong> voor verpleegkundigen. De AI-gegenereerde inhoud vervangt nooit professioneel medisch oordeel. Gebruik altijd uw klinische expertise.</p>
+    <div style="background:#fef3c7;border-radius:10px;padding:12px 14px;margin:14px 0;text-align:left;font-size:0.83rem;color:#78350f;">
+      <strong>⚠️ Verplichte regels:</strong><br>
+      🔒 Gebruik <u>nooit</u> echte namen van patiënten — gebruik kamer- of dossiernummer<br>
+      📋 Kopieer en plak handmatig in uw EHR/zorgdossier<br>
+      🚫 NurseEdAI koppelt nooit rechtstreeks aan ziekenhuissystemen<br>
+      👁️ Controleer altijd de gegenereerde tekst voor gebruik
+    </div>
     <button class="popup-btn" onclick="closePopup()">Ik begrijp dit — verder gaan</button>
   </div>
 </div>
 
 <!-- DISCLAIMER BANNER (altijd zichtbaar onderaan) -->
 <div class="disclaimer-bar">
-  ⚠️ NurseEdAI ondersteunt documentatie — geen medisch advies. Controleer medicatie met apotheker. Wondzorg met hoofdverpleegkundige. Medische beslissingen altijd met de behandelende arts.
+  ⚠️ <strong>Persoonlijk hulpmiddel — geen officieel medisch dossier.</strong> Gebruik geen echte patiëntnamen. Kopieer en plak handmatig in uw EHR. Controleer altijd met behandelende arts. NurseEdAI koppelt nooit aan ziekenhuissystemen.
 </div>
 
 <header>
@@ -278,7 +313,7 @@
       <div class="card">
         <h2>🔄 Overdrachtsrapport</h2>
         <p class="desc">Ruwe notities worden professionele overdrachten (SBAR)</p>
-        <div class="privacy-note">🔒 Gebruik geen echte namen — gebruik "Bewoner X" of kamernummer</div>
+        <div class="privacy-note"><strong>🔒 Privacyregel — verplicht</strong> Gebruik NOOIT echte namen van patiënten. Gebruik "Bewoner X", kamernummer of dossiernummer. Na genereren: kopieer en plak handmatig in uw EHR/zorgdossier.</div>
         <div class="form-row">
           <div class="form-group"><label>Bewoner</label><input type="text" id="ov-bewoner" placeholder="bijv. Bewoner X / Kamer 12"></div>
           <div class="form-group"><label>Verpleegkundige</label><input type="text" id="ov-naam" placeholder="Jouw naam"></div>
@@ -311,7 +346,7 @@
       <div class="card">
         <h2>⚠️ Incidentrapport</h2>
         <p class="desc">Documenteer incidenten snel en volledig</p>
-        <div class="privacy-note">🔒 Gebruik geen echte namen — gebruik kamernummer of initialen</div>
+        <div class="privacy-note"><strong>🔒 Privacyregel — verplicht</strong> Gebruik NOOIT echte namen van patiënten. Gebruik kamernummer of initialen. Na genereren: kopieer en plak handmatig in uw EHR/zorgdossier.</div>
         <div class="form-row">
           <div class="form-group"><label>Bewoner</label><input type="text" id="inc-bewoner" placeholder="bijv. Kamer 5"></div>
           <div class="form-group"><label>Type incident</label>
@@ -950,6 +985,16 @@ async function gen(mod) {
     output.textContent = text;
     if (timeEl) timeEl.textContent = '— ' + now();
     resultBox.style.display = 'block';
+
+    // Show copy instruction
+    let instr = resultBox.parentNode.querySelector('.copy-instruction');
+    if (!instr) {
+      instr = document.createElement('div');
+      instr.className = 'copy-instruction';
+      instr.innerHTML = '📋 <strong>Volgende stap:</strong> Klik op "Kopieer" → open uw EHR/zorgdossier → plak de tekst handmatig. Controleer altijd de inhoud voor gebruik. Gebruik geen echte patiëntnamen.';
+      resultBox.parentNode.insertBefore(instr, resultBox.nextSibling);
+    }
+
     resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
   } catch (err) {
@@ -981,8 +1026,89 @@ function copyResult(id, btn) {
   });
 }
 
-// Print result
-function printResult(id, title) {
+// ══════════════════════════════════════
+// 🎤 VOICE INPUT
+// ══════════════════════════════════════
+(function initVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    console.warn('Voice input niet ondersteund in deze browser.');
+    return;
+  }
+
+  // Add mic button to every textarea
+  document.querySelectorAll('textarea').forEach(ta => {
+    // Wrap textarea
+    const wrapper = document.createElement('div');
+    wrapper.className = 'voice-wrapper';
+    ta.parentNode.insertBefore(wrapper, ta);
+    wrapper.appendChild(ta);
+
+    // Create mic button
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'mic-btn';
+    btn.innerHTML = '🎤';
+    btn.title = 'Klik om in te spreken (Nederlands)';
+    wrapper.appendChild(btn);
+
+    let recognition = null;
+    let listening = false;
+
+    btn.addEventListener('click', () => {
+      if (listening) {
+        recognition.stop();
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = 'nl-BE';
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      let finalTranscript = ta.value;
+
+      recognition.onstart = () => {
+        listening = true;
+        btn.classList.add('listening');
+        btn.innerHTML = '⏹️';
+        btn.title = 'Klik om te stoppen';
+      };
+
+      recognition.onresult = (e) => {
+        let interim = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) {
+            finalTranscript += e.results[i][0].transcript + ' ';
+          } else {
+            interim = e.results[i][0].transcript;
+          }
+        }
+        ta.value = finalTranscript + interim;
+      };
+
+      recognition.onend = () => {
+        listening = false;
+        btn.classList.remove('listening');
+        btn.innerHTML = '🎤';
+        btn.title = 'Klik om in te spreken (Nederlands)';
+        ta.value = finalTranscript.trim();
+      };
+
+      recognition.onerror = (e) => {
+        listening = false;
+        btn.classList.remove('listening');
+        btn.innerHTML = '🎤';
+        if (e.error === 'not-allowed') {
+          alert('Microfoon toegang geweigerd. Sta microfoon toe in uw browser.');
+        }
+      };
+
+      recognition.start();
+    });
+  });
+})();
+
   const content = document.getElementById(id).textContent;
   const win = window.open('', '_blank');
   win.document.write(`
