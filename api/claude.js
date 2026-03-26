@@ -1,28 +1,1120 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NurseEdAI — Volledig Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #1a6b6b;
+    --teal-light: #e8f4f4;
+    --teal-mid: #2d9090;
+    --cream: #faf8f5;
+    --text: #1c2b2b;
+    --text-muted: #5a7070;
+    --border: #d4e8e8;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(26,107,107,0.10);
+    --radius: 16px;
+    --amber-pale: #fef3c7;
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured' });
+  /* DISCLAIMER BANNER */
+  .disclaimer-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--amber-pale);
+    border-top: 2px solid #f0a500;
+    color: #78350f;
+    font-size: 0.78rem;
+    padding: 8px 20px;
+    text-align: center;
+    z-index: 999;
+    line-height: 1.5;
   }
+
+  /* POPUP OVERLAY */
+  .popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .popup-overlay.hidden { display: none !important; }
+  .popup-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    text-align: center;
+  }
+  .popup-box .popup-icon { font-size: 2.5rem; margin-bottom: 12px; }
+  .popup-box h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--teal); margin-bottom: 14px; }
+  .popup-box p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 24px; }
+  .popup-btn {
+    background: var(--teal); color: #fff;
+    border: none; border-radius: 12px;
+    padding: 13px 24px; width: 100%;
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .popup-btn:hover { background: var(--teal-mid); }
+
+  /* ACTIE CHECKBOXES */
+  .actie-opties { margin-bottom: 10px; }
+  .actie-opties-title { font-size: 0.76rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .checkbox-grid { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+  .checkbox-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--cream); border: 1.5px solid var(--border);
+    border-radius: 20px; padding: 5px 12px;
+    font-size: 0.82rem; color: var(--text-muted);
+    cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .checkbox-chip input { display: none; }
+  .checkbox-chip.checked { background: var(--teal-light); border-color: var(--teal); color: var(--teal); font-weight: 600; }
+  .actie-vrij-label { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 5px; display: block; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: var(--teal);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 200;
+  }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.45rem; color: #fff; }
+  .logo span { color: #7ee8e8; }
+  .badge { background: rgba(255,255,255,0.15); color: #c8f0f0; font-size: 0.68rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; margin-left: auto; flex-direction: column; gap: 5px; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all 0.2s; }
+
+  /* API KEY BAR — verborgen, key staat veilig op server */
+  .key-bar { display: none; }
+  .key-bar span { font-size: 0.82rem; color: #2d6a2d; font-weight: 600; }
+  .key-bar input { flex: 1; min-width: 260px; padding: 6px 12px; border: 1.5px solid #b6ddb6; border-radius: 8px; font-family: monospace; font-size: 0.82rem; outline: none; }
+
+  /* VOICE INPUT */
+  .voice-wrapper { position: relative; }
+  .voice-wrapper textarea { padding-right: 44px; }
+  .mic-btn {
+    position: absolute;
+    right: 10px; bottom: 10px;
+    background: var(--teal-light);
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem;
+    transition: all 0.2s;
+    z-index: 2;
+  }
+  .mic-btn:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .mic-btn.listening {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.15);} }
+  .key-bar input:focus { border-color: var(--teal); }
+  .key-bar button { background: var(--teal); color: #fff; border: none; border-radius: 8px; padding: 6px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+  .key-bar button:hover { background: var(--teal-mid); }
+  .key-status { font-size: 0.8rem; }
+
+  /* API NOTICE hidden */
+  .api-notice.hidden { display: none; }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: calc(100vh - 52px); }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 230px;
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    padding: 16px 0;
+    flex-shrink: 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+    transition: transform 0.25s;
+  }
+  .sidebar-section { padding: 8px 16px 4px; font-size: 0.67rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-top: 8px; }
+  .nav-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 9px 16px; border: none; background: none; text-align: left; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+  .nav-btn:hover { background: var(--teal-light); color: var(--teal); }
+  .nav-btn.active { background: var(--teal-light); color: var(--teal); border-left-color: var(--teal); font-weight: 600; }
+  .nav-btn .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+  /* MAIN */
+  .main { flex: 1; padding: 24px 28px 80px; max-width: 780px; }
+
+  /* CARD */
+  .card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); padding: 24px 28px; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  .card h2 { font-family: 'DM Serif Display', serif; font-size: 1.18rem; color: var(--teal); margin-bottom: 3px; }
+  .card .desc { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 18px; }
+
+  /* FORM */
+  .form-group { margin-bottom: 14px; }
+  label { display: block; font-size: 0.76rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+  input[type="text"], select, textarea { width: 100%; padding: 10px 13px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); background: var(--cream); transition: border-color 0.2s; outline: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--teal-mid); background: #fff; }
+  textarea { resize: vertical; min-height: 85px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* BUTTON */
+  .btn-generate { width: 100%; padding: 13px; background: var(--teal); color: #fff; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.92rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(26,107,107,0.2); margin-top: 4px; }
+  .btn-generate:hover { background: var(--teal-mid); transform: translateY(-1px); }
+  .btn-generate:disabled { background: #aaa; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* RESULT */
+  .result-box { margin-top: 18px; border-radius: 12px; overflow: hidden; border: 1.5px solid var(--border); display: none; }
+  .result-header { background: var(--teal-light); padding: 9px 15px; display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.5px; flex-wrap: wrap; gap: 6px; }
+  .result-header-left { display: flex; align-items: center; gap: 8px; }
+  .result-timestamp { font-size: 0.72rem; font-weight: 400; color: var(--text-muted); text-transform: none; letter-spacing: 0; }
+  .result-actions { display: flex; gap: 6px; }
+  .result-content { padding: 16px 18px; font-size: 0.88rem; line-height: 1.75; white-space: pre-wrap; background: #fff; color: var(--text); }
+  .action-btn { background: var(--teal); color: #fff; border: none; border-radius: 6px; padding: 4px 11px; font-size: 0.73rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .action-btn:hover { background: var(--teal-mid); }
+  .action-btn.print-btn { background: #fff; color: var(--teal); border: 1.5px solid var(--teal); }
+  .action-btn.print-btn:hover { background: var(--teal-light); }
+
+  /* LOADER */
+  .loader { display: none; align-items: center; gap: 10px; color: var(--teal); font-size: 0.85rem; margin-top: 14px; font-weight: 500; }
+  .loader.visible { display: flex; }
+  .spinner { width: 18px; height: 18px; border: 3px solid var(--teal-light); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ERROR */
+  .error-box { display: none; background: #fdecea; border: 1.5px solid #f5c6c0; border-radius: 10px; padding: 11px 15px; font-size: 0.84rem; color: #c0392b; margin-top: 12px; }
+  .error-box.visible { display: block; }
+
+  /* PRIVACY NOTE */
+  .privacy-note { background: #fef3c7; border: 1.5px solid #f0a500; border-radius: 8px; padding: 10px 14px; font-size: 0.78rem; color: #78350f; margin-bottom: 14px; line-height: 1.6; }
+  .privacy-note strong { display: block; margin-bottom: 3px; }
+
+  /* COPY INSTRUCTION */
+  .copy-instruction { background: var(--teal-light); border-radius: 8px; padding: 9px 14px; font-size: 0.78rem; color: var(--teal); margin-top: 10px; line-height: 1.6; }
+
+  /* MODULE VISIBILITY */
+  .module { display: none; }
+  .module.active { display: block; }
+
+  /* PRINT STYLES */
+  @media print {
+    header, .sidebar, .api-notice, .btn-generate, .loader, .error-box, .result-header { display: none !important; }
+    .layout, .main { display: block !important; }
+    .module { display: none !important; }
+    .module.active { display: block !important; }
+    .result-box { display: block !important; border: none; }
+    .result-content { padding: 0; font-size: 11pt; line-height: 1.6; }
+    body { background: white; }
+    .card { box-shadow: none; border: none; padding: 0; }
+  }
+
+  /* MOBILE */
+  @media(max-width: 640px) {
+    .hamburger { display: flex; }
+    .sidebar { position: fixed; top: 52px; left: 0; height: calc(100vh - 52px); z-index: 150; transform: translateX(-100%); }
+    .sidebar.open { transform: translateX(0); box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
+    .main { padding: 16px; max-width: 100%; }
+    .form-row { grid-template-columns: 1fr; }
+    .card { padding: 18px; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 140; }
+    .overlay.visible { display: block; }
+  }
+</style>
+</head>
+<body>
+
+<!-- DISCLAIMER POPUP -->
+<div class="popup-overlay" id="disclaimer-popup">
+  <div class="popup-box">
+    <div class="popup-icon">⚕️</div>
+    <h2>Belangrijke mededeling</h2>
+    <p>NurseEdAI is een <strong>persoonlijk documentatiehulpmiddel</strong> voor verpleegkundigen. De AI-gegenereerde inhoud vervangt nooit professioneel medisch oordeel. Gebruik altijd uw klinische expertise.</p>
+    <div style="background:#fef3c7;border-radius:10px;padding:12px 14px;margin:14px 0;text-align:left;font-size:0.83rem;color:#78350f;">
+      <strong>⚠️ Verplichte regels:</strong><br>
+      🔒 Gebruik <u>nooit</u> echte namen van patiënten — gebruik kamer- of dossiernummer<br>
+      📋 Kopieer en plak handmatig in uw EHR/zorgdossier<br>
+      🚫 NurseEdAI koppelt nooit rechtstreeks aan ziekenhuissystemen<br>
+      👁️ Controleer altijd de gegenereerde tekst voor gebruik
+    </div>
+    <button class="popup-btn" onclick="closePopup()">Ik begrijp dit — verder gaan</button>
+  </div>
+</div>
+
+<!-- DISCLAIMER BANNER (altijd zichtbaar onderaan) -->
+<div class="disclaimer-bar">
+  ⚠️ <strong>Persoonlijk hulpmiddel — geen officieel medisch dossier.</strong> Gebruik geen echte patiëntnamen. Kopieer en plak handmatig in uw EHR. Controleer altijd met behandelende arts. NurseEdAI koppelt nooit aan ziekenhuissystemen.
+</div>
+
+<header>
+  <div class="logo">Nurse<span>Ed</span>AI</div>
+  <div class="badge">Volledig Platform</div>
+  <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="key-bar" id="key-bar">
+  <span>🔑 API Key:</span>
+  <input type="password" id="api-key-input" placeholder="Plak hier je Anthropic API key (sk-ant-...)" autocomplete="off">
+  <button onclick="saveKey()">Opslaan</button>
+  <span class="key-status" id="key-status"></span>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">Rapportage</div>
+    <button class="nav-btn active" onclick="show('overdracht', this)"><span class="icon">🔄</span> Overdrachtsrapport</button>
+    <button class="nav-btn" onclick="show('incident', this)"><span class="icon">⚠️</span> Incidentrapport</button>
+    <button class="nav-btn" onclick="show('notities', this)"><span class="icon">📝</span> Snelle notities</button>
+    <button class="nav-btn" onclick="show('dokter', this)"><span class="icon">🩺</span> Doktersbezoek</button>
+
+    <div class="sidebar-section">Zorgplanning</div>
+    <button class="nav-btn" onclick="show('educatie', this)"><span class="icon">📋</span> Patiënteducatie</button>
+    <button class="nav-btn" onclick="show('medicatie', this)"><span class="icon">💊</span> Medicatiebeheer</button>
+    <button class="nav-btn" onclick="show('wond', this)"><span class="icon">🩹</span> Wondverzorging</button>
+    <button class="nav-btn" onclick="show('voeding', this)"><span class="icon">🍽️</span> Voedingsrapport</button>
+    <button class="nav-btn" onclick="show('palliatief', this)"><span class="icon">🕊️</span> Palliatieve zorg</button>
+
+    <div class="sidebar-section">Communicatie</div>
+    <button class="nav-btn" onclick="show('familie', this)"><span class="icon">👨‍👩‍👧</span> Familiecommunicatie</button>
+    <button class="nav-btn" onclick="show('afspraken', this)"><span class="icon">🚗</span> Afspraken & transport</button>
+
+    <div class="sidebar-section">Ondersteuning</div>
+    <button class="nav-btn" onclick="show('dementie', this)"><span class="icon">🧠</span> Dementiezorg</button>
+    <button class="nav-btn" onclick="show('risico', this)"><span class="icon">🚨</span> Risicosignalering</button>
+    <button class="nav-btn" onclick="show('taken', this)"><span class="icon">✅</span> Taakbeheer</button>
+    <button class="nav-btn" onclick="show('welzijn', this)"><span class="icon">💚</span> Verpleegkundige welzijn</button>
+  </nav>
+
+  <main class="main">
+
+    <!-- 1. OVERDRACHT -->
+    <div id="mod-overdracht" class="module active">
+      <div class="card">
+        <h2>🔄 Overdrachtsrapport</h2>
+        <p class="desc">Ruwe notities worden professionele overdrachten (SBAR)</p>
+        <div class="privacy-note"><strong>🔒 Privacyregel — verplicht</strong> Gebruik NOOIT echte namen van patiënten. Gebruik "Bewoner X", kamernummer of dossiernummer. Na genereren: kopieer en plak handmatig in uw EHR/zorgdossier.</div>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="ov-bewoner" placeholder="bijv. Bewoner X / Kamer 12"></div>
+          <div class="form-group"><label>Verpleegkundige</label><input type="text" id="ov-naam" placeholder="Jouw naam"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Datum</label><input type="text" id="ov-datum" placeholder="25/03/2026"></div>
+          <div class="form-group"><label>Shift</label>
+            <select id="ov-shift"><option>Ochtend (07:00–15:00)</option><option>Middag (15:00–22:00)</option><option>Nacht (22:00–07:00)</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Notities</label><textarea id="ov-notities" placeholder="Wat is er gebeurd tijdens de shift?"></textarea></div>
+        <button class="btn-generate" onclick="gen('overdracht')">✨ Genereer overdrachtsrapport</button>
+        <div class="loader" id="ov-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="ov-error"></div>
+        <div class="result-box" id="ov-result">
+          <div class="result-header">
+            <div class="result-header-left">Overdrachtsrapport <span class="result-timestamp" id="ov-time"></span></div>
+            <div class="result-actions">
+              <button class="action-btn print-btn" onclick="printResult('ov-out', 'Overdrachtsrapport')">🖨️ Print</button>
+              <button class="action-btn" onclick="copyResult('ov-out', this)">Kopieer</button>
+            </div>
+          </div>
+          <div class="result-content" id="ov-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. INCIDENT -->
+    <div id="mod-incident" class="module">
+      <div class="card">
+        <h2>⚠️ Incidentrapport</h2>
+        <p class="desc">Documenteer incidenten snel en volledig</p>
+        <div class="privacy-note"><strong>🔒 Privacyregel — verplicht</strong> Gebruik NOOIT echte namen van patiënten. Gebruik kamernummer of initialen. Na genereren: kopieer en plak handmatig in uw EHR/zorgdossier.</div>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="inc-bewoner" placeholder="bijv. Kamer 5"></div>
+          <div class="form-group"><label>Type incident</label>
+            <select id="inc-type"><option>Val</option><option>Medicatiefout</option><option>Agressie</option><option>Wonde</option><option>Andere</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Wat is er gebeurd?</label><textarea id="inc-notities" placeholder="Beschrijf het incident zo gedetailleerd mogelijk..."></textarea></div>
+        <div class="form-group">
+          <div class="actie-opties">
+            <div class="actie-opties-title">Actie ondernomen (selecteer wat van toepassing is)</div>
+            <div class="checkbox-grid" id="inc-acties">
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Arts/dokter gebeld">📞 Arts gebeld</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Parameters gemeten (bloeddruk, pols, temp)">📊 Parameters gemeten</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Pijnmedicatie toegediend">💊 Pijnmedicatie gegeven</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Wondzorg uitgevoerd">🩹 Wondzorg uitgevoerd</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Familie verwittigd">👨‍👩‍👧 Familie verwittigd</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Bewoner getroost en gerustgesteld">🤝 Bewoner gerustgesteld</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Observatie verhoogd">👁️ Observatie verhoogd</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Incident geregistreerd in systeem">📋 In systeem geregistreerd</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Spoeddienst gebeld (112)">🚨 Spoeddienst gebeld</label>
+            </div>
+            <span class="actie-vrij-label">Aanvullende actie (optioneel):</span>
+            <input type="text" id="inc-actie" placeholder="bijv. apotheker gecontacteerd, specialist verwittigd...">
+          </div>
+        </div>
+        <button class="btn-generate" onclick="gen('incident')">✨ Genereer incidentrapport</button>
+        <div class="loader" id="inc-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="inc-error"></div>
+        <div class="result-box" id="inc-result">
+          <div class="result-header">
+            <div class="result-header-left">Incidentrapport <span class="result-timestamp" id="inc-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('inc-out', 'Incidentrapport')">🖨️ Print</button><button class="action-btn" onclick="copyResult('inc-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="inc-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SNELLE NOTITIES -->
+    <div id="mod-notities" class="module">
+      <div class="card">
+        <h2>📝 Snelle notities</h2>
+        <p class="desc">Korte observaties omzetten naar professionele aantekeningen</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="not-bewoner" placeholder="bijv. Kamer 8"></div>
+          <div class="form-group"><label>Categorie</label>
+            <select id="not-cat"><option>Algemene observatie</option><option>Gedrag</option><option>Fysieke toestand</option><option>Slaap</option><option>Stemming</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Jouw notitie</label><textarea id="not-tekst" placeholder="bijv. slecht geslapen, onrustig, weinig gegeten..."></textarea></div>
+        <button class="btn-generate" onclick="gen('notities')">✨ Maak professionele notitie</button>
+        <div class="loader" id="not-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="not-error"></div>
+        <div class="result-box" id="not-result">
+          <div class="result-header">
+            <div class="result-header-left">Notitie <span class="result-timestamp" id="not-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('not-out', 'Zorgnotitie')">🖨️ Print</button><button class="action-btn" onclick="copyResult('not-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="not-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. DOKTER -->
+    <div id="mod-dokter" class="module">
+      <div class="card">
+        <h2>🩺 Doktersbezoek documentatie</h2>
+        <p class="desc">Leg doktersbezoeken en afspraken professioneel vast</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="dok-bewoner" placeholder="bijv. Kamer 3"></div>
+          <div class="form-group"><label>Arts / specialist</label><input type="text" id="dok-arts" placeholder="bijv. Dr. Janssen, cardioloog"></div>
+        </div>
+        <div class="form-group"><label>Reden bezoek</label><input type="text" id="dok-reden" placeholder="bijv. controle bloeddruk, wondcontrole..."></div>
+        <div class="form-group"><label>Bevindingen & afspraken</label><textarea id="dok-notities" placeholder="Wat zei de arts? Welke afspraken zijn gemaakt?"></textarea></div>
+        <button class="btn-generate" onclick="gen('dokter')">✨ Genereer doktersverslag</button>
+        <div class="loader" id="dok-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="dok-error"></div>
+        <div class="result-box" id="dok-result">
+          <div class="result-header">
+            <div class="result-header-left">Doktersverslag <span class="result-timestamp" id="dok-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('dok-out', 'Doktersverslag')">🖨️ Print</button><button class="action-btn" onclick="copyResult('dok-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="dok-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. EDUCATIE -->
+    <div id="mod-educatie" class="module">
+      <div class="card">
+        <h2>📋 Patiënteducatie</h2>
+        <p class="desc">Diagnoses uitgelegd in eenvoudige taal</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner / familie</label><input type="text" id="ed-bewoner" placeholder="Voor wie is deze uitleg?"></div>
+          <div class="form-group"><label>Taal</label>
+            <select id="ed-taal"><option>Nederlands</option><option>Frans</option><option>Engels</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Diagnose of onderwerp</label><input type="text" id="ed-diagnose" placeholder="bijv. Diabetes type 2, hartfalen, COPD..."></div>
+        <div class="form-group"><label>Extra context</label><textarea id="ed-context" placeholder="bijv. Bewoner begrijpt moeilijk, recent gesteld..."></textarea></div>
+        <button class="btn-generate" onclick="gen('educatie')">✨ Genereer uitleg</button>
+        <div class="loader" id="ed-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="ed-error"></div>
+        <div class="result-box" id="ed-result">
+          <div class="result-header">
+            <div class="result-header-left">Patiënteducatie <span class="result-timestamp" id="ed-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('ed-out', 'Patiënteducatie')">🖨️ Print</button><button class="action-btn" onclick="copyResult('ed-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="ed-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. MEDICATIE -->
+    <div id="mod-medicatie" class="module">
+      <div class="card">
+        <h2>💊 Medicatiebeheer</h2>
+        <p class="desc">Medicatie-aantekeningen naar gestructureerde rapporten</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="med-bewoner" placeholder="bijv. Kamer 7"></div>
+          <div class="form-group"><label>Type</label>
+            <select id="med-type"><option>Toediening bijhouden</option><option>Weigering documenteren</option><option>Bijwerking rapporteren</option><option>Overzicht opstellen</option></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="actie-opties">
+            <div class="actie-opties-title">Wat is er gebeurd? (selecteer wat van toepassing is)</div>
+            <div class="checkbox-grid" id="med-acties">
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Medicatie correct toegediend">✅ Correct toegediend</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Bewoner weigerde medicatie">❌ Bewoner weigerde</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Medicatie vergeten toe te dienen">⚠️ Vergeten</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Verkeerde dosis gegeven">🔴 Verkeerde dosis</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Bijwerking vastgesteld">😟 Bijwerking vastgesteld</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Arts verwittigd van medicatieprobleem">📞 Arts verwittigd</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Apotheker gecontacteerd">💬 Apotheker gecontacteerd</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Medicatie ingenomen met vertraging">⏰ Vertraagd toegediend</label>
+            </div>
+            <span class="actie-vrij-label">Aanvullende details (optioneel):</span>
+            <textarea id="med-notities" placeholder="bijv. Paracetamol 1g om 8u gegeven, weigerde bloedverdunner..."></textarea>
+          </div>
+        </div>
+        <button class="btn-generate" onclick="gen('medicatie')">✨ Genereer medicatierapport</button>
+        <div class="loader" id="med-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="med-error"></div>
+        <div class="result-box" id="med-result">
+          <div class="result-header">
+            <div class="result-header-left">Medicatierapport <span class="result-timestamp" id="med-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('med-out', 'Medicatierapport')">🖨️ Print</button><button class="action-btn" onclick="copyResult('med-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="med-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. WOND -->
+    <div id="mod-wond" class="module">
+      <div class="card">
+        <h2>🩹 Wondverzorging</h2>
+        <p class="desc">Wondrapportage met ISTAP huidscheurclassificatie</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="won-bewoner" placeholder="bijv. Kamer 2"></div>
+          <div class="form-group"><label>Wondtype</label>
+            <select id="won-type"><option>Huidscheur (ISTAP)</option><option>Decubitus</option><option>Diabetisch ulcus</option><option>Chirurgische wonde</option><option>Andere</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Locatie wonde</label><input type="text" id="won-locatie" placeholder="bijv. linker onderarm, stuit..."></div>
+        <div class="form-group"><label>Beschrijving wonde</label><textarea id="won-notities" placeholder="bijv. Wonde 3x2cm, ISTAP type 2, gereinigd met NaCl, hydrocolloïd aangebracht..."></textarea></div>
+        <div class="form-group">
+          <div class="actie-opties">
+            <div class="actie-opties-title">Verzorging uitgevoerd (selecteer wat van toepassing is)</div>
+            <div class="checkbox-grid" id="won-acties">
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Wonde gereinigd met NaCl 0.9%">🧴 Gereinigd met NaCl</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Antisepticum aangebracht">🔵 Antisepticum aangebracht</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Hydrocolloïd verband aangebracht">🩹 Hydrocolloïd verband</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Siliconenverband aangebracht">🩹 Siliconenverband</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Foto gemaakt van de wonde">📷 Foto gemaakt</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Arts/hoofdverpleegkundige verwittigd">📞 Arts verwittigd</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Wondmeting uitgevoerd (cm)">📏 Wondmeting gedaan</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Verband verschoond">🔄 Verband verschoond</label>
+              <label class="checkbox-chip" onclick="toggleChip(this)" data-value="Pijnstilling gegeven voor verzorging">💊 Pijnstilling voor verzorging</label>
+            </div>
+            <span class="actie-vrij-label">Aanvullende details (optioneel):</span>
+            <input type="text" id="won-extra" placeholder="bijv. volgende verzorging over 2 dagen...">
+          </div>
+        </div>
+        <button class="btn-generate" onclick="gen('wond')">✨ Genereer wondrapport</button>
+        <div class="loader" id="won-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="won-error"></div>
+        <div class="result-box" id="won-result">
+          <div class="result-header">
+            <div class="result-header-left">Wondrapport <span class="result-timestamp" id="won-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('won-out', 'Wondrapport')">🖨️ Print</button><button class="action-btn" onclick="copyResult('won-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="won-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. VOEDING -->
+    <div id="mod-voeding" class="module">
+      <div class="card">
+        <h2>🍽️ Voedingsrapport</h2>
+        <p class="desc">Voedings- en vochtinname documenteren</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="voe-bewoner" placeholder="bijv. Kamer 11"></div>
+          <div class="form-group"><label>Periode</label>
+            <select id="voe-periode"><option>Ontbijt</option><option>Middag</option><option>Avond</option><option>Volledige dag</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Inname & observaties</label><textarea id="voe-notities" placeholder="bijv. Weinig gegeten, 1/4 bord, weigerde drinken, heeft 200ml gedronken..."></textarea></div>
+        <button class="btn-generate" onclick="gen('voeding')">✨ Genereer voedingsrapport</button>
+        <div class="loader" id="voe-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="voe-error"></div>
+        <div class="result-box" id="voe-result">
+          <div class="result-header">
+            <div class="result-header-left">Voedingsrapport <span class="result-timestamp" id="voe-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('voe-out', 'Voedingsrapport')">🖨️ Print</button><button class="action-btn" onclick="copyResult('voe-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="voe-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. PALLIATIEF -->
+    <div id="mod-palliatief" class="module">
+      <div class="card">
+        <h2>🕊️ Palliatieve zorg</h2>
+        <p class="desc">Sensitieve documentatie voor palliatieve zorgmomenten</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="pal-bewoner" placeholder="bijv. Kamer 6"></div>
+          <div class="form-group"><label>Type notitie</label>
+            <select id="pal-type"><option>Comfort & pijnbeheer</option><option>Familiegesprek</option><option>Zorgplan update</option><option>Overlijdensmelding</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Observaties & notities</label><textarea id="pal-notities" placeholder="Beschrijf de situatie en zorgmomenten..."></textarea></div>
+        <button class="btn-generate" onclick="gen('palliatief')">✨ Genereer palliatief verslag</button>
+        <div class="loader" id="pal-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="pal-error"></div>
+        <div class="result-box" id="pal-result">
+          <div class="result-header">
+            <div class="result-header-left">Palliatief verslag <span class="result-timestamp" id="pal-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('pal-out', 'Palliatief verslag')">🖨️ Print</button><button class="action-btn" onclick="copyResult('pal-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="pal-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. FAMILIE -->
+    <div id="mod-familie" class="module">
+      <div class="card">
+        <h2>👨‍👩‍👧 Familiecommunicatie</h2>
+        <p class="desc">Professionele berichten naar familie opstellen</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="fam-bewoner" placeholder="bijv. Kamer 4"></div>
+          <div class="form-group"><label>Taal</label>
+            <select id="fam-taal"><option>Nederlands</option><option>Frans</option><option>Engels</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Onderwerp</label>
+          <select id="fam-type"><option>Algemene update</option><option>Gezondheidswijziging</option><option>Uitnodiging gesprek</option><option>Overlijdensbericht</option></select>
+        </div>
+        <div class="form-group"><label>Wat wil je communiceren?</label><textarea id="fam-notities" placeholder="bijv. Bewoner voelt zich beter, eet weer goed..."></textarea></div>
+        <button class="btn-generate" onclick="gen('familie')">✨ Genereer familiebericht</button>
+        <div class="loader" id="fam-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="fam-error"></div>
+        <div class="result-box" id="fam-result">
+          <div class="result-header">
+            <div class="result-header-left">Familiebericht <span class="result-timestamp" id="fam-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('fam-out', 'Familiebericht')">🖨️ Print</button><button class="action-btn" onclick="copyResult('fam-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="fam-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. AFSPRAKEN -->
+    <div id="mod-afspraken" class="module">
+      <div class="card">
+        <h2>🚗 Afspraken & transport</h2>
+        <p class="desc">Medische afspraken en transport documenteren</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="afs-bewoner" placeholder="bijv. Kamer 9"></div>
+          <div class="form-group"><label>Type</label>
+            <select id="afs-type"><option>Medische afspraak plannen</option><option>Transport regelen</option><option>Afspraak bevestigen</option><option>Afspraak annuleren</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Details</label><textarea id="afs-notities" placeholder="bijv. Afspraak cardioloog op 10/04 om 14u, transport nodig, rolstoel..."></textarea></div>
+        <button class="btn-generate" onclick="gen('afspraken')">✨ Genereer afspraaknotitie</button>
+        <div class="loader" id="afs-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="afs-error"></div>
+        <div class="result-box" id="afs-result">
+          <div class="result-header">
+            <div class="result-header-left">Afspraaknotitie <span class="result-timestamp" id="afs-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('afs-out', 'Afspraaknotitie')">🖨️ Print</button><button class="action-btn" onclick="copyResult('afs-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="afs-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. DEMENTIE -->
+    <div id="mod-dementie" class="module">
+      <div class="card">
+        <h2>🧠 Dementiezorg</h2>
+        <p class="desc">Gedrag en communicatie bij dementiebewoners documenteren</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="dem-bewoner" placeholder="bijv. Kamer 1"></div>
+          <div class="form-group"><label>Stadium dementie</label>
+            <select id="dem-stadium"><option>Vroeg stadium</option><option>Midden stadium</option><option>Laat stadium</option><option>Onbekend</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Observaties gedrag & communicatie</label><textarea id="dem-notities" placeholder="bijv. Onrustig 's nachts, herhaalde vragen, weigert verzorging, kalm na muziek..."></textarea></div>
+        <button class="btn-generate" onclick="gen('dementie')">✨ Genereer dementiezorgnotitie</button>
+        <div class="loader" id="dem-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="dem-error"></div>
+        <div class="result-box" id="dem-result">
+          <div class="result-header">
+            <div class="result-header-left">Dementiezorgnotitie <span class="result-timestamp" id="dem-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('dem-out', 'Dementiezorgnotitie')">🖨️ Print</button><button class="action-btn" onclick="copyResult('dem-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="dem-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. RISICO -->
+    <div id="mod-risico" class="module">
+      <div class="card">
+        <h2>🚨 Risicosignalering</h2>
+        <p class="desc">Vroegtijdig risico's detecteren en documenteren</p>
+        <div class="form-row">
+          <div class="form-group"><label>Bewoner</label><input type="text" id="ris-bewoner" placeholder="bijv. Kamer 10"></div>
+          <div class="form-group"><label>Type risico</label>
+            <select id="ris-type"><option>Valrisico</option><option>Infectierisico</option><option>Dehydratierisico</option><option>Pijnbeheer</option><option>Ondervoeding</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Signalen & observaties</label><textarea id="ris-notities" placeholder="bijv. Bewoner viel 2x deze week, loopt onzeker, weigert rollator..."></textarea></div>
+        <button class="btn-generate" onclick="gen('risico')">✨ Genereer risicosignalering</button>
+        <div class="loader" id="ris-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="ris-error"></div>
+        <div class="result-box" id="ris-result">
+          <div class="result-header">
+            <div class="result-header-left">Risicosignalering <span class="result-timestamp" id="ris-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('ris-out', 'Risicosignalering')">🖨️ Print</button><button class="action-btn" onclick="copyResult('ris-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="ris-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 14. TAKEN -->
+    <div id="mod-taken" class="module">
+      <div class="card">
+        <h2>✅ Taakbeheer</h2>
+        <p class="desc">Taken en to-do's voor de shift organiseren</p>
+        <div class="form-row">
+          <div class="form-group"><label>Verpleegkundige</label><input type="text" id="tak-naam" placeholder="Jouw naam"></div>
+          <div class="form-group"><label>Shift</label>
+            <select id="tak-shift"><option>Ochtend (07:00–15:00)</option><option>Middag (15:00–22:00)</option><option>Nacht (22:00–07:00)</option></select>
+          </div>
+        </div>
+        <div class="form-group"><label>Taken & prioriteiten</label><textarea id="tak-notities" placeholder="bijv. Kamer 3 wondverzorging, Kamer 7 bloeddruk meten, medicatie 10u..."></textarea></div>
+        <button class="btn-generate" onclick="gen('taken')">✨ Genereer takenoverzicht</button>
+        <div class="loader" id="tak-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="tak-error"></div>
+        <div class="result-box" id="tak-result">
+          <div class="result-header">
+            <div class="result-header-left">Takenoverzicht <span class="result-timestamp" id="tak-time"></span></div>
+            <div class="result-actions"><button class="action-btn print-btn" onclick="printResult('tak-out', 'Takenoverzicht')">🖨️ Print</button><button class="action-btn" onclick="copyResult('tak-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="tak-out"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 15. WELZIJN -->
+    <div id="mod-welzijn" class="module">
+      <div class="card">
+        <h2>💚 Verpleegkundige welzijn</h2>
+        <p class="desc">Check-in voor jouw eigen welzijn na een zware shift</p>
+        <div class="form-group"><label>Hoe was jouw shift vandaag?</label>
+          <select id="wel-gevoel"><option>Zwaar maar goed</option><option>Emotioneel belastend</option><option>Rustig en positief</option><option>Uitputtend</option><option>Normaal</option></select>
+        </div>
+        <div class="form-group"><label>Wat heeft je vandaag geraakt? (optioneel)</label><textarea id="wel-notities" placeholder="Dit is alleen voor jou — schrijf vrijuit wat je voelde of meemaakte..."></textarea></div>
+        <button class="btn-generate" onclick="gen('welzijn')">💚 Genereer welzijnsreflectie</button>
+        <div class="loader" id="wel-loader"><div class="spinner"></div> Bezig met genereren...</div>
+        <div class="error-box" id="wel-error"></div>
+        <div class="result-box" id="wel-result">
+          <div class="result-header">
+            <div class="result-header-left">Welzijnsreflectie <span class="result-timestamp" id="wel-time"></span></div>
+            <div class="result-actions"><button class="action-btn" onclick="copyResult('wel-out', this)">Kopieer</button></div>
+          </div>
+          <div class="result-content" id="wel-out"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// DISCLAIMER POPUP
+function closePopup() {
+  const popup = document.getElementById('disclaimer-popup');
+  if (popup) {
+    popup.style.display = 'none';
+    popup.classList.add('hidden');
+  }
+  sessionStorage.setItem('disclaimer-seen', '1');
+}
+// Show popup on first load (once per session)
+if (!sessionStorage.getItem('disclaimer-seen')) {
+  document.addEventListener('DOMContentLoaded', () => {
+    // slight delay so page renders first
+    setTimeout(() => {
+      document.getElementById('disclaimer-popup').classList.remove('hidden');
+    }, 300);
+  });
+} else {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('disclaimer-popup').classList.add('hidden');
+  });
+}
+
+// CHECKBOX CHIPS — fixed
+function toggleChip(el) {
+  el.classList.toggle('checked');
+}
+
+// ════════════════════════════════════════════
+// 🔑 API KEY — wordt ingevuld via het invoerveld bovenaan
+let API_KEY = localStorage.getItem('nurseedai_key') || '';
+// ════════════════════════════════════════════
+
+// KEY BAR
+function saveKey() {
+  const input = document.getElementById('api-key-input');
+  const val = input.value.trim();
+  if (!val.startsWith('sk-ant-')) {
+    document.getElementById('key-status').textContent = '❌ Ongeldige key';
+    return;
+  }
+  API_KEY = val;
+  localStorage.setItem('nurseedai_key', val);
+  document.getElementById('key-status').textContent = '✅ Opgeslagen!';
+  input.value = '••••••••••••••••••••••';
+  setTimeout(() => document.getElementById('key-status').textContent = '', 3000);
+}
+
+// Load saved key on startup
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('nurseedai_key');
+  if (saved) {
+    API_KEY = saved;
+    document.getElementById('api-key-input').value = '••••••••••••••••••••••';
+    document.getElementById('key-status').textContent = '✅ Key geladen';
+    setTimeout(() => document.getElementById('key-status').textContent = '', 2000);
+  }
+});
+
+// Sidebar toggle (mobile)
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('visible');
+}
+
+// Switch module
+function show(id, btn) {
+  document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mod-' + id).classList.add('active');
+  btn.classList.add('active');
+  // Close sidebar on mobile after selection
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  if (sidebar.classList.contains('open')) {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('visible');
+  }
+}
+
+// Safe value getter
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+// Timestamp formatter
+function now() {
+  return new Date().toLocaleString('nl-BE', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+// Prompts
+function getPrompt(mod) {
+  const base = "Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in het Nederlands. Professioneel, beknopt, direct beginnen zonder inleiding. Max 250 woorden.";
+
+  const prompts = {
+    overdracht: () => {
+      const n = v('ov-notities'); if (!n) return null;
+      return `${base} Schrijf een professioneel SBAR overdrachtsrapport.\nBewoner: ${v('ov-bewoner')||'Niet ingevuld'}\nVerpleegkundige: ${v('ov-naam')||'Niet ingevuld'}\nDatum: ${v('ov-datum')||'Vandaag'}\nShift: ${v('ov-shift')}\nNotities: ${n}`;
+    },
+    incident: () => {
+      const n = v('inc-notities'); if (!n) return null;
+      const chips = [...document.querySelectorAll('#inc-acties .checkbox-chip.checked')]
+        .map(c => c.dataset.value);
+      const extra = v('inc-actie');
+      const alleActies = [...chips, extra].filter(Boolean).join(', ') || 'Niet vermeld';
+      return `Je bent een verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een BEKNOPT incidentrapport in het Nederlands. Max 120 woorden. Geen lege invulvakken of placeholders. Alleen wat echt ingevuld is vermelden.\nBewoner: ${v('inc-bewoner')||'Niet ingevuld'}\nType incident: ${v('inc-type')}\nWat er gebeurde: ${n}\nOndernomen acties: ${alleActies}`;
+    },
+    notities: () => {
+      const n = v('not-tekst'); if (!n) return null;
+      return `${base} Zet deze ruwe notitie om naar een professionele zorgaantekening.\nBewoner: ${v('not-bewoner')}\nCategorie: ${v('not-cat')}\nNotitie: ${n}`;
+    },
+    dokter: () => {
+      const n = v('dok-notities'); if (!n) return null;
+      return `${base} Schrijf een professioneel doktersbezoekverslag.\nBewoner: ${v('dok-bewoner')}\nArts: ${v('dok-arts')}\nReden: ${v('dok-reden')}\nBevindingen: ${n}`;
+    },
+    educatie: () => {
+      const d = v('ed-diagnose'); if (!d) return null;
+      return `Je bent een verpleegkundige die patiënteducatie schrijft. Schrijf in ${v('ed-taal')}. Eenvoudige taal, geen jargon. Structuur: wat is het, wat betekent het voor dagelijks leven, 2-3 praktische tips. Max 200 woorden.\nBewoner: ${v('ed-bewoner')}\nDiagnose: ${d}\nContext: ${v('ed-context')||'geen'}`;
+    },
+    medicatie: () => {
+      const chips = [...document.querySelectorAll('#med-acties .checkbox-chip.checked')]
+        .map(c => c.dataset.value);
+      const notities = v('med-notities');
+      if (chips.length === 0 && !notities) return null;
+      const alles = [...chips, notities].filter(Boolean).join('. ');
+      return `${base} Maak een gestructureerd medicatierapport (${v('med-type')}). Max 120 woorden. Geen placeholders.\nBewoner: ${v('med-bewoner')}\nWat er gebeurde: ${alles}`;
+    },
+    wond: () => {
+      const n = v('won-notities'); if (!n) return null;
+      const chips = [...document.querySelectorAll('#won-acties .checkbox-chip.checked')]
+        .map(c => c.dataset.value);
+      const extra = v('won-extra');
+      const verzorging = [...chips, extra].filter(Boolean).join(', ') || 'Niet gespecificeerd';
+      return `${base} Schrijf een professioneel wondverzorgingsrapport. Max 120 woorden. Bij huidscheur: gebruik ISTAP classificatie (Type 1, 2a, 2b of 3). Geen placeholders.\nBewoner: ${v('won-bewoner')}\nWondtype: ${v('won-type')}\nLocatie: ${v('won-locatie')}\nBeschrijving: ${n}\nVerzorging uitgevoerd: ${verzorging}`;
+    },
+    voeding: () => {
+      const n = v('voe-notities'); if (!n) return null;
+      return `${base} Schrijf een professioneel voedings- en vochtrapport.\nBewoner: ${v('voe-bewoner')}\nPeriode: ${v('voe-periode')}\nObservaties: ${n}`;
+    },
+    palliatief: () => {
+      const n = v('pal-notities'); if (!n) return null;
+      return `${base} Schrijf een sensitief en professioneel palliatief zorgverslag. Gebruik respectvolle, mensgerichte taal.\nBewoner: ${v('pal-bewoner')}\nType: ${v('pal-type')}\nNotities: ${n}`;
+    },
+    familie: () => {
+      const n = v('fam-notities'); if (!n) return null;
+      return `Je bent een verpleegkundige. Schrijf een professioneel familiebericht in ${v('fam-taal')}. Warm maar professioneel. Max 200 woorden.\nBewoner: ${v('fam-bewoner')}\nOnderwerp: ${v('fam-type')}\nBoodschap: ${n}`;
+    },
+    afspraken: () => {
+      const n = v('afs-notities'); if (!n) return null;
+      return `${base} Schrijf een duidelijke afspraak- en transportnotitie.\nBewoner: ${v('afs-bewoner')}\nType: ${v('afs-type')}\nDetails: ${n}`;
+    },
+    dementie: () => {
+      const n = v('dem-notities'); if (!n) return null;
+      return `${base} Schrijf een professionele dementiezorgnotitie met aandacht voor gedrag, communicatie en aanpak.\nBewoner: ${v('dem-bewoner')}\nStadium: ${v('dem-stadium')}\nObservaties: ${n}`;
+    },
+    risico: () => {
+      const n = v('ris-notities'); if (!n) return null;
+      return `${base} Schrijf een professionele risicosignalering met concrete aanbevelingen voor preventie.\nBewoner: ${v('ris-bewoner')}\nType risico: ${v('ris-type')}\nSignalen: ${n}`;
+    },
+    taken: () => {
+      const n = v('tak-notities'); if (!n) return null;
+      return `${base} Maak een gestructureerd takenoverzicht op prioriteit (hoog/midden/laag) voor de shift.\nVerpleegkundige: ${v('tak-naam')}\nShift: ${v('tak-shift')}\nTaken: ${n}`;
+    },
+    welzijn: () => {
+      return `Je bent een empathische coach voor verpleegkundigen. Schrijf een korte, warme welzijnsreflectie. Geef erkenning voor het werk, een concrete tip voor zelfzorg, en een bemoedigend woord. Max 150 woorden. In het Nederlands.\nGevoel: ${v('wel-gevoel')}\nBeleving: ${v('wel-notities')||'Geen verdere toelichting'}`;
+    }
+  };
+
+  return prompts[mod] ? prompts[mod]() : null;
+}
+
+// Prefix map
+const prefixes = {
+  overdracht:'ov', incident:'inc', notities:'not', dokter:'dok',
+  educatie:'ed', medicatie:'med', wond:'won', voeding:'voe',
+  palliatief:'pal', familie:'fam', afspraken:'afs', dementie:'dem',
+  risico:'ris', taken:'tak', welzijn:'wel'
+};
+
+// Main generate function
+async function gen(mod) {
+  const p = prefixes[mod];
+  const loader   = document.getElementById(p + '-loader');
+  const errorEl  = document.getElementById(p + '-error');
+  const resultBox= document.getElementById(p + '-result');
+  const output   = document.getElementById(p + '-out');
+  const timeEl   = document.getElementById(p + '-time');
+  const btn      = document.querySelector(`#mod-${mod} .btn-generate`);
+
+  // Reset
+  errorEl.classList.remove('visible');
+  resultBox.style.display = 'none';
+
+  // API key zit veilig op de server — geen check nodig hier
+
+  // Prompt check
+  const prompt = getPrompt(mod);
+  if (!prompt) {
+    errorEl.textContent = '⚠️ Vul eerst de verplichte velden in (notities of onderwerp).';
+    errorEl.classList.add('visible');
+    return;
+  }
+
+  // Loading
+  loader.classList.add('visible');
+  btn.disabled = true;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
+    const response = await fetch("/api/claude", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify(req.body)
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1024,
+        messages: [{ role: "user", content: prompt }]
+      })
     });
 
     const data = await response.json();
-    return res.status(response.status).json(data);
+    if (!response.ok) throw new Error(data?.error?.message || `HTTP fout ${response.status}`);
 
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+    const text = data?.content?.[0]?.text;
+    if (!text) throw new Error("Geen antwoord ontvangen van de API.");
+
+    output.textContent = text;
+    if (timeEl) timeEl.textContent = '— ' + now();
+    resultBox.style.display = 'block';
+
+    // Show copy instruction
+    let instr = resultBox.parentNode.querySelector('.copy-instruction');
+    if (!instr) {
+      instr = document.createElement('div');
+      instr.className = 'copy-instruction';
+      instr.innerHTML = '📋 <strong>Volgende stap:</strong> Klik op "Kopieer" → open uw EHR/zorgdossier → plak de tekst handmatig. Controleer altijd de inhoud voor gebruik. Gebruik geen echte patiëntnamen.';
+      resultBox.parentNode.insertBefore(instr, resultBox.nextSibling);
+    }
+
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  } catch (err) {
+    errorEl.textContent = '❌ Fout: ' + err.message;
+    errorEl.classList.add('visible');
+  } finally {
+    loader.classList.remove('visible');
+    btn.disabled = false;
   }
 }
+
+// Copy result — fixed: no global event dependency
+function copyResult(id, btn) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Gekopieerd!';
+    setTimeout(() => btn.textContent = orig, 2000);
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Gekopieerd!';
+    setTimeout(() => btn.textContent = 'Kopieer', 2000);
+  });
+}
+
+// ══════════════════════════════════════
+// 🎤 VOICE INPUT
+// ══════════════════════════════════════
+(function initVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    console.warn('Voice input niet ondersteund in deze browser.');
+    return;
+  }
+
+  // Add mic button to every textarea
+  document.querySelectorAll('textarea').forEach(ta => {
+    // Wrap textarea
+    const wrapper = document.createElement('div');
+    wrapper.className = 'voice-wrapper';
+    ta.parentNode.insertBefore(wrapper, ta);
+    wrapper.appendChild(ta);
+
+    // Create mic button
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'mic-btn';
+    btn.innerHTML = '🎤';
+    btn.title = 'Klik om in te spreken (Nederlands)';
+    wrapper.appendChild(btn);
+
+    let recognition = null;
+    let listening = false;
+
+    btn.addEventListener('click', () => {
+      if (listening) {
+        recognition.stop();
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = 'nl-BE';
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      let finalTranscript = ta.value;
+
+      recognition.onstart = () => {
+        listening = true;
+        btn.classList.add('listening');
+        btn.innerHTML = '⏹️';
+        btn.title = 'Klik om te stoppen';
+      };
+
+      recognition.onresult = (e) => {
+        let interim = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) {
+            finalTranscript += e.results[i][0].transcript + ' ';
+          } else {
+            interim = e.results[i][0].transcript;
+          }
+        }
+        ta.value = finalTranscript + interim;
+      };
+
+      recognition.onend = () => {
+        listening = false;
+        btn.classList.remove('listening');
+        btn.innerHTML = '🎤';
+        btn.title = 'Klik om in te spreken (Nederlands)';
+        ta.value = finalTranscript.trim();
+      };
+
+      recognition.onerror = (e) => {
+        listening = false;
+        btn.classList.remove('listening');
+        btn.innerHTML = '🎤';
+        if (e.error === 'not-allowed') {
+          alert('Microfoon toegang geweigerd. Sta microfoon toe in uw browser.');
+        }
+      };
+
+      recognition.start();
+    });
+  });
+})();
+
+// Print result
+function printResult(id, title) {
+  const content = document.getElementById(id).textContent;
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <html><head><title>${title}</title>
+    <style>body{font-family:Arial,sans-serif;padding:32px;font-size:11pt;line-height:1.7;color:#1c2b2b;}h1{font-size:14pt;margin-bottom:16px;color:#1a6b6b;}pre{white-space:pre-wrap;font-family:inherit;}</style>
+    </head><body>
+    <h1>NurseEdAI — ${title}</h1>
+    <p style="font-size:9pt;color:#888;margin-bottom:20px;">Gegenereerd op ${now()}</p>
+    <pre>${content}</pre>
+    </body></html>
+  `);
+  win.document.close();
+  win.print();
+}
+</script>
+</body>
+</html>
