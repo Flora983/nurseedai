@@ -35,14 +35,8 @@
   }
 
   /* POPUP OVERLAY */
-  .popup-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-  }
-  .popup-overlay.hidden { display: none; }
+  .popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .popup-overlay.hidden { display: none !important; }
   .popup-box {
     background: #fff;
     border-radius: 16px;
@@ -751,7 +745,11 @@
 <script>
 // DISCLAIMER POPUP
 function closePopup() {
-  document.getElementById('disclaimer-popup').classList.add('hidden');
+  const popup = document.getElementById('disclaimer-popup');
+  if (popup) {
+    popup.style.display = 'none';
+    popup.classList.add('hidden');
+  }
   sessionStorage.setItem('disclaimer-seen', '1');
 }
 // Show popup on first load (once per session)
@@ -1109,6 +1107,8 @@ function copyResult(id, btn) {
   });
 })();
 
+// Print result
+function printResult(id, title) {
   const content = document.getElementById(id).textContent;
   const win = window.open('', '_blank');
   win.document.write(`
