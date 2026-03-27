@@ -249,6 +249,16 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
   .module-grid { grid-template-columns: 1fr; }
   .result-actions { grid-template-columns: 1fr 1fr; }
 }
+
+/* LANGUAGE BUTTONS */
+.lang-btn {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+  color: #fff; padding: 6px 14px; border-radius: 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.lang-btn.active { background: rgba(255,255,255,0.9); color: var(--teal); }
+.lang-btn:hover { background: rgba(255,255,255,0.25); }
 </style>
 </head>
 <body>
@@ -288,6 +298,11 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <div class="hero-badge">🇧🇪 Belgische woonzorgcentra</div>
       <div class="dashboard-title">Nurse<span>Ed</span>AI</div>
       <div class="dashboard-sub">Snelle en professionele verslaggeving voor verpleegkundigen — rapport klaar in 30 seconden</div>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="lang-btn active" onclick="setLang('nl', this)">🇧🇪 Nederlands</button>
+        <button class="lang-btn" onclick="setLang('fr', this)">🇫🇷 Français</button>
+        <button class="lang-btn" onclick="setLang('en', this)">🇬🇧 English</button>
+      </div>
     </div>
     <div class="module-grid">
       <div class="module-card" onclick="openModule('overdracht')">
@@ -480,6 +495,18 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       </div>
     </div>
     <div class="block">
+      <span class="block-label">Ondernomen acties</span>
+      <div class="btn-group" data-field="inc-actie">
+        <button class="opt-btn" data-val="EHBO verleend">🩹 EHBO verleend</button>
+        <button class="opt-btn" data-val="pijnstilling gegeven">💊 Pijnstilling</button>
+        <button class="opt-btn" data-val="bewoner gerustgesteld">🤝 Gerustgesteld</button>
+        <button class="opt-btn" data-val="bewoner terug in bed geholpen">🛏️ Terug in bed</button>
+        <button class="opt-btn" data-val="parameters gemeten">📊 Parameters gemeten</button>
+        <button class="opt-btn" data-val="observatie verhoogd">👁️ Observatie verhoogd</button>
+        <button class="opt-btn" data-val="incident geregistreerd">📋 Geregistreerd</button>
+      </div>
+    </div>
+    <div class="block">
       <span class="block-label">Korte beschrijving (optioneel)</span>
       <textarea class="field" id="inc-notities" placeholder="Bijzonderheden..."></textarea>
     </div>
@@ -510,24 +537,12 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Medicatie (meest voorkomend)</span>
-      <div class="btn-group" data-field="med-naam" id="med-naam-group">
-        <button class="opt-btn" data-val="Paracetamol">Paracetamol</button>
-        <button class="opt-btn" data-val="Ibuprofen">Ibuprofen</button>
-        <button class="opt-btn" data-val="Metoprolol">Metoprolol</button>
-        <button class="opt-btn" data-val="Furosemide">Furosemide</button>
-        <button class="opt-btn" data-val="Omeprazol">Omeprazol</button>
-        <button class="opt-btn" data-val="Amoxicilline">Amoxicilline</button>
-        <button class="opt-btn" data-val="Sertraline">Sertraline</button>
-        <button class="opt-btn" data-val="Haloperidol">Haloperidol</button>
-        <button class="opt-btn" data-val="Zolpidem">Zolpidem</button>
-        <button class="opt-btn" data-val="Lorazepam">Lorazepam</button>
-        <button class="opt-btn" data-val="Morfine">Morfine</button>
-        <button class="opt-btn" data-val="Warfarine">Warfarine</button>
-        <button class="opt-btn" data-val="Insuline">Insuline</button>
-        <button class="opt-btn" data-val="Andere">📝 Andere</button>
+      <span class="block-label">Medicatie</span>
+      <div class="btn-group" data-field="med-naam">
+        <button class="opt-btn" data-val="uit medicatieschema">📋 Uit medicatieschema</button>
+        <button class="opt-btn" data-val="andere medicatie">📝 Andere</button>
       </div>
-      <input type="text" class="field" id="med-naam-vrij" placeholder="Andere medicatienaam..." style="margin-top:8px;">
+      <input type="text" class="field" id="med-naam-vrij" placeholder="Naam medicatie (optioneel)..." style="margin-top:8px;">
     </div>
     <div class="block">
       <span class="block-label">Tijdstip</span>
@@ -613,6 +628,16 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
         <button class="opt-btn" data-val="vochtig">Vochtig</button>
         <button class="opt-btn" data-val="necrose">Necrose</button>
         <button class="opt-btn" data-val="granulatie">Granulatie</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">ISTAP Classificatie (huidscheur)</span>
+      <div class="btn-group" data-field="won-istap">
+        <button class="opt-btn" data-val="ISTAP Type 1">Type 1</button>
+        <button class="opt-btn" data-val="ISTAP Type 2a">Type 2a</button>
+        <button class="opt-btn" data-val="ISTAP Type 2b">Type 2b</button>
+        <button class="opt-btn" data-val="ISTAP Type 3">Type 3</button>
+        <button class="opt-btn" data-val="niet van toepassing">N.v.t.</button>
       </div>
     </div>
     <div class="block">
@@ -803,6 +828,14 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
         <button class="toggle-btn no" data-val="nee">❌ Nee</button>
       </div>
     </div>
+    <div class="block" id="dok-med-blok">
+      <span class="block-label">Welke medicatie? (optioneel)</span>
+      <div class="btn-group" data-field="dok-med-naam">
+        <button class="opt-btn" data-val="uit medicatieschema">📋 Uit medicatieschema</button>
+        <button class="opt-btn" data-val="nieuwe medicatie">💊 Nieuwe medicatie</button>
+      </div>
+      <input type="text" class="field" id="dok-med-vrij" placeholder="Naam medicatie (optioneel)..." style="margin-top:8px;">
+    </div>
     <div class="block">
       <span class="block-label">Familie verwittigd?</span>
       <div class="toggle-group" data-field="dok-familie">
@@ -836,8 +869,8 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
     </div>
     <div class="result-box" id="result-output"></div>
     <div class="result-actions">
-      <button class="result-btn primary" onclick="copyResult()">📋 Kopieer</button>
-      <button class="result-btn" onclick="printResult()">🖨️ Print</button>
+      <button class="result-btn primary" onclick="copyResult(event)">📋 Kopieer</button>
+      <button class="result-btn" onclick="regenerateResult()">🔄 Opnieuw</button>
       <button class="result-btn" onclick="rewriteResult('korter')">✂️ Maak korter</button>
       <button class="result-btn" onclick="rewriteResult('formeler')">🎓 Maak formeler</button>
     </div>
@@ -905,7 +938,8 @@ function getField(fieldName) {
 
 // ── BUILD PROMPTS ──
 function buildPrompt(mod) {
-  const base = "Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in het Nederlands. Professioneel en beknopt. Maximaal 4-5 zinnen. Direct beginnen zonder inleiding. Geen lege invulvakken vermelden. Geen informatie verzinnen.";
+  const taal = langNames[currentLang] || 'het Nederlands';
+  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in ${taal}. Professioneel en beknopt. Maximaal 4-5 zinnen. Direct beginnen zonder inleiding. Geen lege invulvakken vermelden. Geen informatie verzinnen.`;
 
   if (mod === 'overdracht') {
     const shift = getField('ov-shift');
@@ -967,9 +1001,10 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'geen'}` };
     const locatie = getField('won-locatie');
     if (type === 'niet ingevuld') return { error: '⚠️ Selecteer het type wonde.' };
     if (locatie === 'niet ingevuld') return { error: '⚠️ Selecteer de locatie van de wonde.' };
-    return { prompt: `${base} Schrijf een wondverzorgingsrapport in maximaal 5 zinnen. Bij huidscheur gebruik ISTAP classificatie.
+    return { prompt: `${base} Schrijf een wondverzorgingsrapport in maximaal 5 zinnen.
 Kamer: ${getField('won-kamer')||'niet ingevuld'}
 Type: ${type}
+ISTAP classificatie: ${getField('won-istap')}
 Locatie: ${locatie}
 Wondbodem: ${getField('won-bodem')}
 Exsudaat: ${getField('won-exsudaat')}
@@ -1001,13 +1036,18 @@ Extra: ${document.getElementById('ged-notities')?.value.trim()||'geen'}` };
     const reden = getField('dok-reden');
     if (type === 'niet ingevuld') return { error: '⚠️ Selecteer het type bezoek.' };
     if (reden === 'niet ingevuld') return { error: '⚠️ Selecteer de reden van het bezoek.' };
+    const medNaam = getField('dok-med-naam');
+    const medVrij = document.getElementById('dok-med-vrij')?.value.trim();
+    const medicatie = getField('dok-medicatie') === 'ja'
+      ? (medVrij || (medNaam !== 'niet ingevuld' ? medNaam : 'niet gespecificeerd'))
+      : 'nee';
     return { prompt: `${base} Schrijf een doktersbezoekverslag in maximaal 5 zinnen.
 Kamer: ${getField('dok-kamer')||'niet ingevuld'}
 Type bezoek: ${type}
 Reden: ${reden}
 Diagnose/bevinding: ${getField('dok-diagnose')}
 Bloedafname: ${getField('dok-bloed')}
-Nieuwe medicatie: ${getField('dok-medicatie')}
+Nieuwe medicatie: ${medicatie}
 Familie verwittigd: ${getField('dok-familie')}
 Opvolging: ${getField('dok-opvolging')}
 Extra: ${document.getElementById('dok-notities')?.value.trim()||'geen'}` };
@@ -1016,9 +1056,19 @@ Extra: ${document.getElementById('dok-notities')?.value.trim()||'geen'}` };
   return { error: '⚠️ Module niet gevonden.' };
 }
 
+// ── LANGUAGE ──
+let currentLang = 'nl';
+const langNames = { nl: 'het Nederlands', fr: 'het Frans', en: 'het Engels' };
+
+function setLang(lang, btn) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
 // ── API CALL ──
 async function callAPI(prompt) {
-  const response = await fetch('/api/claude', {
+  const response = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -1104,13 +1154,13 @@ async function rewriteResult(style) {
 }
 
 // ── COPY ──
-function copyResult() {
+function copyResult(event) {
   const text = document.getElementById('result-output').textContent;
+  const btn = event.currentTarget;
   navigator.clipboard.writeText(text).then(() => {
-    const btn = event.currentTarget;
-    const orig = btn.textContent;
-    btn.textContent = '✅ Gekopieerd!';
-    setTimeout(() => btn.textContent = orig, 2000);
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ Gekopieerd!';
+    setTimeout(() => btn.innerHTML = orig, 2000);
   }).catch(() => {
     const ta = document.createElement('textarea');
     ta.value = text;
@@ -1118,21 +1168,29 @@ function copyResult() {
     ta.select();
     document.execCommand('copy');
     document.body.removeChild(ta);
+    btn.innerHTML = '✅ Gekopieerd!';
+    setTimeout(() => btn.innerHTML = '📋 Kopieer', 2000);
   });
 }
 
-// ── PRINT ──
-function printResult() {
-  const content = document.getElementById('result-output').textContent;
-  const win = window.open('', '_blank');
-  if (!win) { alert('Pop-up geblokkeerd — sta pop-ups toe in uw browser.'); return; }
-  win.document.write(`<html><head><title>NurseEdAI Verslag</title>
-  <style>body{font-family:Arial,sans-serif;padding:32px;font-size:11pt;line-height:1.7;}h1{color:#0f766e;font-size:14pt;}pre{white-space:pre-wrap;font-family:inherit;}</style>
-  </head><body><h1>NurseEdAI — Conceptverslag</h1>
-  <p style="font-size:9pt;color:#888;">Gegenereerd op ${new Date().toLocaleString('nl-BE')} — Controleer altijd voor gebruik</p>
-  <pre>${content}</pre></body></html>`);
-  win.document.close();
-  win.print();
+// ── REGENERATE ──
+async function regenerateResult() {
+  if (!currentModule) return;
+  const loader = document.getElementById('result-loader');
+  const errorEl = document.getElementById('result-error');
+  errorEl.classList.remove('visible');
+  loader.classList.add('visible');
+  try {
+    const result = buildPrompt(currentModule);
+    if (result.error) throw new Error(result.error);
+    const text = await callAPI(result.prompt);
+    document.getElementById('result-output').textContent = text;
+  } catch (err) {
+    errorEl.textContent = '❌ ' + err.message;
+    errorEl.classList.add('visible');
+  } finally {
+    loader.classList.remove('visible');
+  }
 }
 
 // ── POPUP ──
