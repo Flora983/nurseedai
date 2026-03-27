@@ -335,6 +335,11 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
         <div class="name">Doktersbezoek</div>
         <div class="desc">Bezoek professioneel vastleggen</div>
       </div>
+      <div class="module-card" onclick="openModule('familie')" style="grid-column: span 2;">
+        <div class="icon">👨‍👩‍👧</div>
+        <div class="name">Familiecommunicatie</div>
+        <div class="desc">Professioneel bericht naar familie</div>
+      </div>
     </div>
   </div>
 </div>
@@ -860,6 +865,71 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
   </div>
 </div>
 
+<!-- ═══ FAMILIE ═══ -->
+<div id="page-familie" class="page">
+  <div class="module-page">
+    <div class="module-title">👨‍👩‍👧 Familiecommunicatie</div>
+    <div class="module-desc">Stel een professioneel bericht op voor de familie van de bewoner</div>
+    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam van bewoner</div>
+
+    <div class="block">
+      <span class="block-label">Kamer / bewoner</span>
+      <input type="text" class="field" id="fam-kamer" placeholder="bijv. Kamer 4">
+    </div>
+    <div class="block">
+      <span class="block-label">Taal bericht ⚠️ verplicht</span>
+      <div class="btn-group" data-field="fam-taal">
+        <button class="opt-btn" data-val="Nederlands">🇧🇪 Nederlands</button>
+        <button class="opt-btn" data-val="Frans">🇫🇷 Frans</button>
+        <button class="opt-btn" data-val="Engels">🇬🇧 Engels</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Onderwerp ⚠️ verplicht</span>
+      <div class="btn-group" data-field="fam-onderwerp">
+        <button class="opt-btn" data-val="algemene update">📋 Algemene update</button>
+        <button class="opt-btn" data-val="gezondheidswijziging">❤️ Gezondheidswijziging</button>
+        <button class="opt-btn" data-val="val/incident">⚠️ Val/incident</button>
+        <button class="opt-btn" data-val="ziekenhuisopname">🏥 Ziekenhuisopname</button>
+        <button class="opt-btn" data-val="uitnodiging gesprek">🤝 Uitnodiging gesprek</button>
+        <button class="opt-btn" data-val="overlijden">🕊️ Overlijden</button>
+        <button class="opt-btn" data-val="andere">📍 Andere</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Toon van het bericht</span>
+      <div class="btn-group" data-field="fam-toon">
+        <button class="opt-btn" data-val="warm en geruststellend">💚 Warm & geruststellend</button>
+        <button class="opt-btn" data-val="professioneel en formeel">📄 Professioneel & formeel</button>
+        <button class="opt-btn" data-val="dringend">🚨 Dringend</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Toestand bewoner</span>
+      <div class="btn-group" data-field="fam-toestand">
+        <button class="opt-btn" data-val="stabiel">✅ Stabiel</button>
+        <button class="opt-btn" data-val="verbeterd">📈 Verbeterd</button>
+        <button class="opt-btn" data-val="verslechterd">📉 Verslechterd</button>
+        <button class="opt-btn" data-val="kritiek">🔴 Kritiek</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Opvolging gevraagd?</span>
+      <div class="toggle-group" data-field="fam-opvolging">
+        <button class="toggle-btn yes" data-val="ja — familie wordt gevraagd contact op te nemen">✅ Ja</button>
+        <button class="toggle-btn no" data-val="nee">❌ Nee</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Extra informatie (optioneel)</span>
+      <textarea class="field" id="fam-notities" placeholder="Bijzonderheden, afspraken, specifieke boodschap..."></textarea>
+    </div>
+    <button class="btn-generate" onclick="generate('familie')">✨ Genereer familiebericht</button>
+    <div class="loader" id="fam-loader"><div class="spinner"></div> Bericht wordt opgesteld...</div>
+    <div class="error-box" id="fam-error"></div>
+  </div>
+</div>
+
 <!-- ═══ RESULT PAGE ═══ -->
 <div id="page-result" class="page">
   <div class="module-page">
@@ -1053,6 +1123,20 @@ Opvolging: ${getField('dok-opvolging')}
 Extra: ${document.getElementById('dok-notities')?.value.trim()||'geen'}` };
   }
 
+  if (mod === 'familie') {
+    const taal = getField('fam-taal');
+    const onderwerp = getField('fam-onderwerp');
+    if (taal === 'niet ingevuld') return { error: '⚠️ Selecteer de taal van het bericht.' };
+    if (onderwerp === 'niet ingevuld') return { error: '⚠️ Selecteer het onderwerp.' };
+    return { prompt: `Je bent een verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een professioneel familiebericht in ${taal}. Warm maar professioneel. Maximaal 5 zinnen. Geen medisch jargon. Geen echte namen gebruiken.
+Kamer: ${getField('fam-kamer')||'niet ingevuld'}
+Onderwerp: ${onderwerp}
+Toon: ${getField('fam-toon')}
+Toestand bewoner: ${getField('fam-toestand')}
+Opvolging: ${getField('fam-opvolging')}
+Extra: ${document.getElementById('fam-notities')?.value.trim()||'geen'}` };
+  }
+
   return { error: '⚠️ Module niet gevonden.' };
 }
 
@@ -1091,11 +1175,12 @@ const moduleNames = {
   medicatie: '💊 Medicatienotitie',
   wond: '🩹 Wondrapport',
   gedrag: '🧠 Gedragsnotitie',
-  dokter: '🩺 Doktersbezoekverslag'
+  dokter: '🩺 Doktersbezoekverslag',
+  familie: '👨‍👩‍👧 Familiebericht'
 };
 
 async function generate(mod) {
-  const prefix = { overdracht:'ov', incident:'inc', medicatie:'med', wond:'won', gedrag:'ged', dokter:'dok' }[mod];
+  const prefix = { overdracht:'ov', incident:'inc', medicatie:'med', wond:'won', gedrag:'ged', dokter:'dok', familie:'fam' }[mod];
   const errorEl = document.getElementById(prefix + '-error');
   const btn = document.querySelector(`#page-${mod} .btn-generate`);
 
