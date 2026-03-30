@@ -1218,15 +1218,20 @@ function goBack() {
 
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add('active');
+  } else {
+    console.warn('Pagina niet gevonden:', id);
+  }
   window.scrollTo(0, 0);
 }
 
 // ── OPTION BUTTONS ──
 document.querySelectorAll('.btn-group').forEach(group => {
-  group.querySelectorAll('.opt-btn').forEach(btn => {
+  group.querySelectorAll('.opt-btn:not(.multi)').forEach(btn => {
     btn.addEventListener('click', () => {
-      group.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+      group.querySelectorAll('.opt-btn:not(.multi)').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
     });
   });
@@ -1576,17 +1581,18 @@ async function regenerateResult() {
 // ── POPUP ──
 function closePopup() {
   const p = document.getElementById('popup');
-  p.style.display = 'none !important';
-  p.style.setProperty('display', 'none', 'important');
+  p.style.display = 'none';
   sessionStorage.setItem('disclaimer-seen', '1');
 }
-// Hide popup if already seen
-window.addEventListener('DOMContentLoaded', function() {
+
+// Run immediately when script loads
+(function() {
+  const p = document.getElementById('popup');
+  if (!p) return;
   if (sessionStorage.getItem('disclaimer-seen')) {
-    const p = document.getElementById('popup');
-    if (p) p.style.setProperty('display', 'none', 'important');
+    p.style.display = 'none';
   }
-});
+})();
 </script>
 </body>
 </html>
