@@ -353,152 +353,56 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 <div id="page-overdracht" class="page">
   <div class="module-page">
     <div class="module-title">🔄 Shift Briefing</div>
-    <div class="module-desc">Geef een volledige briefing over de bewoner — klaar in 30 seconden</div>
+    <div class="module-desc">⚡ 10 seconden → klik → genereer → klaar</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
 
-    <!-- BLOK 1: SHIFT + TOESTAND -->
     <div class="block">
       <span class="block-label">Kamer / bewoner</span>
       <input type="text" class="field" id="ov-kamer" placeholder="bijv. Kamer 12">
     </div>
-    <div class="block">
-      <span class="block-label">Shift ⚠️ verplicht</span>
-      <div class="btn-group" data-field="ov-shift">
-        <button class="opt-btn" data-val="ochtend">🌅 Ochtend</button>
-        <button class="opt-btn" data-val="late">🌆 Late</button>
-        <button class="opt-btn" data-val="nacht">🌙 Nacht</button>
-      </div>
-    </div>
+    <!-- BLOK 1: TOESTAND -->
     <div class="block">
       <span class="block-label">Algemene toestand ⚠️ verplicht</span>
       <div class="btn-group" data-field="ov-toestand">
-        <button class="opt-btn" data-val="stabiel">✅ Stabiel</button>
+        <button class="opt-btn selected" data-val="stabiel">✅ Stabiel</button>
         <button class="opt-btn" data-val="onrustig">😟 Onrustig</button>
-        <button class="opt-btn" data-val="verbeterd">📈 Verbeterd</button>
         <button class="opt-btn" data-val="verslechterd">📉 Verslechterd</button>
       </div>
     </div>
 
-    <!-- BLOK 2: MOBILITEIT -->
+    <!-- BLOK 2: OBSERVATIES MULTI-SELECT -->
     <div class="block">
-      <span class="block-label">Mobiliteit</span>
-      <div class="btn-group" data-field="ov-mobiliteit">
-        <button class="opt-btn" data-val="zelfstandig">🚶 Zelfstandig</button>
-        <button class="opt-btn" data-val="met rollator">🦯 Met rollator</button>
-        <button class="opt-btn" data-val="met begeleiding">🤝 Met begeleiding</button>
-        <button class="opt-btn" data-val="rolstoel">♿ Rolstoel</button>
-        <button class="opt-btn" data-val="bedlegerig">🛏️ Bedlegerig</button>
+      <span class="block-label">Belangrijkste observaties (meerdere mogelijk)</span>
+      <div class="btn-group" id="ov-obs-group">
+        <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this, 'ov-obs', true)">✅ Geen bijzonderheden</button>
+        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this, 'ov-obs', false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="val" onclick="toggleMulti(this, 'ov-obs', false)">⚠️ Val</button>
+        <button class="opt-btn multi" data-val="verward" onclick="toggleMulti(this, 'ov-obs', false)">🧠 Verward</button>
+        <button class="opt-btn multi" data-val="slecht gegeten" onclick="toggleMulti(this, 'ov-obs', false)">🍽️ Slecht gegeten</button>
+        <button class="opt-btn multi" data-val="weinig gedronken" onclick="toggleMulti(this, 'ov-obs', false)">💧 Weinig gedronken</button>
+        <button class="opt-btn multi" data-val="nieuwe wonde" onclick="toggleMulti(this, 'ov-obs', false)">🩹 Nieuwe wonde</button>
       </div>
     </div>
 
-    <!-- BLOK 3: SLAAP + EETLUST + VOCHT -->
+    <!-- BLOK 3: ACTIE -->
     <div class="block">
-      <span class="block-label">Slaap</span>
-      <div class="btn-group" data-field="ov-slaap">
-        <button class="opt-btn" data-val="goed geslapen">😴 Goed</button>
-        <button class="opt-btn" data-val="onrustig geslapen">😰 Onrustig</button>
-        <button class="opt-btn" data-val="weinig geslapen">😵 Weinig</button>
-        <button class="opt-btn" data-val="nvt">— N.v.t.</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Eetlust</span>
-      <div class="btn-group" data-field="ov-eetlust">
-        <button class="opt-btn" data-val="goed gegeten">🍽️ Goed</button>
-        <button class="opt-btn" data-val="matig gegeten">😐 Matig</button>
-        <button class="opt-btn" data-val="slecht gegeten">❌ Slecht</button>
-        <button class="opt-btn" data-val="geweigerd te eten">🚫 Geweigerd</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Vochtinname</span>
-      <div class="btn-group" data-field="ov-vocht">
-        <button class="opt-btn" data-val="voldoende gedronken">💧 Voldoende</button>
-        <button class="opt-btn" data-val="weinig gedronken">⚠️ Weinig</button>
-        <button class="opt-btn" data-val="geweigerd te drinken">🚫 Geweigerd</button>
-      </div>
-    </div>
-
-    <!-- BLOK 4: ELIMINATIE -->
-    <div class="block">
-      <span class="block-label">Stoelgang</span>
-      <div class="btn-group" data-field="ov-stoelgang">
-        <button class="opt-btn" data-val="normale stoelgang">✅ Normaal</button>
-        <button class="opt-btn" data-val="geen stoelgang">❌ Geen</button>
-        <button class="opt-btn" data-val="diarree">💩 Diarree</button>
-        <button class="opt-btn" data-val="obstipatie">😣 Obstipatie</button>
-        <button class="opt-btn" data-val="nvt">— N.v.t.</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Urinelozing</span>
-      <div class="btn-group" data-field="ov-urine">
-        <button class="opt-btn" data-val="normaal geplast">✅ Normaal</button>
-        <button class="opt-btn" data-val="weinig geplast">⚠️ Weinig</button>
-        <button class="opt-btn" data-val="incontinent">💧 Incontinent</button>
-        <button class="opt-btn" data-val="pijnlijk plassen">😣 Pijnlijk</button>
-        <button class="opt-btn" data-val="niet geplast">❌ Niet geplast</button>
-      </div>
-    </div>
-
-    <!-- BLOK 5: KLACHTEN -->
-    <div class="block">
-      <span class="block-label">Klachten / bijzonderheden</span>
-      <div class="btn-group" data-field="ov-klachten">
-        <button class="opt-btn" data-val="geen bijzonderheden">✅ Geen</button>
-        <button class="opt-btn" data-val="pijn">😣 Pijn</button>
-        <button class="opt-btn" data-val="overgegeven">🤢 Overgegeven</button>
-        <button class="opt-btn" data-val="gevallen">⚠️ Gevallen</button>
-        <button class="opt-btn" data-val="nieuwe wonde">🩹 Nieuwe wonde</button>
-        <button class="opt-btn" data-val="koorts">🌡️ Koorts</button>
-        <button class="opt-btn" data-val="kortademig">😮‍💨 Kortademig</button>
-        <button class="opt-btn" data-val="verward">🧠 Verward</button>
-        <button class="opt-btn" data-val="angstig">😨 Angstig</button>
-      </div>
-    </div>
-
-    <!-- BLOK 6: MEDICATIE -->
-    <div class="block">
-      <span class="block-label">Medicatie ingenomen?</span>
-      <div class="btn-group" data-field="ov-medicatie">
-        <button class="opt-btn" data-val="alle medicatie ingenomen">✅ Alles ingenomen</button>
-        <button class="opt-btn" data-val="gedeeltelijk ingenomen">⚠️ Gedeeltelijk</button>
-        <button class="opt-btn" data-val="medicatie geweigerd">❌ Geweigerd</button>
-        <button class="opt-btn" data-val="niet van toepassing">— N.v.t.</button>
-      </div>
-    </div>
-
-    <!-- BLOK 7: ACTIES -->
-    <div class="block">
-      <span class="block-label">Acties ondernomen</span>
+      <span class="block-label">Actie</span>
       <div class="btn-group" data-field="ov-actie">
-        <button class="opt-btn" data-val="arts gebeld">📞 Arts gebeld</button>
-        <button class="opt-btn" data-val="bewoner gerustgesteld">🤝 Gerustgesteld</button>
-        <button class="opt-btn" data-val="geobserveerd">👁️ Geobserveerd</button>
-        <button class="opt-btn" data-val="pijnstilling gegeven">💊 Pijnstilling</button>
+        <button class="opt-btn selected" data-val="geen actie nodig">✅ Geen actie nodig</button>
+        <button class="opt-btn" data-val="arts verwittigd">📞 Arts verwittigd</button>
         <button class="opt-btn" data-val="familie verwittigd">👨‍👩‍👧 Familie verwittigd</button>
-        <button class="opt-btn" data-val="wondverzorging uitgevoerd">🩹 Wondverzorging</button>
-        <button class="opt-btn" data-val="geen actie nodig">✅ Geen actie nodig</button>
+        <button class="opt-btn" data-val="opvolging nodig">👁️ Opvolging nodig</button>
       </div>
     </div>
 
-    <!-- BLOK 8: OPVOLGING -->
+    <!-- BLOK 4: EXTRA -->
     <div class="block">
-      <span class="block-label">Opvolging nodig?</span>
-      <div class="toggle-group" data-field="ov-opvolging">
-        <button class="toggle-btn yes" data-val="ja">✅ Ja</button>
-        <button class="toggle-btn no" data-val="nee">❌ Nee</button>
-      </div>
-    </div>
-
-    <!-- BLOK 9: EXTRA -->
-    <div class="block">
-      <span class="block-label">Extra notities (optioneel)</span>
-      <textarea class="field" id="ov-notities" placeholder="Bijzonderheden..."></textarea>
+      <span class="block-label">Extra notitie (optioneel)</span>
+      <textarea class="field" id="ov-notities" placeholder="Kort detail indien nodig..."></textarea>
     </div>
 
     <button class="btn-generate" onclick="generate('overdracht')">✨ Maak verslag</button>
-    <div class="loader" id="ov-loader"><div class="spinner"></div> Briefing wordt aangemaakt...</div>
+    <div class="loader" id="ov-loader"><div class="spinner"></div> Bezig...</div>
     <div class="error-box" id="ov-error"></div>
   </div>
 </div>
@@ -1090,7 +994,7 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 <div id="page-kort" class="page">
   <div class="module-page">
     <div class="module-title">⚡ Korte Communicatie</div>
-    <div class="module-desc">Snel een korte maar belangrijke melding documenteren</div>
+    <div class="module-desc">10 seconden → klik → genereer → klaar</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
 
     <div class="block">
@@ -1098,76 +1002,76 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <input type="text" class="field" id="kort-kamer" placeholder="bijv. Kamer 8">
     </div>
 
-    <!-- TYPE -->
+    <!-- QUICK PRESETS -->
     <div class="block">
-      <span class="block-label">Type ⚠️ verplicht</span>
-      <div class="btn-group" data-field="kort-type">
-        <button class="opt-btn" data-val="telefoongesprek met arts">📞 Arts gebeld</button>
-        <button class="opt-btn" data-val="telefoongesprek met familie">👨‍👩‍👧 Familie gebeld</button>
-        <button class="opt-btn" data-val="labo / testresultaat">🧪 Labo/test</button>
-        <button class="opt-btn" data-val="afspraak / planning">📅 Afspraak</button>
-        <button class="opt-btn" data-val="ziekenhuisopname">🏥 Opname</button>
-        <button class="opt-btn" data-val="terugkeer uit ziekenhuis">🏠 Terugkeer</button>
-        <button class="opt-btn" data-val="post-operatieve update">🔪 Na operatie</button>
-        <button class="opt-btn" data-val="praktische melding">📋 Praktisch</button>
+      <span class="block-label">⚡ Snelle keuze — klik en alles is ingevuld</span>
+      <div class="btn-group" style="gap:8px;">
+        <button class="opt-btn" style="background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal);font-weight:700;" onclick="applyPreset('labresultaat')">🧪 Labresultaat</button>
+        <button class="opt-btn" style="background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal);font-weight:700;" onclick="applyPreset('arts')">📞 Arts gebeld</button>
+        <button class="opt-btn" style="background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal);font-weight:700;" onclick="applyPreset('familie')">👨‍👩‍👧 Familie gebeld</button>
+        <button class="opt-btn" style="background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal);font-weight:700;" onclick="applyPreset('opname')">🏥 Opname</button>
+        <button class="opt-btn" style="background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal);font-weight:700;" onclick="applyPreset('terugkeer')">🏠 Terug uit ziekenhuis</button>
+        <button class="opt-btn" style="background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal);font-weight:700;" onclick="applyPreset('operatie')">🔪 Na operatie</button>
       </div>
     </div>
 
-    <!-- RICHTING -->
+    <!-- TYPE -->
     <div class="block">
-      <span class="block-label">Richting</span>
-      <div class="btn-group" data-field="kort-richting">
-        <button class="opt-btn" data-val="inkomend">📲 Inkomend</button>
-        <button class="opt-btn" data-val="uitgaand">📤 Uitgaand</button>
-        <button class="opt-btn" data-val="resultaat ontvangen">📨 Resultaat</button>
-        <button class="opt-btn" data-val="interne nota">📝 Interne nota</button>
+      <span class="block-label">Type communicatie ⚠️ verplicht</span>
+      <div class="btn-group" data-field="kort-type">
+        <button class="opt-btn" data-val="telefoon">📞 Telefoon</button>
+        <button class="opt-btn" data-val="mondelinge boodschap">🗣️ Mondeling</button>
+        <button class="opt-btn" data-val="labresultaat ontvangen">🧪 Labresultaat</button>
+        <button class="opt-btn" data-val="ziekenhuisopname">🏥 Opname</button>
+        <button class="opt-btn" data-val="terugkeer uit ziekenhuis">🏠 Terugkeer</button>
+        <button class="opt-btn" data-val="terugkeer na operatie">🔪 Na operatie</button>
+        <button class="opt-btn" data-val="andere">📍 Andere</button>
+      </div>
+    </div>
+
+    <!-- BRON -->
+    <div class="block">
+      <span class="block-label">Van wie? ⚠️ verplicht</span>
+      <div class="btn-group" data-field="kort-bron">
+        <button class="opt-btn" data-val="arts">👨‍⚕️ Arts</button>
+        <button class="opt-btn" data-val="ziekenhuis">🏥 Ziekenhuis</button>
+        <button class="opt-btn" data-val="familie">👨‍👩‍👧 Familie</button>
+        <button class="opt-btn" data-val="laboratorium">🧪 Laboratorium</button>
+        <button class="opt-btn" data-val="collega">👥 Collega</button>
+        <button class="opt-btn" data-val="andere">📍 Andere</button>
       </div>
     </div>
 
     <!-- ONDERWERP -->
     <div class="block">
-      <span class="block-label">Onderwerp</span>
+      <span class="block-label">Onderwerp ⚠️ verplicht</span>
       <div class="btn-group" data-field="kort-onderwerp">
-        <button class="opt-btn" data-val="bloedresultaat">🩸 Bloedresultaat</button>
-        <button class="opt-btn" data-val="urineresultaat">💧 Urinetest</button>
+        <button class="opt-btn" data-val="toestand van de bewoner">❤️ Toestand</button>
         <button class="opt-btn" data-val="medicatie">💊 Medicatie</button>
-        <button class="opt-btn" data-val="nieuwe behandeling">💉 Behandeling</button>
+        <button class="opt-btn" data-val="onderzoek / resultaat">🔬 Resultaat</button>
         <button class="opt-btn" data-val="afspraak">📅 Afspraak</button>
-        <button class="opt-btn" data-val="ziekenhuisopname">🏥 Opname</button>
-        <button class="opt-btn" data-val="operatie">🔪 Operatie</button>
-        <button class="opt-btn" data-val="familieboodschap">👨‍👩‍👧 Familie</button>
+        <button class="opt-btn" data-val="observatie">👁️ Observatie</button>
+        <button class="opt-btn" data-val="opname / ontslag">🏥 Opname/ontslag</button>
+        <button class="opt-btn" data-val="andere">📍 Andere</button>
       </div>
     </div>
 
     <!-- ACTIE -->
     <div class="block">
-      <span class="block-label">Actie ondernomen</span>
+      <span class="block-label">Actie / opvolging ⚠️ verplicht</span>
       <div class="btn-group" data-field="kort-actie">
+        <button class="opt-btn selected" data-val="geen actie nodig">✅ Geen actie</button>
         <button class="opt-btn" data-val="arts verwittigd">📞 Arts verwittigd</button>
-        <button class="opt-btn" data-val="behandeling opgestart">💉 Behandeling opgestart</button>
-        <button class="opt-btn" data-val="medicatie aangepast">💊 Medicatie aangepast</button>
-        <button class="opt-btn" data-val="opvolging voorzien">👁️ Opvolging voorzien</button>
-        <button class="opt-btn" data-val="boodschap doorgegeven">✉️ Boodschap doorgegeven</button>
-        <button class="opt-btn" data-val="opname geregeld">🏥 Opname geregeld</button>
-        <button class="opt-btn" data-val="ontslag afgerond">🏠 Ontslag afgerond</button>
-        <button class="opt-btn" data-val="geen actie nodig">✅ Geen actie</button>
-      </div>
-    </div>
-
-    <!-- STIJL -->
-    <div class="block">
-      <span class="block-label">Stijl output</span>
-      <div class="btn-group" data-field="kort-stijl">
-        <button class="opt-btn" data-val="kort en bondig">✂️ Kort</button>
-        <button class="opt-btn" data-val="neutraal en feitelijk">📄 Neutraal</button>
-        <button class="opt-btn" data-val="formeel">🎓 Formeel</button>
+        <button class="opt-btn" data-val="familie verwittigd">👨‍👩‍👧 Familie verwittigd</button>
+        <button class="opt-btn" data-val="opvolging voorzien">👁️ Opvolgen</button>
+        <button class="opt-btn" data-val="doorgeven aan volgende shift">🔄 Volgende shift</button>
       </div>
     </div>
 
     <!-- EXTRA -->
     <div class="block">
-      <span class="block-label">Kort detail (optioneel)</span>
-      <textarea class="field" id="kort-notities" placeholder="bijv. waarde bloedresultaat, naam arts, tijdstip afspraak..."></textarea>
+      <span class="block-label">Extra info (optioneel)</span>
+      <textarea class="field" id="kort-notities" placeholder="bijv. waarde bloedresultaat, naam arts, bijzonderheden..." style="min-height:60px;"></textarea>
     </div>
 
     <button class="btn-generate" onclick="generate('kort')">⚡ Maak notitie</button>
@@ -1264,37 +1168,32 @@ function buildPrompt(mod) {
 
   if (mod === 'kort') {
     const type = getField('kort-type');
+    const bron = getField('kort-bron');
+    const onderwerp = getField('kort-onderwerp');
     if (type === 'niet ingevuld') return { error: '⚠️ Selecteer het type communicatie.' };
-    const stijl = getField('kort-stijl') || 'kort en bondig';
-    return { prompt: `${base} Schrijf een ${stijl} verpleegkundige communicatienota in maximaal 3 zinnen. Feitelijk, geen aannames, geschikt voor patiëntendossier.
+    if (bron === 'niet ingevuld') return { error: '⚠️ Selecteer van wie.' };
+    if (onderwerp === 'niet ingevuld') return { error: '⚠️ Selecteer het onderwerp.' };
+    return { prompt: `${base} Schrijf een korte professionele verpleegkundige communicatienota in maximaal 3 zinnen. Structuur: 1) wat er gebeurde, 2) welke info ontvangen/doorgegeven, 3) actie/opvolging. Feitelijk, geen aannames.
 Kamer: ${getField('kort-kamer')||'niet ingevuld'}
 Type: ${type}
-Richting: ${getField('kort-richting')}
-Onderwerp: ${getField('kort-onderwerp')}
+Van wie: ${bron}
+Onderwerp: ${onderwerp}
 Actie: ${getField('kort-actie')}
-Detail: ${document.getElementById('kort-notities')?.value.trim()||'geen'}` };
+Extra: ${document.getElementById('kort-notities')?.value.trim()||'geen'}` };
   }
 
   if (mod === 'overdracht') {
-    const shift = getField('ov-shift');
     const toestand = getField('ov-toestand');
-    if (shift === 'niet ingevuld') return { error: '⚠️ Selecteer de shift.' };
-    if (toestand === 'niet ingevuld') return { error: '⚠️ Selecteer de toestand van de bewoner.' };
-    return { prompt: `${base} Schrijf een professionele shift briefing (SBAR stijl). Maximaal 5 zinnen.
+    if (toestand === 'niet ingevuld') return { error: '⚠️ Selecteer de algemene toestand.' };
+    const observaties = getMulti('ov-obs');
+    const actie = getField('ov-actie');
+    const extra = document.getElementById('ov-notities')?.value.trim();
+    return { prompt: `${base} Schrijf een korte professionele shift briefing in maximaal 3 zinnen. Structuur: 1) toestand, 2) observaties, 3) actie/opvolging.
 Kamer: ${getField('ov-kamer')||'niet ingevuld'}
-Shift: ${shift}
 Algemene toestand: ${toestand}
-Mobiliteit: ${getField('ov-mobiliteit')}
-Slaap: ${getField('ov-slaap')}
-Eetlust: ${getField('ov-eetlust')}
-Vochtinname: ${getField('ov-vocht')}
-Stoelgang: ${getField('ov-stoelgang')}
-Urinelozing: ${getField('ov-urine')}
-Klachten: ${getField('ov-klachten')}
-Medicatie: ${getField('ov-medicatie')}
-Acties: ${getField('ov-actie')}
-Opvolging: ${getField('ov-opvolging')}
-Extra: ${document.getElementById('ov-notities')?.value.trim()||'geen'}` };
+Observaties: ${observaties}
+Actie: ${actie || 'geen actie nodig'}
+Extra: ${extra||'geen'}` };
   }
 
   if (mod === 'incident') {
@@ -1407,7 +1306,9 @@ Inhoud: ${document.getElementById('fam-notities')?.value.trim()||'geen'}` };
 }
 
 // ── MULTI-SELECT met speciale logica ──
-const multiSelections = {};
+const multiSelections = {
+  'ov-obs': new Set(['geen bijzonderheden'])
+};
 
 function toggleMulti(btn, group, isExclusive) {
   if (!multiSelections[group]) multiSelections[group] = new Set();
@@ -1439,6 +1340,32 @@ function toggleMulti(btn, group, isExclusive) {
 function getMulti(group) {
   if (!multiSelections[group] || multiSelections[group].size === 0) return 'niet ingevuld';
   return [...multiSelections[group]].join(', ');
+}
+
+// ── QUICK PRESETS ──
+const presets = {
+  labresultaat: { type: 'labresultaat ontvangen', bron: 'laboratorium', onderwerp: 'onderzoek / resultaat', actie: 'arts verwittigd' },
+  arts:         { type: 'telefoon', bron: 'arts', onderwerp: 'toestand van de bewoner', actie: 'opvolging voorzien' },
+  familie:      { type: 'telefoon', bron: 'familie', onderwerp: 'toestand van de bewoner', actie: 'geen actie nodig' },
+  opname:       { type: 'ziekenhuisopname', bron: 'ziekenhuis', onderwerp: 'opname / ontslag', actie: 'familie verwittigd' },
+  terugkeer:    { type: 'terugkeer uit ziekenhuis', bron: 'ziekenhuis', onderwerp: 'opname / ontslag', actie: 'opvolging voorzien' },
+  operatie:     { type: 'terugkeer na operatie', bron: 'ziekenhuis', onderwerp: 'toestand van de bewoner', actie: 'doorgeven aan volgende shift' }
+};
+
+function applyPreset(name) {
+  const p = presets[name];
+  if (!p) return;
+  // Set each field
+  ['kort-type', 'kort-bron', 'kort-onderwerp', 'kort-actie'].forEach(field => {
+    const val = p[field.replace('kort-', '')];
+    if (!val) return;
+    const group = document.querySelector(`[data-field="${field}"]`);
+    if (!group) return;
+    group.querySelectorAll('.opt-btn').forEach(btn => {
+      btn.classList.remove('selected');
+      if (btn.dataset.val === val) btn.classList.add('selected');
+    });
+  });
 }
 
 // ── LANGUAGE ──
