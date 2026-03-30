@@ -276,7 +276,7 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       🚫 Geen directe koppeling met ziekenhuissystemen<br>
       👁️ Controleer altijd voor gebruik
     </div>
-    <button class="popup-btn" onclick="closePopup()">Ik begrijp dit — verder gaan</button>
+    <button class="popup-btn" onclick="document.getElementById('popup').style.display='none'; sessionStorage.setItem('disclaimer-seen','1');">Ik begrijp dit — verder gaan</button>
   </div>
 </div>
 
@@ -1576,13 +1576,17 @@ async function regenerateResult() {
 // ── POPUP ──
 function closePopup() {
   const p = document.getElementById('popup');
-  p.style.display = 'none';
-  p.classList.add('hidden');
+  p.style.display = 'none !important';
+  p.style.setProperty('display', 'none', 'important');
   sessionStorage.setItem('disclaimer-seen', '1');
 }
-if (sessionStorage.getItem('disclaimer-seen')) {
-  document.getElementById('popup').classList.add('hidden');
-}
+// Hide popup if already seen
+window.addEventListener('DOMContentLoaded', function() {
+  if (sessionStorage.getItem('disclaimer-seen')) {
+    const p = document.getElementById('popup');
+    if (p) p.style.setProperty('display', 'none', 'important');
+  }
+});
 </script>
 </body>
 </html>
