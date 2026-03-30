@@ -1274,6 +1274,8 @@ Onderwerp: ${getField('kort-onderwerp')}
 Actie: ${getField('kort-actie')}
 Detail: ${document.getElementById('kort-notities')?.value.trim()||'geen'}` };
   }
+
+  if (mod === 'overdracht') {
     const shift = getField('ov-shift');
     const toestand = getField('ov-toestand');
     if (shift === 'niet ingevuld') return { error: '⚠️ Selecteer de shift.' };
