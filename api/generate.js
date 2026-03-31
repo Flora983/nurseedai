@@ -5,7 +5,19 @@ export default async function handler(req, res) {
 
   try {
     const { module, formData } = req.body || {};
+let moduleInstruction = "";
 
+if (module === "korte") {
+  moduleInstruction = "Schrijf zeer kort (1-2 zinnen), simpel en direct.";
+} else if (module === "overdracht") {
+  moduleInstruction = "Schrijf gestructureerd en duidelijk voor overdracht tussen shifts.";
+} else if (module === "incident") {
+  moduleInstruction = "Schrijf strikt objectief, feitelijk en zonder interpretatie.";
+} else if (module === "wondzorg") {
+  moduleInstruction = "Gebruik medische terminologie en beschrijf observaties van de wond correct.";
+} else {
+  moduleInstruction = "Algemeen verpleegkundig verslag.";
+}
     const prompt = `
 Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum.
 
@@ -19,7 +31,8 @@ BELANGRIJKE REGELS:
 - Geen titel
 - Alleen het verslag
 - 2 tot 4 korte zinnen
-
+Module instructie:
+${moduleInstruction}
 STRUCTUUR:
 - Start met de toestand van de bewoner
 - Vermeld daarna de relevante observaties
