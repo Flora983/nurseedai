@@ -31,9 +31,21 @@ Schrijf zoals een echte verpleegkundige noteert.
 
     const data = await response.json();
 
-    const text =
-      data.output?.[0]?.content?.[0]?.text ||
-      "Geen output gegenereerd.";
+    // 🔥 FIX: betere output parsing
+    let text = "";
+
+    if (data.output && data.output[0] && data.output[0].content) {
+      const content = data.output[0].content;
+      for (let item of content) {
+        if (item.type === "output_text") {
+          text += item.text;
+        }
+      }
+    }
+
+    if (!text) {
+      text = "Geen output gegenereerd.";
+    }
 
     res.status(200).json({ text });
 
