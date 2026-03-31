@@ -1527,7 +1527,41 @@ async function regenerateResult() {
     loader.classList.remove('visible');
   }
 }
+function toggleMulti(button, field, isNone) {
+  const group = button.closest('.btn-group');
+  if (!group) return;
 
+  const allButtons = Array.from(group.querySelectorAll('.opt-btn.multi'));
+  const noneButton = allButtons.find(btn =>
+    btn.getAttribute('onclick') &&
+    btn.getAttribute('onclick').includes(`'${field}', true`)
+  );
+
+  if (isNone) {
+    const wasSelected = button.classList.contains('selected');
+
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+
+    if (!wasSelected) {
+      button.classList.add('selected');
+    }
+    return;
+  }
+
+  button.classList.toggle('selected');
+
+  if (noneButton) {
+    noneButton.classList.remove('selected');
+  }
+
+  const anySelected = allButtons.some(btn =>
+    btn !== noneButton && btn.classList.contains('selected')
+  );
+
+  if (!anySelected && noneButton) {
+    noneButton.classList.add('selected');
+  }
+}
 // ── POPUP ──
 function closePopup() {
   const p = document.getElementById('popup');
