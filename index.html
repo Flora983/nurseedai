@@ -1412,7 +1412,7 @@ async function callAPI(prompt) {
     throw new Error(data?.error || `HTTP ${response.status}`);
   }
 
-  const text = data?.text;
+  const text = data?.output || data?.error || "Geen output gegenereerd.";
   if (!text) throw new Error('Geen antwoord ontvangen.');
   return text;
 }
