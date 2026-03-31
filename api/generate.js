@@ -7,16 +7,23 @@ export default async function handler(req, res) {
     const { module, formData } = req.body || {};
 
     const prompt = `
-Je bent een professionele verpleegkundige in een woonzorgcentrum.
+Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum.
 
-Schrijf een kort, duidelijk en professioneel verpleegkundig verslag in het Nederlands (2-4 zinnen).
+Schrijf een kort, professioneel en correct verpleegkundig verslag in het Nederlands.
 
-Regels:
-- schrijf alleen het verslag
-- geen titel
-- geen opsomming
-- correct en natuurlijk Nederlands
-- kort en bruikbaar voor in het dossier
+BELANGRIJKE REGELS:
+- Gebruik duidelijke en professionele zorgtaal
+- Schrijf objectief
+- Vermijd tegenstrijdigheden
+- Geen opsomming
+- Geen titel
+- Alleen het verslag
+- 2 tot 4 korte zinnen
+
+STRUCTUUR:
+- Start met de toestand van de bewoner
+- Vermeld daarna de relevante observaties
+- Vermeld daarna de uitgevoerde actie of opvolging indien van toepassing
 
 Module:
 ${module || "algemeen"}
@@ -24,7 +31,7 @@ ${module || "algemeen"}
 Gegevens:
 ${JSON.stringify(formData || {}, null, 2)}
 
-Schrijf zoals een echte verpleegkundige noteert.
+Schrijf zoals in een echt zorgdossier in een woonzorgcentrum.
 `;
 
     const response = await fetch("https://api.openai.com/v1/responses", {
