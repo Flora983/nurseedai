@@ -67,8 +67,14 @@ Schrijf zoals in een echt zorgdossier.
       }),
     });
 
-    const data = await response.json();
-
+    
+let data;
+try {
+  data = await response.json();
+} catch (e) {
+  const text = await response.text();
+  throw new Error("Server fout: " + text);
+}
     let text = "";
 
     if (typeof data.output_text === "string") {
