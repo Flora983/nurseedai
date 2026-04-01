@@ -823,12 +823,11 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
   </div>
 </div>
 
-
 <!-- ═══ DOKTER ═══ -->
 <div id="page-dokter" class="page">
   <div class="module-page">
     <div class="module-title">🩺 Doktersbezoek</div>
-    <div class="module-desc">Documenteer contact met arts kort, duidelijk en actiegericht</div>
+    <div class="module-desc">Documenteer een artsenconsult duidelijk en professioneel</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
 
     <div class="block">
@@ -836,71 +835,85 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <input type="text" class="field" id="dok-kamer" placeholder="bijv. Kamer 3">
     </div>
 
+    <!-- TYPE CONSULT -->
     <div class="block">
-      <span class="block-label">Type contact ⚠️ verplicht</span>
+      <span class="block-label">Type consult ⚠️ verplicht</span>
       <div class="btn-group" data-field="dok-type">
-        <button class="opt-btn" data-val="arts op afdeling">🧑‍⚕️ Arts op afdeling</button>
-        <button class="opt-btn" data-val="telefonisch overleg">📞 Telefonisch overleg</button>
-        <button class="opt-btn" data-val="ziekenhuisconsult">🏥 Ziekenhuisconsult</button>
+        <button class="opt-btn" data-val="arts op afdeling">🏥 Arts op afdeling</button>
+        <button class="opt-btn" data-val="telefonisch overleg">📞 Telefonisch</button>
+        <button class="opt-btn" data-val="ziekenhuisconsult">🚑 Ziekenhuis</button>
         <button class="opt-btn" data-val="tandarts">🦷 Tandarts</button>
         <button class="opt-btn" data-val="andere">📍 Andere</button>
       </div>
     </div>
 
+    <!-- REDEN — MULTI-SELECT -->
     <div class="block">
-      <span class="block-label">Reden contact (meerdere mogelijk)</span>
+      <span class="block-label">Reden consult ⚠️ verplicht (meerdere mogelijk)</span>
       <div class="btn-group" id="dok-reden-group">
-        <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this, 'dok-reden', false)">🌡️ Koorts</button>
         <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this, 'dok-reden', false)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="wond" onclick="toggleMulti(this, 'dok-reden', false)">🩹 Wond</button>
-        <button class="opt-btn multi" data-val="gedrag of onrust" onclick="toggleMulti(this, 'dok-reden', false)">🧠 Gedrag / onrust</button>
-        <button class="opt-btn multi" data-val="val" onclick="toggleMulti(this, 'dok-reden', false)">⚠️ Val</button>
-        <button class="opt-btn multi" data-val="ademhaling" onclick="toggleMulti(this, 'dok-reden', false)">🫁 Ademhaling</button>
-        <button class="opt-btn multi" data-val="labo resultaat" onclick="toggleMulti(this, 'dok-reden', false)">🧪 Labo resultaat</button>
-        <button class="opt-btn multi" data-val="andere reden" onclick="toggleMulti(this, 'dok-reden', false)">📝 Andere</button>
+        <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this, 'dok-reden', false)">🌡️ Koorts</button>
+        <button class="opt-btn multi" data-val="hoest/verkoudheid" onclick="toggleMulti(this, 'dok-reden', false)">🤧 Hoest</button>
+        <button class="opt-btn multi" data-val="wonde" onclick="toggleMulti(this, 'dok-reden', false)">🩹 Wonde</button>
+        <button class="opt-btn multi" data-val="val/letsel" onclick="toggleMulti(this, 'dok-reden', false)">⚠️ Val/letsel</button>
+        <button class="opt-btn multi" data-val="urineweginfectie" onclick="toggleMulti(this, 'dok-reden', false)">💧 Urineweginfectie</button>
+        <button class="opt-btn multi" data-val="bloeddruk" onclick="toggleMulti(this, 'dok-reden', false)">❤️ Bloeddruk</button>
+        <button class="opt-btn multi" data-val="kortademigheid" onclick="toggleMulti(this, 'dok-reden', false)">😮‍💨 Kortademig</button>
+        <button class="opt-btn multi" data-val="gedrag/verwardheid" onclick="toggleMulti(this, 'dok-reden', false)">🧠 Gedrag</button>
+        <button class="opt-btn multi" data-val="routine controle" onclick="toggleMulti(this, 'dok-reden', false)">🔍 Controle</button>
+        <button class="opt-btn multi" data-val="andere reden" onclick="toggleMulti(this, 'dok-reden', false)">📍 Andere</button>
       </div>
     </div>
 
+    <!-- BEVINDINGEN -->
     <div class="block">
-      <span class="block-label">Beslissing / beleid arts</span>
-      <div class="btn-group" id="dok-beleid-group">
-        <button class="opt-btn multi" data-val="medicatie gestart" onclick="toggleMulti(this, 'dok-beleid', false)">💊 Medicatie gestart</button>
-        <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this, 'dok-beleid', false)">🔄 Medicatie gewijzigd</button>
-        <button class="opt-btn multi" data-val="medicatie gestopt" onclick="toggleMulti(this, 'dok-beleid', false)">🛑 Medicatie gestopt</button>
-        <button class="opt-btn multi" data-val="geen wijziging" onclick="toggleMulti(this, 'dok-beleid', false)">✅ Geen wijziging</button>
-        <button class="opt-btn multi" data-val="opname ziekenhuis" onclick="toggleMulti(this, 'dok-beleid', false)">🏥 Opname ziekenhuis</button>
-        <button class="opt-btn multi" data-val="extra observatie" onclick="toggleMulti(this, 'dok-beleid', false)">👁️ Extra observatie</button>
-        <button class="opt-btn multi" data-val="extra onderzoek" onclick="toggleMulti(this, 'dok-beleid', false)">🧪 Extra onderzoek</button>
+      <span class="block-label">Bevindingen</span>
+      <div class="btn-group" data-field="dok-bevinding">
+        <button class="opt-btn" data-val="toestand stabiel">✅ Stabiel</button>
+        <button class="opt-btn" data-val="afwijkingen vastgesteld">⚠️ Afwijkingen</button>
+        <button class="opt-btn" data-val="verder onderzoek nodig">🔍 Verder onderzoek</button>
+        <button class="opt-btn" data-val="opname nodig">🏥 Opname nodig</button>
       </div>
     </div>
 
+    <!-- BESLISSINGEN — MULTI-SELECT -->
     <div class="block">
-      <span class="block-label">Welke medicatie / wijziging? (optioneel)</span>
-      <input type="text" class="field" id="dok-medicatie" placeholder="bijv. Furadantine gestart, Paracetamol verhoogd, Amlodipine gestopt">
-    </div>
-
-    <div class="block">
-      <span class="block-label">Actie verpleegkundige (meerdere mogelijk)</span>
-      <div class="btn-group" id="dok-actie-group">
-        <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this, 'dok-actie', false)">💊 Medicatie toegediend</button>
-        <button class="opt-btn multi" data-val="observatie gestart" onclick="toggleMulti(this, 'dok-actie', false)">👁️ Observatie gestart</button>
-        <button class="opt-btn multi" data-val="parameters opgevolgd" onclick="toggleMulti(this, 'dok-actie', false)">📊 Parameters opgevolgd</button>
-        <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this, 'dok-actie', false)">👨‍👩‍👧 Familie verwittigd</button>
-        <button class="opt-btn multi" data-val="afspraak gemaakt" onclick="toggleMulti(this, 'dok-actie', false)">📅 Afspraak gemaakt</button>
-        <button class="opt-btn multi" data-val="geen directe actie" onclick="toggleMulti(this, 'dok-actie', false)">➖ Geen directe actie</button>
+      <span class="block-label">Beslissingen (meerdere mogelijk)</span>
+      <div class="btn-group" id="dok-beslissing-group">
+        <button class="opt-btn multi" data-val="medicatie aangepast" onclick="toggleMulti(this, 'dok-beslissing', false)">💊 Medicatie aangepast</button>
+        <button class="opt-btn multi" data-val="nieuwe behandeling gestart" onclick="toggleMulti(this, 'dok-beslissing', false)">💉 Nieuwe behandeling</button>
+        <button class="opt-btn multi" data-val="observatie voorzien" onclick="toggleMulti(this, 'dok-beslissing', false)">👁️ Observatie</button>
+        <button class="opt-btn multi" data-val="geen wijziging" onclick="toggleMulti(this, 'dok-beslissing', false)">✅ Geen wijziging</button>
+        <button class="opt-btn multi" data-val="bloedafname" onclick="toggleMulti(this, 'dok-beslissing', false)">🩸 Bloedafname</button>
+        <button class="opt-btn multi" data-val="doorverwijzing specialist" onclick="toggleMulti(this, 'dok-beslissing', false)">🏥 Doorverwijzing</button>
       </div>
     </div>
 
+    <!-- OPDRACHTEN — MULTI-SELECT -->
     <div class="block">
-      <span class="block-label">Extra notitie (optioneel)</span>
-      <textarea class="field" id="dok-notities" placeholder="Kort detail indien nodig..."></textarea>
+      <span class="block-label">Opdrachten voor team (meerdere mogelijk)</span>
+      <div class="btn-group" id="dok-opdracht-group">
+        <button class="opt-btn multi" data-val="opvolging door team voorzien" onclick="toggleMulti(this, 'dok-opdracht', false)">👥 Opvolging team</button>
+        <button class="opt-btn multi" data-val="parameters controleren" onclick="toggleMulti(this, 'dok-opdracht', false)">📊 Parameters</button>
+        <button class="opt-btn multi" data-val="wondzorg uitvoeren" onclick="toggleMulti(this, 'dok-opdracht', false)">🩹 Wondzorg</button>
+        <button class="opt-btn multi" data-val="medicatie opvolgen" onclick="toggleMulti(this, 'dok-opdracht', false)">💊 Medicatie</button>
+        <button class="opt-btn multi" data-val="familie informeren" onclick="toggleMulti(this, 'dok-opdracht', false)">👨‍👩‍👧 Familie informeren</button>
+        <button class="opt-btn multi" data-val="rust voorzien" onclick="toggleMulti(this, 'dok-opdracht', false)">😴 Rust</button>
+      </div>
+    </div>
+
+    <!-- EXTRA -->
+    <div class="block">
+      <span class="block-label">Extra detail (optioneel)</span>
+      <textarea class="field" id="dok-notities" placeholder="Naam arts, specifieke instructies, bijzonderheden..."></textarea>
     </div>
 
     <button class="btn-generate" onclick="generate('dokter')">✨ Maak verslag</button>
-    <div class="loader" id="dok-loader"><div class="spinner"></div> Bezig...</div>
+    <div class="loader" id="dok-loader"><div class="spinner"></div> Verslag wordt aangemaakt...</div>
     <div class="error-box" id="dok-error"></div>
   </div>
 </div>
+
 <!-- ═══ FAMILIE ═══ -->
 <div id="page-familie" class="page">
   <div class="module-page">
@@ -1219,17 +1232,7 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <span id="result-module-name">Conceptverslag</span>
       <span class="result-warning">⚠️ Controleer voor gebruik</span>
     </div>
-   <textarea class="result-box" id="result-output" style="
-  width: 100%;
-  min-height: 260px;
-  font-size: 17px;
-  line-height: 1.7;
-  padding: 16px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  resize: vertical;
-  background: #fafafa;
-"></textarea>
+    <textarea class="result-box" id="result-output" style="min-height:260px; resize:vertical; font-size:1rem; line-height:1.7;"></textarea>
     <div class="result-actions">
       <button class="result-btn primary" onclick="copyResult(event)">📋 Kopieer</button>
       <button class="result-btn" onclick="focusResultEditor()">✏️ Bewerk verslag</button>
@@ -1590,7 +1593,6 @@ function setLang(lang, btn) {
 
 // ── API CALL ──
 async function callAPI(prompt) {
-  async function callAPI(prompt) {
   const response = await fetch('/api/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1606,30 +1608,14 @@ async function callAPI(prompt) {
   try {
     data = JSON.parse(rawText);
   } catch (e) {
-    throw new Error("Server fout: " + rawText);
+    throw new Error('Server fout: ' + rawText);
   }
 
   if (!response.ok) {
     throw new Error(data?.error || `HTTP ${response.status}`);
   }
 
-  const text = data?.output || data?.error || "Geen output gegenereerd.";
-  if (!text) throw new Error("Geen antwoord ontvangen.");
-
-  return text;
-}
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      module: currentModule || 'kort',
-      formData: { prompt }
-    })
-  });
-
-  const data = await response.json();
-  if (!response.ok) throw new Error(data?.error || `HTTP ${response.status}`);
-
-  const text = data?.output || data?.error;
+  const text = data?.output || data?.error || 'Geen output gegenereerd.';
   if (!text) throw new Error('Geen antwoord ontvangen.');
   return text;
 }
