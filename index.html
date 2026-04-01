@@ -1232,7 +1232,17 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <span id="result-module-name">Conceptverslag</span>
       <span class="result-warning">⚠️ Controleer voor gebruik</span>
     </div>
-    <textarea class="result-box" id="result-output" style="min-height:260px; resize:vertical; font-size:1rem; line-height:1.7;"></textarea>
+   <textarea class="result-box" id="result-output" style="
+  width: 100%;
+  min-height: 260px;
+  font-size: 17px;
+  line-height: 1.7;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  resize: vertical;
+  background: #fafafa;
+"></textarea>
     <div class="result-actions">
       <button class="result-btn primary" onclick="copyResult(event)">📋 Kopieer</button>
       <button class="result-btn" onclick="focusResultEditor()">✏️ Bewerk verslag</button>
