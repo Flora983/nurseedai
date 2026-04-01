@@ -214,8 +214,8 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
   background: var(--white); border: 1.5px solid var(--border);
   border-radius: var(--radius); padding: 18px 20px;
   font-size: 0.88rem; line-height: 1.75; color: var(--text);
-  white-space: pre-wrap; min-height: 120px; margin-bottom: 14px;
-  box-shadow: var(--shadow);
+  white-space: pre-wrap; min-height: 220px; margin-bottom: 14px;
+  box-shadow: var(--shadow); border-width: 2px; background: #fcfffe; padding: 20px 22px;
 }
 .result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .result-btn {
@@ -984,7 +984,7 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
   <div class="module-page">
     <div class="module-title">⚡ Korte Communicatie</div>
     <div class="module-desc">Snelle, realistische WZC-updates voor tussendoor</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam. Alleen noteren wat effectief meegedeeld, beslist of geobserveerd werd.</div>
+    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam. Alleen noteren wat effectief geobserveerd, meegedeeld of afgesproken werd.</div>
 
     <div class="block">
       <span class="block-label">Kamer / bewoner</span>
@@ -995,12 +995,13 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <span class="block-label">Wat voor soort korte communicatie is dit? ⚠️ verplicht</span>
       <div class="btn-group" data-field="kort-scenario" id="kort-scenario-group">
         <button class="opt-btn" data-val="huisarts gecontacteerd" onclick="selectKortScenario(this, 'arts-gecontacteerd')">🩺 Huisarts gecontacteerd</button>
-        <button class="opt-btn" data-val="huisarts belde terug" onclick="selectKortScenario(this, 'arts-terugbellen')">📞 Huisarts belde terug</button>
+        <button class="opt-btn" data-val="huisarts belde terug" onclick="selectKortScenario(this, 'arts-terug')">📞 Huisarts belde terug</button>
+        <button class="opt-btn" data-val="ziekenhuis contact" onclick="selectKortScenario(this, 'ziekenhuis-contact')">🏥 Ziekenhuis contact</button>
         <button class="opt-btn" data-val="familie gecontacteerd" onclick="selectKortScenario(this, 'familie-contact')">👨‍👩‍👧 Familie gecontacteerd</button>
-        <button class="opt-btn" data-val="bewoner opgenomen" onclick="selectKortScenario(this, 'opname')">🏥 Bewoner opgenomen</button>
+        <button class="opt-btn" data-val="bewoner opgenomen" onclick="selectKortScenario(this, 'opname')">🚑 Bewoner opgenomen</button>
         <button class="opt-btn" data-val="bewoner terug" onclick="selectKortScenario(this, 'terug')">🔙 Bewoner terug</button>
         <button class="opt-btn" data-val="nieuwe observatie" onclick="selectKortScenario(this, 'observatie')">👁️ Nieuwe observatie</button>
-        <button class="opt-btn" data-val="algemeen aandachtspunt" onclick="selectKortScenario(this, 'algemeen')">📝 Algemeen aandachtspunt</button>
+        <button class="opt-btn" data-val="algemeen aandachtspunt" onclick="selectKortScenario(this, 'algemeen')">📝 Algemeen bericht</button>
       </div>
     </div>
 
@@ -1008,25 +1009,46 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <div class="block">
         <span class="block-label">Reden contact</span>
         <div class="btn-group" data-field="kort-arts-contact-reden">
-          <button class="opt-btn" data-val="pijn">😣 Pijn</button>
           <button class="opt-btn" data-val="koorts">🌡️ Koorts</button>
-          <button class="opt-btn" data-val="verwardheid">🧠 Verwardheid</button>
-          <button class="opt-btn" data-val="ademhalingsprobleem">🫁 Ademhaling</button>
+          <button class="opt-btn" data-val="pijn">😣 Pijn</button>
           <button class="opt-btn" data-val="wonde">🩹 Wonde</button>
+          <button class="opt-btn" data-val="gedrag / verwardheid">🧠 Gedrag</button>
+          <button class="opt-btn" data-val="labo resultaat opvragen">🧪 Laboresultaat</button>
           <button class="opt-btn" data-val="andere reden">📍 Andere</button>
+        </div>
+      </div>
+      <div class="block">
+        <span class="block-label">Antwoord / beleid huisarts</span>
+        <div class="btn-group" data-field="kort-arts-contact-antwoord">
+          <button class="opt-btn" data-val="komt vandaag langs">📍 Komt vandaag</button>
+          <button class="opt-btn" data-val="komt morgen langs">📅 Komt morgen</button>
+          <button class="opt-btn" data-val="telefonisch advies gegeven">📞 Telefonisch advies</button>
+          <button class="opt-btn" data-val="medicatie opstarten">💊 Medicatie starten</button>
+          <button class="opt-btn" data-val="medicatie wijzigen">🔁 Medicatie wijzigen</button>
+          <button class="opt-btn" data-val="observatie verderzetten">👁️ Observatie</button>
+        </div>
+      </div>
+      <div class="block">
+        <span class="block-label">Actie verpleegkundige</span>
+        <div class="btn-group" data-field="kort-arts-contact-actie">
+          <button class="opt-btn" data-val="opvolging voorzien">👁️ Opvolging</button>
+          <button class="opt-btn" data-val="parameters gecontroleerd">📊 Parameters</button>
+          <button class="opt-btn" data-val="medicatie gestart volgens telefonisch advies">💊 Medicatie gestart</button>
+          <button class="opt-btn" data-val="familie geïnformeerd">👨‍👩‍👧 Familie</button>
+          <button class="opt-btn" data-val="geen bijkomende actie">✅ Geen bijkomende actie</button>
         </div>
       </div>
     </div>
 
-    <div id="kort-arts-terugbellen" class="kort-section" style="display:none;">
+    <div id="kort-arts-terug" class="kort-section" style="display:none;">
       <div class="block">
         <span class="block-label">Waarover belde de huisarts terug?</span>
         <div class="btn-group" data-field="kort-arts-terug-reden">
-          <button class="opt-btn" data-val="bloedresultaat">🧪 Resultaat</button>
+          <button class="opt-btn" data-val="bloedresultaat">🩸 Bloedresultaat</button>
+          <button class="opt-btn" data-val="urineresultaat">🧪 Urineresultaat</button>
           <button class="opt-btn" data-val="pijnklachten">😣 Pijn</button>
           <button class="opt-btn" data-val="koorts">🌡️ Koorts</button>
           <button class="opt-btn" data-val="gedrag / verwardheid">🧠 Gedrag</button>
-          <button class="opt-btn" data-val="wonde">🩹 Wonde</button>
           <button class="opt-btn" data-val="andere reden">📍 Andere</button>
         </div>
       </div>
@@ -1034,15 +1056,16 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
         <span class="block-label">Beleid / beslissing</span>
         <div class="btn-group" data-field="kort-arts-terug-beleid">
           <button class="opt-btn" data-val="geen wijziging">✅ Geen wijziging</button>
-          <button class="opt-btn" data-val="nieuwe medicatie gestart">💊 Nieuwe medicatie</button>
+          <button class="opt-btn" data-val="nieuwe medicatie gestart">💊 Medicatie gestart</button>
           <button class="opt-btn" data-val="medicatie gewijzigd">🔁 Medicatie gewijzigd</button>
           <button class="opt-btn" data-val="medicatie gestopt">⛔ Medicatie gestopt</button>
           <button class="opt-btn" data-val="verdere observatie gevraagd">👁️ Observatie</button>
+          <button class="opt-btn" data-val="consultatie gepland">📅 Consultatie</button>
         </div>
       </div>
       <div class="block">
         <span class="block-label">Welke medicatie gestart? (indien van toepassing)</span>
-        <input type="text" class="field" id="kort-arts-terug-start" placeholder="bijv. Augmentin 875 mg 2x/dag">
+        <input type="text" class="field" id="kort-arts-terug-start" placeholder="bijv. Furadantine 100 mg 4x/dag">
       </div>
       <div class="block">
         <span class="block-label">Welke medicatie gewijzigd? (indien van toepassing)</span>
@@ -1054,13 +1077,36 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       </div>
     </div>
 
+    <div id="kort-ziekenhuis-contact" class="kort-section" style="display:none;">
+      <div class="block">
+        <span class="block-label">Wie nam contact op?</span>
+        <div class="btn-group" data-field="kort-zh-contact-type">
+          <button class="opt-btn" data-val="ziekenhuis belde">📞 Ziekenhuis belde</button>
+          <button class="opt-btn" data-val="wij belden ziekenhuis">☎️ Wij belden ziekenhuis</button>
+        </div>
+      </div>
+      <div class="block">
+        <span class="block-label">Waarover?</span>
+        <div class="btn-group" data-field="kort-zh-contact-doel">
+          <button class="opt-btn" data-val="ontslag gepland">🏠 Ontslag gepland</button>
+          <button class="opt-btn" data-val="update over toestand">❤️ Update toestand</button>
+          <button class="opt-btn" data-val="afspraak bevestigd">📅 Afspraak bevestigd</button>
+          <button class="opt-btn" data-val="andere reden">📍 Andere</button>
+        </div>
+      </div>
+      <div class="block">
+        <span class="block-label">Datum / tijd (optioneel)</span>
+        <input type="text" class="field" id="kort-zh-contact-moment" placeholder="bijv. morgen om 14u of 03/04 om 11u">
+      </div>
+    </div>
+
     <div id="kort-familie-contact" class="kort-section" style="display:none;">
       <div class="block">
         <span class="block-label">Waarom familie gecontacteerd?</span>
         <div class="btn-group" data-field="kort-familie-reden">
           <button class="opt-btn" data-val="update over toestand">❤️ Toestand</button>
           <button class="opt-btn" data-val="opname ziekenhuis">🏥 Opname</button>
-          <button class="opt-btn" data-val="artsenadvies doorgegeven">📞 Advies arts</button>
+          <button class="opt-btn" data-val="advies arts doorgegeven">📞 Advies arts</button>
           <button class="opt-btn" data-val="praktische afspraak">📅 Afspraak</button>
           <button class="opt-btn" data-val="andere reden">📍 Andere</button>
         </div>
@@ -1074,15 +1120,15 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
           <button class="opt-btn multi" data-val="na val" onclick="toggleMulti(this, 'kort-opname-redenen', false)">⚠️ Na val</button>
           <button class="opt-btn multi" data-val="hoge koorts" onclick="toggleMulti(this, 'kort-opname-redenen', false)">🌡️ Hoge koorts</button>
           <button class="opt-btn multi" data-val="verwardheid" onclick="toggleMulti(this, 'kort-opname-redenen', false)">🧠 Verward</button>
-          <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this, 'kort-opname-redenen', false)">🫁 Niet goed ademen</button>
+          <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this, 'kort-opname-redenen', false)">🫁 Ademhaling</button>
           <button class="opt-btn multi" data-val="lage saturatie" onclick="toggleMulti(this, 'kort-opname-redenen', false)">📉 Lage saturatie</button>
           <button class="opt-btn multi" data-val="vermoeden CVA" onclick="toggleMulti(this, 'kort-opname-redenen', false)">🧠 Vermoeden CVA</button>
           <button class="opt-btn multi" data-val="andere reden" onclick="toggleMulti(this, 'kort-opname-redenen', false)">📍 Andere</button>
         </div>
       </div>
       <div class="block">
-        <span class="block-label">Naam ziekenhuis</span>
-        <input type="text" class="field" id="kort-opname-ziekenhuis" placeholder="bijv. AZ Sint-Jan">
+        <span class="block-label">Ziekenhuis</span>
+        <input type="text" class="field" id="kort-opname-ziekenhuis" placeholder="bijv. Jessa, UZ Leuven, AZ Sint-Truiden">
       </div>
       <div class="block">
         <span class="block-label">Familie geïnformeerd?</span>
@@ -1108,13 +1154,15 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
           <button class="opt-btn multi" data-val="nieuwe medicatie gestart" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">💊 Medicatie gestart</button>
           <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">🔁 Medicatie gewijzigd</button>
           <button class="opt-btn multi" data-val="medicatie gestopt" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">⛔ Medicatie gestopt</button>
-          <button class="opt-btn multi" data-val="geen wijziging" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">✅ Geen wijziging</button>
+          <button class="opt-btn multi" data-val="post op voorschrift" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">📝 Post op voorschrift</button>
+          <button class="opt-btn multi" data-val="nieuwe afspraak consultatie" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">📅 Nieuwe afspraak</button>
           <button class="opt-btn multi" data-val="verdere observatie gevraagd" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">👁️ Observatie gevraagd</button>
+          <button class="opt-btn multi" data-val="geen wijziging" onclick="toggleMulti(this, 'kort-terug-beslissing', false)">✅ Geen wijziging</button>
         </div>
       </div>
       <div class="block">
         <span class="block-label">Welke medicatie gestart? (indien van toepassing)</span>
-        <input type="text" class="field" id="kort-terug-start" placeholder="bijv. Amoxicilline 500 mg 3x/dag">
+        <input type="text" class="field" id="kort-terug-start" placeholder="bijv. Augmentin 875/125 mg 2x/dag">
       </div>
       <div class="block">
         <span class="block-label">Welke medicatie gewijzigd? (indien van toepassing)</span>
@@ -1124,25 +1172,40 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
         <span class="block-label">Welke medicatie gestopt? (indien van toepassing)</span>
         <input type="text" class="field" id="kort-terug-stop" placeholder="bijv. Metformine stopgezet">
       </div>
+      <div class="block">
+        <span class="block-label">Nieuwe afspraak / voorschrift (optioneel)</span>
+        <input type="text" class="field" id="kort-terug-afspraak" placeholder="bijv. controle cardiologie op 14/04 of voorschrift in dossier">
+      </div>
     </div>
 
     <div id="kort-observatie" class="kort-section" style="display:none;">
       <div class="block">
         <span class="block-label">Observatie</span>
         <div class="btn-group" data-field="kort-observatie-type">
-          <button class="opt-btn" data-val="pijn">😣 Pijn</button>
           <button class="opt-btn" data-val="koorts">🌡️ Koorts</button>
+          <button class="opt-btn" data-val="pijn">😣 Pijn</button>
           <button class="opt-btn" data-val="verwardheid">🧠 Verward</button>
-          <button class="opt-btn" data-val="minder eten of drinken">🍽️ Minder intake</button>
+          <button class="opt-btn" data-val="ademhalingsproblemen">🫁 Ademhaling</button>
           <button class="opt-btn" data-val="wonde">🩹 Wonde</button>
           <button class="opt-btn" data-val="andere observatie">📍 Andere</button>
+        </div>
+      </div>
+      <div class="block">
+        <span class="block-label">Actie genomen (meerdere mogelijk)</span>
+        <div class="btn-group" id="kort-observatie-acties-group">
+          <button class="opt-btn multi" data-val="huisarts gecontacteerd" onclick="toggleMulti(this, 'kort-observatie-acties', false)">🩺 Huisarts</button>
+          <button class="opt-btn multi" data-val="familie geïnformeerd" onclick="toggleMulti(this, 'kort-observatie-acties', false)">👨‍👩‍👧 Familie</button>
+          <button class="opt-btn multi" data-val="parameters genomen" onclick="toggleMulti(this, 'kort-observatie-acties', false)">📊 Parameters</button>
+          <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this, 'kort-observatie-acties', false)">💊 Medicatie</button>
+          <button class="opt-btn multi" data-val="observatie opgestart" onclick="toggleMulti(this, 'kort-observatie-acties', false)">👁️ Observatie</button>
+          <button class="opt-btn multi" data-val="geen actie nodig" onclick="toggleMulti(this, 'kort-observatie-acties', true)">✅ Geen actie</button>
         </div>
       </div>
     </div>
 
     <div id="kort-algemeen" class="kort-section" style="display:none;">
       <div class="block">
-        <span class="block-label">Soort aandachtspunt</span>
+        <span class="block-label">Soort bericht</span>
         <div class="btn-group" data-field="kort-algemeen-type">
           <button class="opt-btn" data-val="praktische afspraak">📅 Afspraak</button>
           <button class="opt-btn" data-val="opvolging door volgende shift">🔄 Volgende shift</button>
@@ -1153,7 +1216,7 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 
     <div class="block">
       <span class="block-label">Extra korte notitie (optioneel)</span>
-      <textarea class="field" id="kort-notities" placeholder="bijv. telefonisch bevestigd door huisarts, afspraak morgen, bewoner rustig bij vertrek..." style="min-height:60px;"></textarea>
+      <textarea class="field" id="kort-notities" placeholder="bijv. telefonisch bevestigd door huisarts, ontslag morgen om 14u, bewoner rustig bij vertrek..." style="min-height:88px;"></textarea>
     </div>
 
     <button class="btn-generate" onclick="generate('kort')">⚡ Maak verslag</button>
@@ -1169,7 +1232,7 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <span id="result-module-name">Conceptverslag</span>
       <span class="result-warning">⚠️ Controleer voor gebruik</span>
     </div>
-    <textarea class="result-box" id="result-output" style="min-height:180px; resize:vertical;"></textarea>
+    <textarea class="result-box" id="result-output" style="min-height:260px; resize:vertical; font-size:1rem; line-height:1.7;"></textarea>
     <div class="result-actions">
       <button class="result-btn primary" onclick="copyResult(event)">📋 Kopieer</button>
       <button class="result-btn" onclick="focusResultEditor()">✏️ Bewerk verslag</button>
@@ -1256,9 +1319,15 @@ function buildPrompt(mod) {
 
     if (scenario === 'huisarts gecontacteerd') {
       const reden = getField('kort-arts-contact-reden');
+      const antwoord = getField('kort-arts-contact-antwoord');
+      const actie = getField('kort-arts-contact-actie');
       if (reden === 'niet ingevuld') return { error: '⚠️ Kies de reden van contact met de huisarts.' };
+      if (antwoord === 'niet ingevuld') return { error: '⚠️ Kies het antwoord / beleid van de huisarts.' };
+      if (actie === 'niet ingevuld') return { error: '⚠️ Kies de actie van de verpleegkundige.' };
       details = `Scenario: huisarts gecontacteerd
-Reden: ${reden}`;
+Reden: ${reden}
+Antwoord / beleid huisarts: ${antwoord}
+Actie verpleegkundige: ${actie}`;
     }
 
     if (scenario === 'huisarts belde terug') {
@@ -1272,6 +1341,17 @@ Beleid: ${beleid}
 Nieuwe medicatie gestart: ${document.getElementById('kort-arts-terug-start')?.value.trim() || 'geen'}
 Medicatie gewijzigd: ${document.getElementById('kort-arts-terug-wijzig')?.value.trim() || 'geen'}
 Medicatie gestopt: ${document.getElementById('kort-arts-terug-stop')?.value.trim() || 'geen'}`;
+    }
+
+    if (scenario === 'ziekenhuis contact') {
+      const type = getField('kort-zh-contact-type');
+      const doel = getField('kort-zh-contact-doel');
+      if (type === 'niet ingevuld') return { error: '⚠️ Kies wie contact had met het ziekenhuis.' };
+      if (doel === 'niet ingevuld') return { error: '⚠️ Kies waarover het ziekenhuiscontact ging.' };
+      details = `Scenario: ziekenhuis contact
+Type contact: ${type}
+Waarover: ${doel}
+Datum / tijd: ${document.getElementById('kort-zh-contact-moment')?.value.trim() || 'niet vermeld'}`;
     }
 
     if (scenario === 'familie gecontacteerd') {
@@ -1300,24 +1380,28 @@ Terug van: ${terugVan}
 Beslissing / afspraak: ${beslissing}
 Nieuwe medicatie gestart: ${document.getElementById('kort-terug-start')?.value.trim() || 'geen'}
 Medicatie gewijzigd: ${document.getElementById('kort-terug-wijzig')?.value.trim() || 'geen'}
-Medicatie gestopt: ${document.getElementById('kort-terug-stop')?.value.trim() || 'geen'}`;
+Medicatie gestopt: ${document.getElementById('kort-terug-stop')?.value.trim() || 'geen'}
+Nieuwe afspraak / voorschrift: ${document.getElementById('kort-terug-afspraak')?.value.trim() || 'geen'}`;
     }
 
     if (scenario === 'nieuwe observatie') {
       const observatie = getField('kort-observatie-type');
+      const acties = getMulti('kort-observatie-acties');
       if (observatie === 'niet ingevuld') return { error: '⚠️ Kies de observatie.' };
+      if (acties === 'niet ingevuld') return { error: '⚠️ Kies de actie die genomen werd.' };
       details = `Scenario: nieuwe observatie
-Observatie: ${observatie}`;
+Observatie: ${observatie}
+Actie genomen: ${acties}`;
     }
 
     if (scenario === 'algemeen aandachtspunt') {
       const type = getField('kort-algemeen-type');
-      if (type === 'niet ingevuld') return { error: '⚠️ Kies het soort aandachtspunt.' };
+      if (type === 'niet ingevuld') return { error: '⚠️ Kies het soort bericht.' };
       details = `Scenario: algemeen aandachtspunt
 Type: ${type}`;
     }
 
-    return { prompt: `${base} Schrijf een zeer korte, duidelijke verpleegkundige communicatienota voor het zorgdossier in maximaal 2 tot 3 zinnen. Focus op wat er gebeurde, de relevante info en eventuele opvolging.
+    return { prompt: `${base} Schrijf een zeer korte, duidelijke verpleegkundige communicatienota voor het zorgdossier in maximaal 2 tot 3 zinnen. Focus op wat er gebeurde, wat werd afgesproken of beslist, en welke opvolging relevant is. Schrijf logisch voor een woonzorgcentrum. Vermijd foutieve aannames zoals dat de arts gebeld heeft als eigenlijk de verpleegkundige de huisarts contacteerde.
 Kamer: ${getField('kort-kamer') || 'niet ingevuld'}
 ${details}
 Extra notitie: ${document.getElementById('kort-notities')?.value.trim() || 'geen'}` };
@@ -1439,7 +1523,8 @@ Inhoud: ${document.getElementById('fam-notities')?.value.trim()||'geen'}` };
 const multiSelections = {
   'ov-obs': new Set(['geen bijzonderheden']),
   'kort-opname-redenen': new Set(),
-  'kort-terug-beslissing': new Set()
+  'kort-terug-beslissing': new Set(),
+  'kort-observatie-acties': new Set()
 };
 
 function toggleMulti(btn, group, isExclusive) {
@@ -1478,32 +1563,6 @@ function toggleMulti(btn, group, isExclusive) {
 function getMulti(group) {
   if (!multiSelections[group] || multiSelections[group].size === 0) return 'niet ingevuld';
   return [...multiSelections[group]].join(', ');
-}
-
-// ── QUICK PRESETS ──
-const presets = {
-  labresultaat: { type: 'labresultaat ontvangen', bron: 'laboratorium', onderwerp: 'onderzoek / resultaat', actie: 'arts verwittigd' },
-  arts:         { type: 'telefoon', bron: 'arts', onderwerp: 'toestand van de bewoner', actie: 'opvolging voorzien' },
-  familie:      { type: 'telefoon', bron: 'familie', onderwerp: 'toestand van de bewoner', actie: 'geen actie nodig' },
-  opname:       { type: 'ziekenhuisopname', bron: 'ziekenhuis', onderwerp: 'opname / ontslag', actie: 'familie verwittigd' },
-  terugkeer:    { type: 'terugkeer uit ziekenhuis', bron: 'ziekenhuis', onderwerp: 'opname / ontslag', actie: 'opvolging voorzien' },
-  operatie:     { type: 'terugkeer na operatie', bron: 'ziekenhuis', onderwerp: 'toestand van de bewoner', actie: 'doorgeven aan volgende shift' }
-};
-
-function applyPreset(name) {
-  const p = presets[name];
-  if (!p) return;
-  // Set each field
-  ['kort-type', 'kort-bron', 'kort-onderwerp', 'kort-actie'].forEach(field => {
-    const val = p[field.replace('kort-', '')];
-    if (!val) return;
-    const group = document.querySelector(`[data-field="${field}"]`);
-    if (!group) return;
-    group.querySelectorAll('.opt-btn').forEach(btn => {
-      btn.classList.remove('selected');
-      if (btn.dataset.val === val) btn.classList.add('selected');
-    });
-  });
 }
 
 function selectKortScenario(button, section) {
