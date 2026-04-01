@@ -24,9 +24,9 @@ ${JSON.stringify(formData || {}, null, 2)}
 `;
     }
 
-    // 🩺 DOKTERSBEZOEK (BELANGRIJK!)
+    // 🩺 DOKTERSBEZOEK
     else if (module === "dokter") {
-  prompt = `
+      prompt = `
 Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum.
 
 Schrijf een kort, duidelijk en professioneel verpleegkundig verslag van een doktersbezoek of telefonisch overleg.
@@ -49,10 +49,23 @@ ${JSON.stringify(formData || {}, null, 2)}
 
 Schrijf zoals in een echt zorgdossier.
 `;
-}
+    }
 
     // 📋 ANDERE MODULES
-    
+    else {
+      prompt = `
+Schrijf een kort, professioneel verpleegkundig verslag in het Nederlands.
+
+Regels:
+- Kort en duidelijk
+- Professioneel en objectief
+- Geen uitleg
+- Geen AI-zinnen zoals "ontbreekt" of "niet ingevuld"
+- Alleen bruikbare dossiertekst
+
+Gegevens:
+${JSON.stringify(formData || {}, null, 2)}
+`;
     }
 
     const response = await fetch("https://api.openai.com/v1/responses", {
@@ -67,14 +80,14 @@ Schrijf zoals in een echt zorgdossier.
       }),
     });
 
-    
-let data;
-try {
-  data = await response.json();
-} catch (e) {
-  const text = await response.text();
-  throw new Error("Server fout: " + text);
-}
+    let data;
+    try {
+      data = await response.json();
+    } catch (e) {
+      const text = await response.text();
+      throw new Error("Server fout: " + text);
+    }
+
     let text = "";
 
     if (typeof data.output_text === "string") {
@@ -95,10 +108,9 @@ try {
       return res.status(500).json({ error: "Geen output gegenereerd." });
     }
 
-    return res.status(200).json({ output: text });
-
+    return res.status(200).json({ output: text.trim() });
   } catch (error) {
-    console.error(error);
+    console.error("API fout:", error);
     return res.status(500).json({ error: "Server error" });
   }
 }
