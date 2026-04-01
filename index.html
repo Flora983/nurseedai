@@ -1590,7 +1590,34 @@ function setLang(lang, btn) {
 
 // ── API CALL ──
 async function callAPI(prompt) {
+  async function callAPI(prompt) {
   const response = await fetch('/api/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      module: currentModule || 'kort',
+      formData: { prompt }
+    })
+  });
+
+  const rawText = await response.text();
+
+  let data;
+  try {
+    data = JSON.parse(rawText);
+  } catch (e) {
+    throw new Error("Server fout: " + rawText);
+  }
+
+  if (!response.ok) {
+    throw new Error(data?.error || `HTTP ${response.status}`);
+  }
+
+  const text = data?.output || data?.error || "Geen output gegenereerd.";
+  if (!text) throw new Error("Geen antwoord ontvangen.");
+
+  return text;
+}
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
