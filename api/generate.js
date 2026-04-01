@@ -26,38 +26,33 @@ ${JSON.stringify(formData || {}, null, 2)}
 
     // 🩺 DOKTERSBEZOEK (BELANGRIJK!)
     else if (module === "dokter") {
-      prompt = `
-Je bent een verpleegkundige in een woonzorgcentrum.
-
-Schrijf een duidelijk en professioneel verslag van een doktersbezoek.
-
-Regels:
-- Objectief
-- Logisch opgebouwd
-- 3 tot 5 zinnen
-- Vermeld reden, observaties, advies arts en opvolging
-
-Gegevens:
-${JSON.stringify(formData || {}, null, 2)}
-`;
-    }
-
-    // 📋 ANDERE MODULES
-    else {
-      prompt = `
+  prompt = `
 Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum.
 
-Schrijf een kort, professioneel verslag.
+Schrijf een kort, duidelijk en professioneel verpleegkundig verslag van een doktersbezoek of telefonisch overleg.
 
-Regels:
-- 2 tot 4 zinnen
-- Objectief
-- Geen tegenstrijdigheden
-- Geen uitleg
+BELANGRIJKE REGELS:
+- Schrijf objectief en praktisch
+- Gebruik eenvoudige, professionele zorgtaal
+- Schrijf 2 tot 4 zinnen
+- Vermeld alleen wat effectief gebeurd is of beslist werd
+- Schrijf NOOIT dat iets "niet ingevuld", "niet genoteerd" of "ontbreekt"
+- Vermijd aannames
+- Geen uitleg, geen titel, alleen het verslag
+
+ALS ER WEINIG INFO IS:
+- schrijf toch een bruikbaar, neutraal kort verslag
+- focus op reden van contact en eventuele opvolging
 
 Gegevens:
 ${JSON.stringify(formData || {}, null, 2)}
+
+Schrijf zoals in een echt zorgdossier.
 `;
+}
+
+    // 📋 ANDERE MODULES
+    
     }
 
     const response = await fetch("https://api.openai.com/v1/responses", {
