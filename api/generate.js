@@ -5,47 +5,60 @@ export default async function handler(req, res) {
 
   try {
     const { module, formData } = req.body || {};
-let moduleInstruction = "";
 
-if (module === "korte") {
-  moduleInstruction = "Schrijf zeer kort (1-2 zinnen), simpel en direct.";
-} else if (module === "overdracht") {
-  moduleInstruction = "Schrijf gestructureerd en duidelijk voor overdracht tussen shifts.";
-} else if (module === "incident") {
-  moduleInstruction = "Schrijf strikt objectief, feitelijk en zonder interpretatie.";
-} else if (module === "wondzorg") {
-  moduleInstruction = "Gebruik medische terminologie en beschrijf observaties van de wond correct.";
-} else {
-  moduleInstruction = "Algemeen verpleegkundig verslag.";
-}
-    const prompt = `
-Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum.
+    let prompt = "";
 
-Schrijf een kort, professioneel en correct verpleegkundig verslag in het Nederlands.
+    // ⚡ SNELLE MODULE: KORTE COMMUNICATIE
+    if (module === "kort") {
+      prompt = `
+Schrijf 1 tot 2 korte, professionele verpleegkundige zinnen in het Nederlands.
 
-BELANGRIJKE REGELS:
-- Gebruik duidelijke en professionele zorgtaal
-- Schrijf objectief
-- Vermijd tegenstrijdigheden
-- Geen opsomming
-- Geen titel
-- Alleen het verslag
-- 2 tot 4 korte zinnen
-Module instructie:
-${moduleInstruction}
-STRUCTUUR:
-- Start met de toestand van de bewoner
-- Vermeld daarna de relevante observaties
-- Vermeld daarna de uitgevoerde actie of opvolging indien van toepassing
-
-Module:
-${module || "algemeen"}
+Regels:
+- Zeer kort
+- Geen uitleg
+- Geen herhaling
+- Direct bruikbaar in dossier
 
 Gegevens:
 ${JSON.stringify(formData || {}, null, 2)}
-
-Schrijf zoals in een echt zorgdossier in een woonzorgcentrum.
 `;
+    }
+
+    // 🩺 DOKTERSBEZOEK (BELANGRIJK!)
+    else if (module === "dokter") {
+      prompt = `
+Je bent een verpleegkundige in een woonzorgcentrum.
+
+Schrijf een duidelijk en professioneel verslag van een doktersbezoek.
+
+Regels:
+- Objectief
+- Logisch opgebouwd
+- 3 tot 5 zinnen
+- Vermeld reden, observaties, advies arts en opvolging
+
+Gegevens:
+${JSON.stringify(formData || {}, null, 2)}
+`;
+    }
+
+    // 📋 ANDERE MODULES
+    else {
+      prompt = `
+Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum.
+
+Schrijf een kort, professioneel verslag.
+
+Regels:
+- 2 tot 4 zinnen
+- Objectief
+- Geen tegenstrijdigheden
+- Geen uitleg
+
+Gegevens:
+${JSON.stringify(formData || {}, null, 2)}
+`;
+    }
 
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -55,53 +68,36 @@ Schrijf zoals in een echt zorgdossier in een woonzorgcentrum.
       },
       body: JSON.stringify({
         model: "gpt-5-mini",
-        input: prompt
+        input: prompt,
       }),
     });
 
     const data = await response.json();
 
-    if (!response.ok) {
-      console.error("OpenAI API error:", data);
-      return res.status(response.status).json({
-        error: data?.error?.message || "Fout bij OpenAI API"
-      });
-    }
-
     let text = "";
 
-    if (typeof data.output_text === "string" && data.output_text.trim()) {
-      text = data.output_text.trim();
+    if (typeof data.output_text === "string") {
+      text = data.output_text;
     }
 
     if (!text && Array.isArray(data.output)) {
       for (const item of data.output) {
-        if (Array.isArray(item.content)) {
-          for (const contentItem of item.content) {
-            if (
-              contentItem.type === "output_text" &&
-              typeof contentItem.text === "string"
-            ) {
-              text += contentItem.text;
-            }
+        for (const content of item.content || []) {
+          if (content.type === "output_text") {
+            text += content.text;
           }
         }
       }
-
-      text = text.trim();
     }
 
     if (!text) {
-      console.error("Geen tekst gevonden in OpenAI response:", JSON.stringify(data, null, 2));
       return res.status(500).json({ error: "Geen output gegenereerd." });
     }
 
     return res.status(200).json({ output: text });
 
   } catch (error) {
-    console.error("Server error:", error);
-    return res.status(500).json({
-      error: error.message || "Server error"
-    });
+    console.error(error);
+    return res.status(500).json({ error: "Server error" });
   }
 }
