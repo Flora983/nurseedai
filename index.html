@@ -523,6 +523,36 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       </div>
     </div>
 
+    <!-- VITALE PARAMETERS -->
+    <div class="block">
+      <span class="block-label">Vitale parameters (optioneel)</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <input type="text" class="field" id="inc-rr" placeholder="RR bv. 120/70">
+        <input type="text" class="field" id="inc-hf" placeholder="HF bv. 82">
+        <input type="text" class="field" id="inc-sat" placeholder="Sat bv. 96%">
+        <input type="text" class="field" id="inc-temp" placeholder="Temp bv. 37.1">
+      </div>
+    </div>
+
+    <!-- PIJNSCORE -->
+    <div class="block">
+      <span class="block-label">Pijnscore</span>
+      <select class="field" id="inc-pijnscore">
+        <option value="">Kies pijnscore</option>
+        <option value="0/10">0/10</option>
+        <option value="1/10">1/10</option>
+        <option value="2/10">2/10</option>
+        <option value="3/10">3/10</option>
+        <option value="4/10">4/10</option>
+        <option value="5/10">5/10</option>
+        <option value="6/10">6/10</option>
+        <option value="7/10">7/10</option>
+        <option value="8/10">8/10</option>
+        <option value="9/10">9/10</option>
+        <option value="10/10">10/10</option>
+      </select>
+    </div>
+
     <!-- OPVOLGING -->
     <div class="block">
       <span class="block-label">Opvolging nodig?</span>
@@ -1433,20 +1463,42 @@ Extra: ${extra||'geen'}` };
   if (mod === 'incident') {
     const type = getField('inc-type');
     const locatie = getField('inc-locatie');
+    const situatie = getField('inc-situatie');
+    const bewustzijn = getField('inc-bewustzijn');
+    const hoofdimpact = getField('inc-hoofd');
+    const mobiliteit = getField('inc-mobiliteit');
+    const letsel = getMulti('inc-letsel');
+    const acties = getMulti('inc-actie');
+    const opvolging = getField('inc-opvolging');
+    const extra = document.getElementById('inc-notities')?.value.trim() || 'geen';
+
+    const rr = document.getElementById('inc-rr')?.value.trim() || 'niet gemeten';
+    const hf = document.getElementById('inc-hf')?.value.trim() || 'niet gemeten';
+    const sat = document.getElementById('inc-sat')?.value.trim() || 'niet gemeten';
+    const temp = document.getElementById('inc-temp')?.value.trim() || 'niet gemeten';
+    const pijnscore = document.getElementById('inc-pijnscore')?.value || 'niet gescoord';
+
     if (type === 'niet ingevuld') return { error: '⚠️ Selecteer type incident.' };
     if (locatie === 'niet ingevuld') return { error: '⚠️ Selecteer locatie.' };
-    return { prompt: `${base} Schrijf een objectief incidentverslag in maximaal 4 zinnen. Feiten eerst, daarna letsel, daarna acties en opvolging.
+
+    return { prompt: `${base} Schrijf een objectief incidentverslag in maximaal 4 zinnen. Feiten eerst, daarna letsel, daarna acties en opvolging. Vermeld vitale parameters en pijnscore alleen als ze beschikbaar zijn of ingevuld werden.
 Kamer: ${getField('inc-kamer')||'niet ingevuld'}
 Type incident: ${type}
 Locatie: ${locatie}
-Situatie: ${getField('inc-situatie')}
-Bewustzijn: ${getField('inc-bewustzijn')}
-Hoofdimpact: ${getField('inc-hoofd')}
-Mobiliteit: ${getField('inc-mobiliteit')}
-Letsel: ${getMulti('inc-letsel')}
-Acties: ${getMulti('inc-actie')}
-Opvolging nodig: ${getField('inc-opvolging')}
-Extra: ${document.getElementById('inc-notities')?.value.trim()||'geen'}` };
+Situatie: ${situatie}
+Bewustzijn: ${bewustzijn}
+Hoofdimpact: ${hoofdimpact}
+Mobiliteit: ${mobiliteit}
+Letsel: ${letsel}
+Acties: ${acties}
+Vitale parameters:
+- RR: ${rr}
+- HF: ${hf}
+- Sat: ${sat}
+- Temp: ${temp}
+Pijnscore: ${pijnscore}
+Opvolging nodig: ${opvolging}
+Extra: ${extra}` };
   }
 
   if (mod === 'medicatie') {
