@@ -1364,6 +1364,7 @@ document.querySelectorAll('.btn-group').forEach(group => {
     btn.addEventListener('click', () => {
       group.querySelectorAll('.opt-btn:not(.multi)').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
+      refreshGenerateButtons();
     });
   });
 });
@@ -1373,6 +1374,7 @@ document.querySelectorAll('.toggle-group').forEach(group => {
     btn.addEventListener('click', () => {
       group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
+      refreshGenerateButtons();
     });
   });
 });
@@ -1387,6 +1389,81 @@ function getField(fieldName) {
   const el = document.getElementById(fieldName);
   return el ? el.value.trim() : '';
 }
+
+function hasValue(id) {
+  const el = document.getElementById(id);
+  return !!(el && el.value.trim());
+}
+
+function isKortReady() {
+  const scenario = getField('kort-scenario');
+  if (!hasValue('kort-kamer') || scenario === 'niet ingevuld') return false;
+
+  if (scenario === 'huisarts gecontacteerd') {
+    return getField('kort-arts-contact-reden') !== 'niet ingevuld'
+      && getField('kort-arts-contact-antwoord') !== 'niet ingevuld'
+      && getField('kort-arts-contact-actie') !== 'niet ingevuld';
+  }
+
+  if (scenario === 'huisarts belde terug') {
+    return getField('kort-arts-terug-reden') !== 'niet ingevuld'
+      && getField('kort-arts-terug-beleid') !== 'niet ingevuld';
+  }
+
+  if (scenario === 'ziekenhuis contact') {
+    return getField('kort-zh-contact-type') !== 'niet ingevuld'
+      && getField('kort-zh-contact-doel') !== 'niet ingevuld';
+  }
+
+  if (scenario === 'familie gecontacteerd') {
+    return getField('kort-familie-reden') !== 'niet ingevuld';
+  }
+
+  if (scenario === 'bewoner opgenomen') {
+    return getMulti('kort-opname-redenen') !== 'niet ingevuld'
+      && getField('kort-opname-familie') !== 'niet ingevuld';
+  }
+
+  if (scenario === 'bewoner terug') {
+    return getField('kort-terug-van') !== 'niet ingevuld'
+      && getMulti('kort-terug-beslissing') !== 'niet ingevuld';
+  }
+
+  if (scenario === 'nieuwe observatie') {
+    return getField('kort-observatie-type') !== 'niet ingevuld'
+      && getMulti('kort-observatie-acties') !== 'niet ingevuld';
+  }
+
+  if (scenario === 'algemeen aandachtspunt') {
+    return getField('kort-algemeen-type') !== 'niet ingevuld';
+  }
+
+  return false;
+}
+
+function refreshGenerateButtons() {
+  const rules = {
+    kort: () => isKortReady(),
+    overdracht: () => hasValue('ov-kamer') && getField('ov-toestand') !== 'niet ingevuld',
+    incident: () => hasValue('inc-kamer') && getField('inc-type') !== 'niet ingevuld' && getField('inc-locatie') !== 'niet ingevuld',
+    medicatie: () => hasValue('med-kamer') && getField('med-situatie') !== 'niet ingevuld' && getField('med-reden') !== 'niet ingevuld',
+    wond: () => hasValue('won-kamer') && getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld',
+    gedrag: () => hasValue('ged-kamer') && getField('ged-gedrag') !== 'niet ingevuld',
+    dokter: () => hasValue('dok-kamer') && getField('dok-type') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld',
+    familie: () => hasValue('fam-kamer') && getField('fam-type') !== 'niet ingevuld' && getField('fam-onderwerp') !== 'niet ingevuld' && getField('fam-modus') !== 'niet ingevuld'
+  };
+
+  Object.entries(rules).forEach(([mod, check]) => {
+    const btn = document.querySelector(`#page-${mod} .btn-generate`);
+    if (!btn) return;
+    btn.disabled = !check();
+  });
+}
+
+document.querySelectorAll('input.field, textarea.field, select.field').forEach(el => {
+  el.addEventListener('input', refreshGenerateButtons);
+  el.addEventListener('change', refreshGenerateButtons);
+});
 
 // ── BUILD PROMPTS ──
 function buildPrompt(mod) {
@@ -1652,6 +1729,7 @@ function toggleMulti(btn, group, isExclusive) {
     multiSelections[group].clear();
     btn.classList.add('selected');
     multiSelections[group].add(btn.dataset.val);
+    refreshGenerateButtons();
     return;
   }
 
@@ -1674,6 +1752,8 @@ function toggleMulti(btn, group, isExclusive) {
       });
     }
   }
+
+  refreshGenerateButtons();
 }
 
 function getMulti(group) {
@@ -1688,6 +1768,7 @@ function selectKortScenario(button, section) {
   document.querySelectorAll('.kort-section').forEach(el => el.style.display = 'none');
   const target = document.getElementById('kort-' + section);
   if (target) target.style.display = 'block';
+  refreshGenerateButtons();
 }
 
 function focusResultEditor() {
@@ -1861,6 +1942,7 @@ function closePopup() {
   if (sessionStorage.getItem('disclaimer-seen')) {
     p.style.display = 'none';
   }
+  refreshGenerateButtons();
 })();
 </script>
 </body>
