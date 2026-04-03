@@ -553,6 +553,49 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       </select>
     </div>
 
+    <!-- TIME CLASSIFICATIE -->
+    <div class="block">
+      <span class="block-label">TIME – Tissue</span>
+      <div class="btn-group" data-field="won-time-tissue">
+        <button class="opt-btn" data-val="granulatieweefsel">✅ Granulatie</button>
+        <button class="opt-btn" data-val="fibrine">🟡 Fibrine</button>
+        <button class="opt-btn" data-val="necrose">⚫ Necrose</button>
+        <button class="opt-btn" data-val="gemengd weefsel">🟠 Gemengd</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">TIME – Infection / Inflammation</span>
+      <div class="btn-group" data-field="won-time-infectie">
+        <button class="opt-btn" data-val="geen tekenen van infectie">✅ Geen tekenen</button>
+        <button class="opt-btn" data-val="roodheid">🔴 Roodheid</button>
+        <button class="opt-btn" data-val="zwelling">🫧 Zwelling</button>
+        <button class="opt-btn" data-val="onaangename geur">👃 Geur</button>
+        <button class="opt-btn" data-val="etter">🟡 Etter</button>
+        <button class="opt-btn" data-val="pijn">😣 Pijn</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">TIME – Moisture</span>
+      <div class="btn-group" data-field="won-time-moisture">
+        <button class="opt-btn" data-val="droog wondmilieu">🏜️ Droog</button>
+        <button class="opt-btn" data-val="licht exsudaat">💧 Licht exsudaat</button>
+        <button class="opt-btn" data-val="matig exsudaat">🟠 Matig exsudaat</button>
+        <button class="opt-btn" data-val="veel exsudaat">🔴 Veel exsudaat</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">TIME – Edge</span>
+      <div class="btn-group" data-field="won-time-edge">
+        <button class="opt-btn" data-val="intacte wondranden">✅ Intact</button>
+        <button class="opt-btn" data-val="verweekte wondranden">💧 Verweekt</button>
+        <button class="opt-btn" data-val="onregelmatige wondranden">↔️ Onregelmatig</button>
+        <button class="opt-btn" data-val="ondermijnde wondranden">⬇️ Ondermijnd</button>
+      </div>
+    </div>
+
     <!-- OPVOLGING -->
     <div class="block">
       <span class="block-label">Opvolging nodig?</span>
@@ -1514,16 +1557,28 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'geen'}` };
   }
 
   if (mod === 'wond') {
+    const type = getField('won-type');
     const locatie = getField('won-locatie');
+    if (type === 'niet ingevuld') return { error: '⚠️ Selecteer het type wonde.' };
     if (locatie === 'niet ingevuld') return { error: '⚠️ Selecteer de wondlocatie.' };
-    return { prompt: `${base} Schrijf een duidelijke wondzorgnota in maximaal 4 zinnen.
-Kamer: ${getField('won-kamer')||'niet ingevuld'}
+
+    return { prompt: `${base} Schrijf een duidelijke, professionele wondzorgnota in maximaal 4 zinnen. Beschrijf kort de wonde, de wondzorg, relevante TIME-observaties en de opvolging. Vermeld alleen wat effectief geselecteerd of genoteerd werd.
+
+Kamer: ${getField('won-kamer') || 'niet ingevuld'}
+Type wonde: ${type}
 Locatie: ${locatie}
-Type wond: ${getField('won-type')}
-ISTAP / categorie: ${getField('won-istap')}
-Observaties: ${getMulti('won-obs')}
-Uitgevoerde zorg: ${getMulti('won-zorg')}
-Extra: ${document.getElementById('won-notities')?.value.trim()||'geen'}` };
+Classificatie: ${getField('won-classificatie')}
+Wondbodem: ${getField('won-bodem')}
+Exsudaat: ${getField('won-exsudaat')}
+Protocol: ${getField('won-protocol')}
+Gebruikte producten: ${getMulti('won-producten')}
+Alarmsignalen: ${getMulti('won-alarm')}
+TIME Tissue: ${getField('won-time-tissue')}
+TIME Infection/Inflammation: ${getField('won-time-infectie')}
+TIME Moisture: ${getField('won-time-moisture')}
+TIME Edge: ${getField('won-time-edge')}
+Opvolging: ${getField('won-opvolging')}
+Extra: ${document.getElementById('won-notities')?.value.trim() || 'geen'}` };
   }
 
   if (mod === 'gedrag') {
