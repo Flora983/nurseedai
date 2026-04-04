@@ -2184,63 +2184,76 @@ function stopListening() {
 
 // ── SNELLE NOTITIE (inspreken → direct rapport) ──
 async function quickNote() {
-  if (!recognition) {
-    alert('Snelle notitie vereist stemherkenning. Gebruik Chrome of Edge.');
-    return;
-  }
+  // Fallback als geen stemherkenning beschikbaar
+  const heeftStem = ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
 
   const kamer = prompt('Voor welke kamer? (bijv. 12)');
   if (!kamer) return;
 
-  alert('🎤 Klaar om in te spreken! Klik OK en spreek dan direct uw notitie in.\n\nBijvoorbeeld: "Bewoner was onrustig, weinig gegeten, arts verwittigd"');
+  const btn = document.querySelector('.quick-note-btn');
+  const origHTML = btn.innerHTML;
 
-  return new Promise((resolve) => {
-    const tempRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    tempRecognition.lang = 'nl-NL';
-    tempRecognition.interimResults = false;
+  async function verwerkEnGenereer(transcript) {
+    btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;filter:brightness(10)"></div> <div><div>Verslag wordt aangemaakt...</div><div class="qn-sub">Even geduld</div></div>';
+    btn.disabled = true;
 
-    tempRecognition.onresult = async (event) => {
-      const transcript = event.results[0][0].transcript;
-
-      // Toon loader op dashboard
-      const btn = document.querySelector('.quick-note-btn');
-      const origHTML = btn.innerHTML;
-      btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;filter:brightness(10)"></div> <div><div>Verslag wordt aangemaakt...</div><div class="qn-sub">Even geduld</div></div>';
-      btn.disabled = true;
-
-      try {
-        const prompt = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in het Nederlands een kort, professioneel verpleegkundig verslag van maximaal 3 zinnen. Geen aannames, alleen wat gezegd werd.
+    try {
+      const promptTekst = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct Nederlands een korte, feitelijke en professionele notitie voor het zorgdossier. Gebruik directe, actieve taal. Wees bondig (maximaal 2-3 zinnen). Schrijf zoals een collega-verpleegkundige het zou noteren: helder, neutraal en zonder oordeel. Gebruik alleen de verstrekte informatie. Verzin niets bij.
 Kamer: ${kamer}
 Ingesproken notitie: "${transcript}"`;
 
-        const response = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ module: 'snel', formData: { prompt } })
-        });
-        const data = await response.json();
-        const text = data?.output || 'Geen output ontvangen.';
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 300,
+          messages: [{ role: 'user', content: promptTekst }]
+        })
+      });
 
-        document.getElementById('result-output').value = text;
-        document.getElementById('result-module-name').textContent = '⚡ Snelle Notitie';
-        showPage('page-result');
-        document.getElementById('back-btn').classList.add('visible');
-      } catch(err) {
-        alert('Fout bij aanmaken verslag: ' + err.message);
-      } finally {
-        btn.innerHTML = origHTML;
-        btn.disabled = false;
-      }
-      resolve();
-    };
+      const data = await response.json();
+      const text = data?.content?.[0]?.text || 'Geen output ontvangen.';
 
-    tempRecognition.onerror = (e) => {
-      alert('Stemherkenning mislukt. Probeer opnieuw.');
-      resolve();
-    };
+      document.getElementById('result-output').value = text;
+      document.getElementById('result-module-name').textContent = '⚡ Snelle Notitie — Kamer ' + kamer;
+      showPage('page-result');
+      document.getElementById('back-btn').classList.add('visible');
+    } catch(err) {
+      alert('Fout bij aanmaken verslag: ' + err.message);
+    } finally {
+      btn.innerHTML = origHTML;
+      btn.disabled = false;
+    }
+  }
 
-    tempRecognition.start();
-  });
+  // MET stem
+  if (heeftStem) {
+    alert('🎤 Klik OK en spreek direct uw notitie in.\n\nBijvoorbeeld: "Bewoner was onrustig, weinig gegeten, arts verwittigd"');
+    return new Promise((resolve) => {
+      const tempRec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      tempRec.lang = 'nl-NL';
+      tempRec.interimResults = false;
+      tempRec.onresult = async (event) => {
+        await verwerkEnGenereer(event.results[0][0].transcript);
+        resolve();
+      };
+      tempRec.onerror = () => {
+        // Fallback naar tekst invoer als stem mislukt
+        const tekst = prompt('Stemherkenning mislukt. Typ uw notitie hier:');
+        if (tekst) verwerkEnGenereer(tekst).then(resolve);
+        else resolve();
+      };
+      tempRec.start();
+    });
+  } else {
+    // ZONDER stem — gewoon typen
+    const tekst = prompt('Typ uw snelle notitie (bijv. "Bewoner onrustig, weinig gegeten, arts verwittigd"):');
+    if (tekst) await verwerkEnGenereer(tekst);
+  }
 }
 
 // ── REGENERATE ──
