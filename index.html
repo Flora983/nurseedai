@@ -871,93 +871,67 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 </div>
 
 <!-- ═══ GEDRAG ═══ -->
-<div id="page-gedrag" class="page">
-  <div class="module-page">
-    <div class="module-title">🧠 Gedrag & Dementiezorg</div>
-    <div class="module-desc">Documenteer gedrag neutraal, respectvol en professioneel</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-
-    <div class="block">
-      <span class="block-label">Kamer / bewoner</span>
-      <input type="text" class="field" id="ged-kamer" placeholder="bijv. Kamer 1">
-    </div>
-
-    <!-- TYPE GEDRAG -->
-    <div class="block">
-      <span class="block-label">Type gedrag ⚠️ verplicht</span>
-      <div class="btn-group" data-field="ged-gedrag">
-        <button class="opt-btn" data-val="onrust">😰 Onrust</button>
-        <button class="opt-btn" data-val="agitatie">😤 Agitatie</button>
-        <button class="opt-btn" data-val="agressie">😠 Agressie</button>
-        <button class="opt-btn" data-val="roepen">📢 Roepen</button>
-        <button class="opt-btn" data-val="dwalen">🚶 Dwalen</button>
-        <button class="opt-btn" data-val="zorgweigering">🚫 Zorgweigering</button>
-        <button class="opt-btn" data-val="apathie">😶 Apathie</button>
-      </div>
-    </div>
-
-    <!-- MOMENT -->
-    <div class="block">
-      <span class="block-label">Moment ⚠️ verplicht</span>
-      <div class="btn-group" data-field="ged-moment">
-        <button class="opt-btn" data-val="ochtend">🌅 Ochtend</button>
-        <button class="opt-btn" data-val="namiddag">☀️ Namiddag</button>
-        <button class="opt-btn" data-val="avond">🌆 Avond</button>
-        <button class="opt-btn" data-val="nacht">🌙 Nacht</button>
-      </div>
-    </div>
-
-    <!-- AANLEIDING -->
-    <div class="block">
-      <span class="block-label">Mogelijke aanleiding</span>
-      <div class="btn-group" data-field="ged-aanleiding">
-        <button class="opt-btn" data-val="pijn">😣 Pijn</button>
-        <button class="opt-btn" data-val="angst">😨 Angst</button>
-        <button class="opt-btn" data-val="prikkelende omgeving">🔊 Prikkelomgeving</button>
-        <button class="opt-btn" data-val="vermoeidheid">😴 Vermoeidheid</button>
-        <button class="opt-btn" data-val="verandering in routine">🔄 Verandering</button>
-        <button class="opt-btn" data-val="onbekend">❓ Onbekend</button>
-        <button class="opt-btn" data-val="andere aanleiding">📝 Andere</button>
-      </div>
-    </div>
-
-    <!-- ACTIE -->
-    <div class="block">
-      <span class="block-label">Actie ondernomen</span>
-      <div class="btn-group" id="ged-actie-group">
-        <button class="opt-btn multi" data-val="bewoner gerustgesteld" onclick="toggleMulti(this, 'ged-actie', false)">🤝 Gerustgesteld</button>
-        <button class="opt-btn multi" data-val="afleiding aangeboden" onclick="toggleMulti(this, 'ged-actie', false)">🎵 Afleiding</button>
-        <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this, 'ged-actie', false)">💊 Medicatie</button>
-        <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this, 'ged-actie', false)">📞 Arts verwittigd</button>
-        <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this, 'ged-actie', false)">👨‍👩‍👧 Familie verwittigd</button>
-        <button class="opt-btn multi" data-val="geobserveerd" onclick="toggleMulti(this, 'ged-actie', false)">👁️ Geobserveerd</button>
-        <button class="opt-btn multi" data-val="omgeving aangepast" onclick="toggleMulti(this, 'ged-actie', false)">🏠 Omgeving aangepast</button>
-      </div>
-    </div>
-
-    <!-- RESULTAAT -->
-    <div class="block">
-      <span class="block-label">Resultaat</span>
-      <div class="btn-group" data-field="ged-resultaat">
-        <button class="opt-btn" data-val="verbetering vastgesteld">✅ Verbetering</button>
-        <button class="opt-btn" data-val="geen verandering vastgesteld">😐 Geen verandering</button>
-        <button class="opt-btn" data-val="verslechtering vastgesteld">📉 Verslechtering</button>
-        <button class="opt-btn" data-val="nog te evalueren">⏳ Te evalueren</button>
-      </div>
-    </div>
-
-    <!-- EXTRA -->
-    <div class="block">
-      <span class="block-label">Extra detail (optioneel)</span>
-      <textarea class="field" id="ged-notities" placeholder="Kort feitelijk detail..."></textarea>
-    </div>
-
-    <button class="btn-generate" onclick="generate('gedrag')">✨ Maak verslag</button>
-    <div class="loader" id="ged-loader"><div class="spinner"></div> Notitie wordt aangemaakt...</div>
-    <div class="error-box" id="ged-error"></div>
+<div class="block">
+  <span class="block-label">Type gedrag ⚠️ verplicht</span>
+  <div class="btn-group" data-field="ged-gedrag">
+    <button class="opt-btn" data-val="onrust">😰 Onrust</button>
+    <button class="opt-btn" data-val="agressie">😠 Agressie</button>
+    <button class="opt-btn" data-val="roepen">📢 Roepen</button>
+    <button class="opt-btn" data-val="dwalen">🚶 Dwalen</button>
+    <button class="opt-btn" data-val="weerstand bij zorg">✋ Weerstand zorg</button>
+    <button class="opt-btn" data-val="verward gedrag">🧠 Verward</button>
+    <button class="opt-btn" data-val="apathie">😶 Apathie</button>
   </div>
 </div>
 
+<!-- MOMENT -->
+<div class="block">
+  <span class="block-label">Moment ⚠️ verplicht</span>
+  <div class="btn-group" data-field="ged-moment">
+    <button class="opt-btn" data-val="ochtend">🌅 Ochtend</button>
+    <button class="opt-btn" data-val="namiddag">☀️ Namiddag</button>
+    <button class="opt-btn" data-val="avond">🌆 Avond</button>
+    <button class="opt-btn" data-val="nacht">🌙 Nacht</button>
+  </div>
+</div>
+
+<!-- AANLEIDING -->
+<div class="block">
+  <span class="block-label">Mogelijke aanleiding</span>
+  <div class="btn-group" data-field="ged-aanleiding">
+    <button class="opt-btn" data-val="pijn">😣 Pijn</button>
+    <button class="opt-btn" data-val="angst">😨 Angst</button>
+    <button class="opt-btn" data-val="prikkelrijke omgeving">🔊 Prikkels</button>
+    <button class="opt-btn" data-val="vermoeidheid">😴 Vermoeidheid</button>
+    <button class="opt-btn" data-val="verandering in routine">🔄 Routine</button>
+    <button class="opt-btn" data-val="onbekend">❓ Onbekend</button>
+  </div>
+</div>
+
+<!-- ACTIE -->
+<div class="block">
+  <span class="block-label">Actie ondernomen</span>
+  <div class="btn-group" id="ged-actie-group">
+    <button class="opt-btn multi" data-val="bewoner gerustgesteld" onclick="toggleMulti(this, 'ged-actie', false)">🤝 Gerustgesteld</button>
+    <button class="opt-btn multi" data-val="afleiding aangeboden" onclick="toggleMulti(this, 'ged-actie', false)">🎵 Afleiding</button>
+    <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this, 'ged-actie', false)">💊 Medicatie</button>
+    <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this, 'ged-actie', false)">📞 Arts</button>
+    <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this, 'ged-actie', false)">👨‍👩‍👧 Familie</button>
+    <button class="opt-btn multi" data-val="geobserveerd" onclick="toggleMulti(this, 'ged-actie', false)">👁️ Observatie</button>
+    <button class="opt-btn multi" data-val="omgeving aangepast" onclick="toggleMulti(this, 'ged-actie', false)">🏠 Omgeving</button>
+  </div>
+</div>
+
+<!-- RESULTAAT -->
+<div class="block">
+  <span class="block-label">Resultaat</span>
+  <div class="btn-group" data-field="ged-resultaat">
+    <button class="opt-btn" data-val="bewoner werd rustiger">😌 Rustiger</button>
+    <button class="opt-btn" data-val="gedrag bleef aanwezig">⚠️ Blijft aanwezig</button>
+    <button class="opt-btn" data-val="gedrag verergerde">📉 Verergering</button>
+    <button class="opt-btn" data-val="nog te evalueren">⏳ Te evalueren</button>
+  </div>
+</div>
 <!-- ═══ DOKTER ═══ -->
 <div id="page-dokter" class="page">
   <div class="module-page">
