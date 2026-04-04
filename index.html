@@ -4,52 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NurseEdAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --teal: #0d6b63;
+  --teal: #0d6e7a;
+  --teal-light: #13919f;
+  --teal-pale: #e6f6f8;
   --teal-mid: #0f9c8f;
-  --teal-light: #e0f7f5;
-  --teal-pale: #f0fdf9;
-  --text: #0f3d39;
-  --text-muted: #5f8a87;
-  --border: #b2d8d5;
-  --white: #ffffff;
-  --cream: #f4fffe;
-  --shadow: 0 4px 20px rgba(13,107,99,0.10);
-  --radius: 16px;
   --amber: #fef3c7;
   --amber-border: #f59e0b;
-  --red-light: #fef2f2;
+  --rose: #be123c;
+  --rose-pale: #fff1f2;
+  --green: #15803d;
+  --green-light: #dcfce7;
   --red: #dc2626;
-  --green-light: #f0fdf4;
-  --green: #16a34a;
+  --red-light: #fef2f2;
+  --ink: #0f1923;
+  --ink-mid: #374151;
+  --ink-light: #6b7280;
+  --border: #e5e7eb;
+  --bg: #f7f9fb;
+  --white: #ffffff;
+  --shadow: 0 2px 12px rgba(13,110,122,0.08);
+  --radius: 14px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
 
 /* ── HEADER ── */
 .header {
-  background: linear-gradient(135deg, #0d6b63 0%, #0f9c8f 100%);
-  padding: 14px 20px;
-  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, #0a5260 0%, var(--teal-light) 100%);
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 14px;
   position: sticky; top: 0; z-index: 100;
-  box-shadow: 0 3px 16px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 .header-logo {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.45rem; font-weight: 800; color: #fff; letter-spacing: -0.5px;
-  display: flex; align-items: center; gap: 8px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem; color: #fff; letter-spacing: 0;
+  display: flex; align-items: center; gap: 10px;
 }
 .header-logo .logo-icon {
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px; padding: 4px 8px; font-size: 1.1rem;
+  background: rgba(255,255,255,0.18);
+  border-radius: 10px; padding: 4px 9px; font-size: 1.1rem;
 }
-.header-logo span { color: #5eead4; }
+.header-logo span { color: #7de8f0; font-style: italic; }
 .back-btn {
-  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: #fff;
-  padding: 7px 16px; border-radius: 20px; font-family: 'Plus Jakarta Sans', sans-serif;
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.28); color: #fff;
+  padding: 7px 16px; border-radius: 20px; font-family: 'DM Sans', sans-serif;
   font-size: 0.82rem; font-weight: 600; cursor: pointer; display: none;
   align-items: center; gap: 6px; transition: background 0.2s;
 }
@@ -59,224 +62,261 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--cream); c
 /* ── DISCLAIMER ── */
 .disclaimer-bar {
   background: var(--amber); border-bottom: 1px solid var(--amber-border);
-  padding: 7px 16px; font-size: 0.75rem; color: #92400e;
-  text-align: center; line-height: 1.5;
+  padding: 8px 18px; font-size: 0.76rem; color: #78350f;
+  text-align: center; line-height: 1.5; font-weight: 500;
 }
 
 /* ── PAGES ── */
-.page { display: none; animation: fadeUp 0.2s ease; }
+.page { display: none; animation: fadeUp 0.25s ease; }
 .page.active { display: block; }
-@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 
 /* ── DASHBOARD ── */
-.dashboard { padding: 0 0 60px; max-width: 600px; margin: 0 auto; }
+.dashboard { padding: 0 0 60px; max-width: 620px; margin: 0 auto; }
 .dashboard-hero {
-  background: linear-gradient(135deg, #0d6b63 0%, #0f9c8f 100%);
-  padding: 32px 24px 28px;
-  color: #fff;
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(135deg, #0a5260 0%, var(--teal-light) 100%);
+  padding: 36px 28px 30px;
+  color: #fff; position: relative; overflow: hidden;
 }
 .dashboard-hero::before {
-  content: ''; position: absolute;
-  top: -40px; right: -40px;
-  width: 180px; height: 180px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 50%;
+  content: ''; position: absolute; top: -50px; right: -50px;
+  width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%;
 }
 .dashboard-hero::after {
-  content: ''; position: absolute;
-  bottom: -60px; right: 40px;
-  width: 120px; height: 120px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 50%;
+  content: ''; position: absolute; bottom: -70px; right: 30px;
+  width: 140px; height: 140px; background: rgba(255,255,255,0.04); border-radius: 50%;
 }
 .hero-badge {
   display: inline-block;
-  background: rgba(255,255,255,0.15);
-  border: 1px solid rgba(255,255,255,0.25);
-  color: #a7f3d0; font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 1px; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;
+  background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25);
+  color: #a7f3d0; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
 }
 .dashboard-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 2.2rem; color: #fff; line-height: 1.2; margin-bottom: 8px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.4rem; color: #fff; line-height: 1.15; margin-bottom: 10px;
 }
-.dashboard-title span { color: #5eead4; font-style: italic; }
-.dashboard-sub { font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.6; max-width: 340px; }
+.dashboard-title span { color: #7de8f0; font-style: italic; }
+.dashboard-sub { font-size: 0.87rem; color: rgba(255,255,255,0.78); line-height: 1.65; max-width: 360px; }
 
-.module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px 16px 0; }
+/* ── MODULE GRID ── */
+.module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 22px 18px 0; }
 .module-card {
-  background: var(--white);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius); padding: 22px 16px 18px;
-  cursor: pointer; transition: all 0.2s; text-align: center;
-  box-shadow: var(--shadow);
-  position: relative; overflow: hidden;
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 24px 18px 20px;
+  cursor: pointer; transition: all 0.22s; text-align: center;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
 }
 .module-card::before {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--teal), var(--teal-mid));
+  background: linear-gradient(90deg, var(--teal), var(--teal-light));
   opacity: 0; transition: opacity 0.2s;
 }
-.module-card:hover { border-color: var(--teal-mid); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(13,107,99,0.15); }
+.module-card:hover { border-color: var(--teal-light); transform: translateY(-3px); box-shadow: 0 8px 28px rgba(13,110,122,0.14); }
 .module-card:hover::before { opacity: 1; }
 .module-card .icon { font-size: 2.2rem; margin-bottom: 10px; display: block; }
-.module-card .name { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.module-card .desc { font-size: 0.74rem; color: var(--text-muted); line-height: 1.4; }
+.module-card .name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem; color: var(--teal); margin-bottom: 5px;
+}
+.module-card .desc { font-size: 0.75rem; color: var(--ink-light); line-height: 1.5; }
 
 /* ── MODULE PAGE ── */
-.module-page { padding: 20px 16px 60px; max-width: 600px; margin: 0 auto; }
-.module-title { font-size: 1.3rem; font-weight: 700; color: var(--teal); margin-bottom: 4px; }
-.module-desc { font-size: 0.83rem; color: var(--text-muted); margin-bottom: 20px; }
+.module-page { padding: 22px 18px 70px; max-width: 620px; margin: 0 auto; }
+.module-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.45rem; color: var(--teal); margin-bottom: 5px;
+}
+.module-desc { font-size: 0.84rem; color: var(--ink-light); margin-bottom: 22px; line-height: 1.6; }
 
 .privacy-note {
   background: var(--amber); border: 1.5px solid var(--amber-border);
-  border-radius: 10px; padding: 10px 14px; font-size: 0.78rem;
-  color: #92400e; margin-bottom: 18px; line-height: 1.6;
+  border-radius: 10px; padding: 11px 15px; font-size: 0.79rem;
+  color: #78350f; margin-bottom: 20px; line-height: 1.6; font-weight: 500;
+}
+
+/* ── FORM CARD ── */
+.form-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 22px 20px;
+  box-shadow: var(--shadow); margin-bottom: 16px;
 }
 
 /* ── FORM BLOCKS ── */
-.block { margin-bottom: 18px; }
+.block { margin-bottom: 20px; }
+.block:last-child { margin-bottom: 0; }
 .block-label {
-  font-size: 0.75rem; font-weight: 600; color: var(--text-muted);
-  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block;
+  font-size: 0.76rem; font-weight: 700; color: var(--ink-mid);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 9px; display: block;
 }
 
 /* Button group */
 .btn-group { display: flex; flex-wrap: wrap; gap: 8px; }
 .opt-btn {
-  padding: 10px 18px; border-radius: 24px;
-  border: 2px solid var(--border); background: var(--white);
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.84rem; font-weight: 600;
-  color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+  padding: 9px 17px; border-radius: 22px;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-family: 'DM Sans', sans-serif; font-size: 0.84rem; font-weight: 600;
+  color: var(--ink-light); cursor: pointer; transition: all 0.15s;
 }
-.opt-btn:hover { border-color: var(--teal-mid); color: var(--teal); background: var(--teal-light); }
-.opt-btn.selected { background: var(--teal); border-color: var(--teal); color: #fff; box-shadow: 0 2px 8px rgba(13,107,99,0.25); }
+.opt-btn:hover { border-color: var(--teal-light); color: var(--teal); background: var(--teal-pale); }
+.opt-btn.selected { background: var(--teal); border-color: var(--teal); color: #fff; box-shadow: 0 2px 8px rgba(13,110,122,0.25); }
 
 /* Toggle yes/no */
 .toggle-group { display: flex; gap: 10px; }
 .toggle-btn {
   flex: 1; padding: 12px; border-radius: 12px;
-  border: 2px solid var(--border); background: var(--white);
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
-  color: var(--text-muted); cursor: pointer; transition: all 0.15s; text-align: center;
+  border: 1.5px solid var(--border); background: var(--white);
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 600;
+  color: var(--ink-light); cursor: pointer; transition: all 0.15s; text-align: center;
 }
-.toggle-btn.yes.selected { background: var(--green-light); border-color: var(--green); color: var(--green); box-shadow: 0 2px 8px rgba(22,163,74,0.15); }
-.toggle-btn.no.selected { background: var(--red-light); border-color: var(--red); color: var(--red); box-shadow: 0 2px 8px rgba(220,38,38,0.15); }
+.toggle-btn.yes.selected { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.toggle-btn.no.selected { background: var(--red-light); border-color: var(--red); color: var(--red); }
 
-/* Select dropdown */
-select.field {
+/* Select & inputs */
+select.field, textarea.field, input.field {
   width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
-  border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.88rem;
-  color: var(--text); background: var(--white); outline: none; cursor: pointer;
-  transition: border-color 0.2s;
+  border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.89rem;
+  color: var(--ink); background: var(--bg); outline: none;
+  transition: border-color 0.2s, background 0.2s;
 }
-select.field:focus { border-color: var(--teal-mid); }
-
-/* Text input */
-textarea.field, input.field {
-  width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
-  border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 0.88rem;
-  color: var(--text); background: var(--white); outline: none; resize: vertical;
-  transition: border-color 0.2s;
+select.field { cursor: pointer; background: var(--white); }
+textarea.field { min-height: 72px; resize: vertical; line-height: 1.6; }
+select.field:focus, textarea.field:focus, input.field:focus {
+  border-color: var(--teal-light); background: var(--white);
 }
-textarea.field { min-height: 70px; }
-textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 
 /* ── GENERATE BUTTON ── */
 .btn-generate {
-  width: 100%; padding: 16px; 
-  background: linear-gradient(135deg, #0d6b63, #0f9c8f);
-  color: #fff; border: none; border-radius: 14px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 10px;
+  width: 100%; padding: 15px;
+  background: linear-gradient(135deg, #0a5260, var(--teal-light));
+  color: #fff; border: none; border-radius: 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.97rem; font-weight: 700;
+  cursor: pointer; margin-top: 12px;
   display: flex; align-items: center; justify-content: center; gap: 8px;
-  transition: all 0.2s; box-shadow: 0 4px 18px rgba(13,107,99,0.3);
-  letter-spacing: 0.2px;
+  transition: all 0.2s; box-shadow: 0 4px 16px rgba(13,110,122,0.28);
 }
-.btn-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(13,107,99,0.4); }
-.btn-generate:disabled { background: #aaa; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-generate:hover { opacity: 0.92; transform: translateY(-2px); box-shadow: 0 6px 22px rgba(13,110,122,0.38); }
+.btn-generate:disabled { background: #b0bec5; cursor: not-allowed; transform: none; box-shadow: none; }
 
 /* ── LOADER ── */
-.loader { display: none; align-items: center; justify-content: center; gap: 10px; padding: 16px; color: var(--teal); font-size: 0.88rem; font-weight: 500; }
+.loader { display: none; align-items: center; justify-content: center; gap: 10px; padding: 16px; color: var(--teal); font-size: 0.88rem; font-weight: 600; }
 .loader.visible { display: flex; }
-.spinner { width: 20px; height: 20px; border: 3px solid var(--teal-light); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; }
+.spinner { width: 20px; height: 20px; border: 3px solid var(--teal-pale); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* ── RESULT PAGE ── */
-.result-page { padding: 20px 16px 60px; max-width: 600px; margin: 0 auto; display: none; }
-.result-page.visible { display: block; }
-.result-label { font-size: 0.72rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-.result-warning { background: var(--amber); border-radius: 6px; padding: 3px 8px; font-size: 0.7rem; color: #92400e; }
-.result-box {
-  width: 100%;
-  min-height: 320px;
-  padding: 22px 24px;
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
-  background: #fcfffe;
-  box-shadow: var(--shadow);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--text);
-  white-space: pre-wrap;
-  resize: vertical;
-  margin-bottom: 14px;
+.result-label {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem; color: var(--teal); margin-bottom: 6px;
+  display: flex; align-items: center; gap: 10px;
 }
-.result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.result-warning { background: var(--amber); border-radius: 6px; padding: 3px 10px; font-size: 0.71rem; color: #78350f; font-family: 'DM Sans', sans-serif; font-weight: 700; }
+.result-box {
+  width: 100%; min-height: 300px; padding: 20px 22px;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  background: var(--white); box-shadow: var(--shadow);
+  font-family: 'DM Sans', sans-serif; font-size: 0.95rem; line-height: 1.75;
+  color: var(--ink-mid); white-space: pre-wrap; resize: vertical; margin-bottom: 14px;
+  border-left: 4px solid var(--teal-light);
+}
+.result-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .result-btn {
   padding: 11px; border-radius: 10px; border: 1.5px solid var(--border);
-  background: var(--white); font-family: 'Outfit', sans-serif; font-size: 0.83rem;
-  font-weight: 500; color: var(--text); cursor: pointer; transition: all 0.2s;
-  text-align: center;
+  background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 0.84rem;
+  font-weight: 600; color: var(--ink-mid); cursor: pointer; transition: all 0.2s; text-align: center;
 }
-.result-btn:hover { border-color: var(--teal); color: var(--teal); }
-.result-btn.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
-.result-btn.primary:hover { background: var(--teal-mid); }
-
-.copy-tip { background: var(--teal-light); border-radius: 10px; padding: 10px 14px; font-size: 0.78rem; color: var(--teal); margin-top: 12px; line-height: 1.6; }
+.result-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-pale); }
+.result-btn.primary { background: linear-gradient(135deg, #0a5260, var(--teal-light)); border-color: var(--teal); color: #fff; }
+.result-btn.primary:hover { opacity: 0.9; }
+.copy-tip { background: var(--teal-pale); border-radius: 10px; padding: 11px 15px; font-size: 0.79rem; color: var(--teal); margin-top: 13px; line-height: 1.6; font-weight: 500; }
 
 /* ── ERROR ── */
 .error-box { display: none; background: var(--red-light); border: 1.5px solid #fca5a5; border-radius: 10px; padding: 12px 16px; font-size: 0.84rem; color: var(--red); margin-top: 12px; }
 .error-box.visible { display: block; }
 
 /* ── POPUP ── */
-.popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.popup-overlay.hidden { display: none !important; }
-.popup-box { background: #fff; border-radius: 18px; padding: 30px 24px; max-width: 400px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.2); text-align: center; }
-.popup-icon { font-size: 2.2rem; margin-bottom: 12px; }
-.popup-box h2 { font-size: 1.2rem; font-weight: 700; color: var(--teal); margin-bottom: 12px; }
-.popup-box p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 16px; }
-.popup-rules { background: var(--amber); border-radius: 10px; padding: 12px 14px; text-align: left; font-size: 0.8rem; color: #92400e; margin-bottom: 20px; line-height: 1.7; }
-.popup-btn { width: 100%; padding: 13px; background: var(--teal); color: #fff; border: none; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 600; cursor: pointer; }
-.popup-btn:hover { background: var(--teal-mid); }
+.popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.popup-box { background: #fff; border-radius: 18px; padding: 32px 26px; max-width: 400px; width: 100%; box-shadow: 0 24px 60px rgba(0,0,0,0.18); text-align: center; }
+.popup-icon { font-size: 2.4rem; margin-bottom: 14px; }
+.popup-box h2 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--teal); margin-bottom: 12px; }
+.popup-box p { font-size: 0.86rem; color: var(--ink-light); line-height: 1.65; margin-bottom: 16px; }
+.popup-rules { background: var(--amber); border-radius: 10px; padding: 13px 15px; text-align: left; font-size: 0.8rem; color: #78350f; margin-bottom: 22px; line-height: 1.75; font-weight: 500; }
+.popup-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #0a5260, var(--teal-light)); color: #fff; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
+.popup-btn:hover { opacity: 0.9; }
 
-@media(max-width: 480px) {
+/* ── TAAL & SHIFT KNOPPEN ── */
+.lang-btn {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.28);
+  color: #fff; padding: 6px 14px; border-radius: 20px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.lang-btn.active { background: rgba(255,255,255,0.9); color: var(--teal); }
+.lang-btn:hover { background: rgba(255,255,255,0.26); }
+
+.shift-btn {
+  background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.22);
+  color: rgba(255,255,255,0.88); padding: 7px 16px; border-radius: 20px;
+  font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.shift-btn:hover { background: rgba(255,255,255,0.24); }
+.shift-btn.active { background: rgba(255,255,255,0.9); color: var(--teal); border-color: rgba(255,255,255,0.9); }
+
+@media(max-width: 500px) {
   .module-grid { grid-template-columns: 1fr; }
   .result-actions { grid-template-columns: 1fr 1fr; }
 }
 
-/* LANGUAGE BUTTONS */
-.lang-btn {
-  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
-  color: #fff; padding: 6px 14px; border-radius: 20px;
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.8rem; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
+/* ── MOBIEL TOUCH TARGETS ── */
+@media(max-width: 600px) {
+  .opt-btn { padding: 11px 18px; font-size: 0.88rem; }
+  .btn-generate { padding: 17px; font-size: 1rem; }
+  .result-btn { padding: 13px; font-size: 0.88rem; }
+  .toggle-btn { padding: 14px; font-size: 0.92rem; }
+  .field, textarea.field, input.field { padding: 13px 14px; font-size: 0.92rem; }
+  .voice-btn { width: 46px; height: 46px; font-size: 1.3rem; }
+  .module-card { padding: 20px 14px 16px; }
+  .quick-note-btn { padding: 18px 16px; }
 }
-.lang-btn.active { background: rgba(255,255,255,0.9); color: var(--teal); }
-.lang-btn:hover { background: rgba(255,255,255,0.25); }
+.voice-btn {
+  background: var(--teal-pale); border: 1.5px solid var(--teal-light);
+  color: var(--teal); width: 40px; height: 40px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; cursor: pointer; margin-left: 8px; vertical-align: middle;
+  transition: all 0.2s; flex-shrink: 0;
+}
+.voice-btn:hover { background: var(--teal-pale); border-color: var(--teal); }
+.voice-btn.listening { background: #fee2e2; color: #ef4444; border-color: #ef4444; animation: pulse 1.2s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-.shift-btn {
-  background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.25);
-  color: rgba(255,255,255,0.85); padding: 7px 16px; border-radius: 20px;
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.82rem; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
+.voice-row { display: flex; align-items: flex-start; gap: 0; }
+.voice-row textarea.field, .voice-row input.field { flex: 1; }
+
+/* ── SNELLE NOTITIE KNOP ── */
+.quick-note-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: calc(100% - 32px); margin: 18px 16px 4px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #0a5260, var(--teal-light));
+  color: #fff; border: none; border-radius: 14px;
+  font-family: 'DM Serif Display', serif; font-size: 1.05rem;
+  cursor: pointer; box-shadow: 0 4px 18px rgba(13,110,122,0.3);
+  transition: all 0.2s;
 }
-.shift-btn:hover { background: rgba(255,255,255,0.25); }
-.shift-btn.active { background: rgba(255,255,255,0.9); color: var(--teal); border-color: rgba(255,255,255,0.9); }
+.quick-note-btn:hover { opacity: 0.92; transform: translateY(-2px); }
+.quick-note-btn .qn-sub { font-family: 'DM Sans', sans-serif; font-size: 0.76rem; opacity: 0.85; margin-top: 2px; }
+
+/* ── TIJDSBESPARING TELLER ── */
+.time-saved-bar {
+  display: none; margin: 14px 0 0;
+  background: var(--green-light); border: 1.5px solid var(--green);
+  border-radius: 10px; padding: 10px 16px;
+  font-size: 0.84rem; color: var(--green); font-weight: 600;
+  text-align: center; animation: fadeUp 0.3s ease;
+}
+.time-saved-bar.visible { display: block; }
 </style>
 </head>
 <body>
@@ -331,6 +371,16 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       </div>
     </div>
     <div class="module-grid">
+      <!-- Snelle Notitie bovenaan -->
+      <div style="grid-column: span 2; margin-bottom: 4px;">
+        <button class="quick-note-btn" onclick="quickNote()">
+          <span style="font-size:1.4rem;">🎤</span>
+          <div>
+            <div>Snelle Notitie inspreken</div>
+            <div class="qn-sub">Spreek in — AI schrijft het verslag in 30 sec</div>
+          </div>
+        </button>
+      </div>
       <div class="module-card" onclick="openModule('kort')" style="grid-column: span 2; background: linear-gradient(135deg, #f0fdf9, #e0f7f5); border-color: var(--teal-mid);">
         <div class="icon">⚡</div>
         <div class="name" style="color:var(--teal);">Korte Communicatie</div>
@@ -459,7 +509,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 
     <div class="block">
       <span class="block-label">Extra notitie (optioneel)</span>
-      <textarea class="field" id="ov-notities" placeholder="Korte extra info voor de volgende shift..."></textarea>
+      <div class="voice-row">
+        <textarea class="field" id="ov-notities" placeholder="Korte extra info voor de volgende shift..."></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'ov-notities')">🎤</button>
+      </div>
     </div>
 
     <button class="btn-generate" onclick="generate('overdracht')" disabled>✨ Maak verslag</button>
@@ -660,7 +713,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
     <!-- EXTRA -->
     <div class="block">
       <span class="block-label">Korte beschrijving (optioneel)</span>
-      <textarea class="field" id="inc-notities" placeholder="Bijzonderheden..."></textarea>
+      <div class="voice-row">
+        <textarea class="field" id="inc-notities" placeholder="Bijzonderheden..."></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'inc-notities')">🎤</button>
+      </div>
     </div>
 
     <button class="btn-generate" onclick="generate('incident')">✨ Maak verslag</button>
@@ -757,7 +813,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 
     <div class="block">
       <span class="block-label">Extra notitie (optioneel)</span>
-      <textarea class="field" id="med-notities" placeholder="Korte extra info indien nodig..."></textarea>
+      <div class="voice-row">
+        <textarea class="field" id="med-notities" placeholder="Korte extra info indien nodig..."></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'med-notities')">🎤</button>
+      </div>
     </div>
 
     <button class="btn-generate" onclick="generate('medicatie')">✨ Maak verslag</button>
@@ -908,7 +967,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 
     <div class="block">
       <span class="block-label">Extra notities (optioneel)</span>
-      <textarea class="field" id="won-notities" placeholder="Kleur exsudaat, bijzonderheden..."></textarea>
+      <div class="voice-row">
+        <textarea class="field" id="won-notities" placeholder="Kleur exsudaat, bijzonderheden..."></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'won-notities')">🎤</button>
+      </div>
     </div>
 
     <button class="btn-generate" onclick="generate('wond')">✨ Maak verslag</button>
@@ -1012,7 +1074,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
     <!-- EXTRA -->
     <div class="block">
       <span class="block-label">Extra detail (optioneel)</span>
-      <textarea class="field" id="ged-notities" placeholder="Kort feitelijk detail..."></textarea>
+      <div class="voice-row">
+        <textarea class="field" id="ged-notities" placeholder="Kort feitelijk detail..."></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'ged-notities')">🎤</button>
+      </div>
     </div>
 
     <button class="btn-generate" onclick="generate('gedrag')">✨ Maak verslag</button>
@@ -1089,7 +1154,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 
     <div class="block">
       <span class="block-label">Extra (optioneel)</span>
-      <textarea class="field" id="dok-notities" placeholder="Korte extra info..."></textarea>
+      <div class="voice-row">
+        <textarea class="field" id="dok-notities" placeholder="Korte extra info..."></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'dok-notities')">🎤</button>
+      </div>
     </div>
 
     <button class="btn-generate" onclick="generate('dokter')">✨ Maak verslag</button>
@@ -1341,7 +1409,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 
     <div class="block">
       <span class="block-label">Extra korte notitie (optioneel)</span>
-      <textarea class="field" id="kort-notities" placeholder="bijv. telefonisch bevestigd door huisarts, familie akkoord, ontslagbrief in dossier..." style="min-height:88px;"></textarea>
+      <div class="voice-row">
+        <textarea class="field" id="kort-notities" placeholder="bijv. telefonisch bevestigd door huisarts, familie akkoord, ontslagbrief in dossier..." style="min-height:88px;"></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'kort-notities')">🎤</button>
+      </div>
     </div>
 
     <button class="btn-generate" onclick="generate('kort')">⚡ Maak verslag</button>
@@ -1350,8 +1421,71 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
   </div>
 </div>
 
+<!-- ═══ FAMILIE ═══ -->
+<div id="page-familie" class="page">
+  <div class="module-page">
+    <div class="module-title">👨‍👩‍👧 Familiecommunicatie</div>
+    <div class="module-desc">Professioneel bericht of dossiernotitie over familiecontact</div>
+    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
 
-<!-- ═══ RESULT PAGE ═══ -->
+    <div class="block">
+      <span class="block-label">Kamer / bewoner</span>
+      <input type="text" class="field" id="fam-kamer" placeholder="bijv. Kamer 6">
+    </div>
+
+    <div class="block">
+      <span class="block-label">Type contact ⚠️ verplicht</span>
+      <div class="btn-group" data-field="fam-type">
+        <button class="opt-btn" data-val="telefonisch contact met familie">📞 Telefonisch</button>
+        <button class="opt-btn" data-val="bezoek van familie">🏠 Bezoek</button>
+        <button class="opt-btn" data-val="bericht gestuurd aan familie">💬 Bericht gestuurd</button>
+        <button class="opt-btn" data-val="geen contact gekregen met familie">📵 Geen contact</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">Onderwerp ⚠️ verplicht</span>
+      <div class="btn-group" data-field="fam-onderwerp">
+        <button class="opt-btn" data-val="algemeen welbevinden">💚 Welbevinden</button>
+        <button class="opt-btn" data-val="medische update">🩺 Medische update</button>
+        <button class="opt-btn" data-val="incident of val">⚠️ Incident / val</button>
+        <button class="opt-btn" data-val="medicatiewijziging">💊 Medicatie</button>
+        <button class="opt-btn" data-val="achteruitgang">📉 Achteruitgang</button>
+        <button class="opt-btn" data-val="praktische afspraak">📅 Afspraak</button>
+        <button class="opt-btn" data-val="overlijden">🕊️ Overlijden</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">Toon van het bericht</span>
+      <div class="btn-group" data-field="fam-toon">
+        <button class="opt-btn selected" data-val="warm en geruststellend">💚 Warm & geruststellend</button>
+        <button class="opt-btn" data-val="neutraal en informatief">📋 Neutraal</button>
+        <button class="opt-btn" data-val="zorgelijk maar professioneel">⚠️ Ernstig</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">Wat wil je genereren? ⚠️ verplicht</span>
+      <div class="btn-group" data-field="fam-modus">
+        <button class="opt-btn" data-val="dossiernotitie">📝 Dossiernotitie</button>
+        <button class="opt-btn" data-val="spreekversie">📞 Spreekversie (tel.)</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">Inhoud / bijzonderheden (optioneel)</span>
+      <div class="voice-row">
+        <textarea class="field" id="fam-notities" placeholder="bijv. familie vroeg naar medicatie, dochter bezorgd, afgesproken dat arts morgen belt..."></textarea>
+        <button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'fam-notities')">🎤</button>
+      </div>
+    </div>
+
+    <button class="btn-generate" onclick="generate('familie')" disabled>✨ Maak verslag</button>
+    <div class="loader" id="fam-loader"><div class="spinner"></div> Bericht wordt aangemaakt...</div>
+    <div class="error-box" id="fam-error"></div>
+  </div>
+</div>
 <div id="page-result" class="page">
   <div class="module-page">
     <div class="result-label">
@@ -1365,6 +1499,7 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
       <button class="result-btn" onclick="regenerateResult()">🔄 Opnieuw</button>
       <button class="result-btn" onclick="rewriteResult('korter')">✂️ Maak korter</button>
     </div>
+    <div class="time-saved-bar" id="time-saved-bar"></div>
     <div class="copy-tip">📋 <strong>Volgende stap:</strong> Kopieer de tekst → open uw EHR/zorgdossier → plak handmatig. Controleer altijd voor gebruik.</div>
     <div class="loader" id="result-loader" style="margin-top:12px;"><div class="spinner"></div> Bezig...</div>
     <div class="error-box" id="result-error"></div>
@@ -1504,8 +1639,9 @@ document.querySelectorAll('input.field, textarea.field, select.field').forEach(e
 
 // ── BUILD PROMPTS ──
 function buildPrompt(mod) {
-  const taal = langNames[currentLang] || 'het Nederlands';
-  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in ${taal}. Professioneel, kort, logisch en praktijkgericht. Maximaal 4 zinnen. Geen info verzinnen. Vermijd aannames zoals arts verwittigd als dat niet expliciet vermeld is.`;
+  const taal = currentLang === 'fr' ? 'Frans' : currentLang === 'en' ? 'Engels' : 'Nederlands';
+
+  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke en professionele notitie voor het zorgdossier. Gebruik directe, actieve taal. Wees bondig (maximaal 2-4 zinnen). Vermijd herhaling, passieve zinnen, AI-taal en overbodige uitleg. Schrijf zoals een collega-verpleegkundige het zou noteren: helder, neutraal en zonder oordeel. Gebruik alleen de verstrekte informatie. Verzin niets bij.`;
 
 if (mod === 'kort') {
     const scenario = getField('kort-scenario');
@@ -1591,10 +1727,12 @@ Type: ${type}
 Korte inhoud: ${inhoud}`;
     }
 
-    return { prompt: `${base} Schrijf een ZEER korte, directe verpleegkundige communicatienota voor het zorgdossier. Maximaal 2 zinnen, liefst maximaal 25 woorden. Focus alleen op reden, actie en beleid of opvolging. Gebruik natuurlijke dossierstijl voor een Belgisch woonzorgcentrum. Vermijd standaardzinnen zoals "parameters gecontroleerd" tenzij echt relevant. Bij laboresultaten schrijf je dat de huisarts gecontacteerd werd of dat laboresultaten met de huisarts besproken werden. Schrijf nooit dat het labo zelf besliste of rechtstreeks belde.
+    return { 
+      prompt: `${base} Schrijf een ZEER korte communicatienota voor het zorgdossier (maximaal 2 zinnen).
 Kamer: ${getField('kort-kamer') || 'niet ingevuld'}
 ${details}
-Extra notitie: ${document.getElementById('kort-notities')?.value.trim() || 'geen'}` };
+Extra: ${document.getElementById('kort-notities')?.value.trim() || 'geen'}`
+    };
   }
 
   if (mod === 'overdracht') {
@@ -1604,16 +1742,19 @@ Extra notitie: ${document.getElementById('kort-notities')?.value.trim() || 'geen
     const acties = getMulti('ov-actie');
     const opvolging = getField('ov-opvolging');
     const extra = document.getElementById('ov-notities')?.value.trim();
-    return { prompt: `${base} Schrijf een korte professionele overdracht voor de volgende shift in maximaal 3 zinnen. Focus op: huidige toestand, wat belangrijk is voor de volgende shift, wat al gedaan werd en welke opvolging nodig is. Schrijf compact en direct bruikbaar in het zorgdossier.
+    return { 
+      prompt: `${base} Schrijf een korte, duidelijke overdracht voor de volgende shift.
+Focus op huidige toestand, belangrijke observaties, wat al gedaan werd en opvolging. Maximaal 3 zinnen.
 Shift: ${currentShift || 'niet gespecificeerd'}
 Kamer: ${getField('ov-kamer')||'niet ingevuld'}
-Huidige toestand: ${toestand}
+Toestand: ${toestand}
 Voeding: ${getField('ov-voeding') || 'niet geregistreerd'}
 Vochtinname: ${getField('ov-vocht') || 'niet geregistreerd'}
-Belangrijk voor volgende shift: ${observaties}
-Reeds uitgevoerd: ${acties}
-Opvolging volgende shift: ${opvolging || 'geen bijzondere opvolging'}
-Extra: ${extra||'geen'}` };
+Belangrijk: ${observaties}
+Reeds gedaan: ${acties}
+Opvolging: ${opvolging || 'geen bijzondere opvolging'}
+Extra: ${extra||'geen'}`
+    };
   }
 
   if (mod === 'incident') {
@@ -1637,9 +1778,11 @@ Extra: ${extra||'geen'}` };
     if (type === 'niet ingevuld') return { error: '⚠️ Selecteer type incident.' };
     if (locatie === 'niet ingevuld') return { error: '⚠️ Selecteer locatie.' };
 
-    return { prompt: `${base} Schrijf een objectief incidentverslag in maximaal 4 zinnen. Feiten eerst, daarna letsel, daarna acties en opvolging. Vermeld vitale parameters en pijnscore alleen als ze beschikbaar zijn of ingevuld werden.
+    return { 
+      prompt: `${base} Schrijf een objectief incidentverslag. Beschrijf feiten, observaties, letsel, acties en opvolging.
+Wees feitelijk en bondig. Vermeld vitale parameters alleen als ingevuld. Maximaal 4 zinnen.
 Kamer: ${getField('inc-kamer')||'niet ingevuld'}
-Type incident: ${type}
+Type: ${type}
 Locatie: ${locatie}
 Situatie: ${situatie}
 Bewustzijn: ${bewustzijn}
@@ -1647,14 +1790,11 @@ Hoofdimpact: ${hoofdimpact}
 Mobiliteit: ${mobiliteit}
 Letsel: ${letsel}
 Acties: ${acties}
-Vitale parameters:
-- RR: ${rr}
-- HF: ${hf}
-- Sat: ${sat}
-- Temp: ${temp}
+Vitale parameters: RR ${rr} | HF ${hf} | Sat ${sat} | Temp ${temp}
 Pijnscore: ${pijnscore}
-Opvolging nodig: ${opvolging}
-Extra: ${extra}` };
+Opvolging: ${opvolging}
+Extra: ${extra}`
+    };
   }
 
   if (mod === 'medicatie') {
@@ -1662,16 +1802,18 @@ Extra: ${extra}` };
     const wijziging = getField('med-wijziging');
     if (context === 'niet ingevuld') return { error: '⚠️ Selecteer de reden of context.' };
     if (wijziging === 'niet ingevuld') return { error: '⚠️ Selecteer wat er gewijzigd is.' };
-    return { prompt: `${base} Schrijf een kort, logisch en professioneel verpleegkundig medicatieverslag in maximaal 3 zinnen. Focus op reden of context, medicatiewijziging, verpleegkundige actie en opvolging. Vermeld alleen wat effectief geselecteerd of ingevuld werd. Gebruik geen zinnen zoals "ontbreekt" of "niet ingevuld".
+    return { 
+      prompt: `${base} Schrijf een professionele medicatienotitie. Vermeld context, wijziging, medicatie, actie en opvolging. Maximaal 3 zinnen.
 Kamer: ${getField('med-kamer') || 'niet ingevuld'}
-Reden / context: ${context}
+Context: ${context}
 Wijziging: ${wijziging}
 Medicatie: ${document.getElementById('med-naam')?.value.trim() || 'geen'}
 Opdracht van: ${getField('med-opdracht')}
-Actie verpleegkundige: ${getField('med-actie')}
-Antwoord / beleid: ${document.getElementById('med-beleid')?.value.trim() || 'geen'}
+Actie: ${getField('med-actie')}
+Beleid: ${document.getElementById('med-beleid')?.value.trim() || 'geen'}
 Opvolging: ${getField('med-opvolging')}
-Extra: ${document.getElementById('med-notities')?.value.trim() || 'geen'}` };
+Extra: ${document.getElementById('med-notities')?.value.trim() || 'geen'}`
+    };
   }
 
   if (mod === 'wond') {
@@ -1680,8 +1822,8 @@ Extra: ${document.getElementById('med-notities')?.value.trim() || 'geen'}` };
     if (type === 'niet ingevuld') return { error: '⚠️ Selecteer het type wonde.' };
     if (locatie === 'niet ingevuld') return { error: '⚠️ Selecteer de wondlocatie.' };
 
-    return { prompt: `${base} Schrijf een duidelijke, professionele wondzorgnota in maximaal 4 zinnen. Beschrijf kort de wonde, de wondzorg, relevante TIME-observaties en de opvolging. Vermeld alleen wat effectief geselecteerd of genoteerd werd.
-
+    return { 
+      prompt: `${base} Schrijf een duidelijke wondverzorgingsnota. Vermeld type, locatie, afmetingen, observaties, zorg en opvolging. Maximaal 4 zinnen.
 Kamer: ${getField('won-kamer') || 'niet ingevuld'}
 Type wonde: ${type}
 Locatie: ${locatie}
@@ -1703,16 +1845,18 @@ Extra: ${document.getElementById('won-notities')?.value.trim() || 'geen'}` };
   if (mod === 'gedrag') {
     const gedrag = getField('ged-gedrag');
     if (gedrag === 'niet ingevuld') return { error: '⚠️ Selecteer het gedrag.' };
-    return { prompt: `${base} Schrijf een professionele gedragsnotitie in maximaal 3 zinnen.
+    return { 
+      prompt: `${base} Schrijf een neutrale, feitelijke gedragsnotitie zonder oordeel.
+Vermeld gedrag, context, interventie en resultaat. Maximaal 3 zinnen.
 Kamer: ${getField('ged-kamer')||'niet ingevuld'}
 Gedrag: ${gedrag}
-Moment: ${getField('ged-moment')}
-Tijdstip: ${document.getElementById('ged-tijdstip')?.value || 'niet ingevuld'}
-Context: ${getField('ged-context') || 'niet ingevuld'}
+Moment: ${getField('ged-moment')} ${document.getElementById('ged-tijdstip')?.value ? 'om ' + document.getElementById('ged-tijdstip').value : ''}
+Context: ${getField('ged-context') || 'niet vermeld'}
 Mogelijke oorzaak: ${getField('ged-aanleiding')}
 Interventie: ${getMulti('ged-actie')}
 Resultaat: ${getField('ged-resultaat')}
-Extra: ${document.getElementById('ged-notities')?.value.trim()||'geen'}` };
+Extra: ${document.getElementById('ged-notities')?.value.trim()||'geen'}`
+    };
   }
 
   if (mod === 'dokter') {
@@ -1720,14 +1864,16 @@ Extra: ${document.getElementById('ged-notities')?.value.trim()||'geen'}` };
     const antwoord = getField('dok-antwoord');
     if (reden === 'niet ingevuld') return { error: '⚠️ Selecteer de reden van contact.' };
     if (antwoord === 'niet ingevuld') return { error: '⚠️ Selecteer het antwoord van de arts.' };
-    return { prompt: `${base} Schrijf een kort, duidelijk en professioneel verpleegkundig verslag van een doktersbezoek of telefonisch overleg in maximaal 3 zinnen. Focus op type contact, reden van contact, actie van de verpleegkundige, antwoord van de arts en opvolging. Vermeld alleen wat effectief geselecteerd of genoteerd werd. Gebruik natuurlijke dossierstijl, zonder uitleg of titel.
+    return { 
+      prompt: `${base} Schrijf een kort verslag van het dokterscontact. Vermeld type contact, reden, beslissingen van de arts en opvolging. Maximaal 3 zinnen.
 Kamer: ${getField('dok-kamer')||'niet ingevuld'}
 Type contact: ${getField('dok-contacttype') || 'fysiek bezoek'}
-Reden van contact: ${reden}
+Reden: ${reden}
 Actie verpleegkundige: ${getField('dok-actie')}
 Antwoord arts: ${antwoord}
 Opvolging: ${getField('dok-opvolging')}
-Extra: ${document.getElementById('dok-notities')?.value.trim()||'geen'}` };
+Extra: ${document.getElementById('dok-notities')?.value.trim()||'geen'}`
+    };
   }
 
   if (mod === 'familie') {
@@ -1950,11 +2096,20 @@ async function rewriteResult(style) {
   }
 }
 
-// ── COPY ──
+// ── COPY (met tijdsbesparing teller) ──
+let totalTimeSaved = 0;
+
 function copyResult(event) {
   const text = document.getElementById('result-output').value;
   const btn = event.currentTarget;
   navigator.clipboard.writeText(text).then(() => {
+    // Tijdsbesparing: gemiddeld 3 minuten = 180 seconden per rapport
+    totalTimeSaved += 180;
+    const minuten = Math.floor(totalTimeSaved / 60);
+    const sec = totalTimeSaved % 60;
+    const bar = document.getElementById('time-saved-bar');
+    bar.innerHTML = `✅ Gekopieerd! Vandaag al <strong>${minuten > 0 ? minuten + ' min' + (sec > 0 ? ' ' + sec + ' sec' : '') : sec + ' sec'}</strong> bespaard op documentatie 🎉`;
+    bar.classList.add('visible');
     const orig = btn.innerHTML;
     btn.innerHTML = '✅ Gekopieerd!';
     setTimeout(() => btn.innerHTML = orig, 2000);
@@ -1967,6 +2122,124 @@ function copyResult(event) {
     document.body.removeChild(ta);
     btn.innerHTML = '✅ Gekopieerd!';
     setTimeout(() => btn.innerHTML = '📋 Kopieer', 2000);
+  });
+}
+
+// ── STEM HERKENNING ──
+let recognition = null;
+let isListening = false;
+let currentVoiceTextarea = null;
+
+function initVoice() {
+  if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.lang = 'nl-NL';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      if (currentVoiceTextarea) {
+        const existing = currentVoiceTextarea.value;
+        currentVoiceTextarea.value = existing ? existing + ' ' + transcript : transcript;
+        currentVoiceTextarea.dispatchEvent(new Event('input'));
+      }
+      stopListening();
+    };
+    recognition.onerror = (e) => {
+      stopListening();
+      if (e.error !== 'no-speech') alert('Stemherkenning werkte niet. Gebruik Chrome of Edge.');
+    };
+    recognition.onend = stopListening;
+  }
+}
+
+function toggleVoice(btn, textareaId) {
+  if (!recognition) {
+    alert('Stemherkenning is niet beschikbaar. Gebruik Google Chrome of Microsoft Edge.');
+    return;
+  }
+  currentVoiceTextarea = document.getElementById(textareaId);
+  if (!currentVoiceTextarea) return;
+
+  if (!isListening) {
+    isListening = true;
+    btn.classList.add('listening');
+    btn.title = 'Klik om te stoppen';
+    recognition.start();
+  } else {
+    stopListening();
+  }
+}
+
+function stopListening() {
+  isListening = false;
+  if (recognition) try { recognition.stop(); } catch(e) {}
+  document.querySelectorAll('.voice-btn').forEach(b => {
+    b.classList.remove('listening');
+    b.title = 'Inspreken';
+  });
+}
+
+// ── SNELLE NOTITIE (inspreken → direct rapport) ──
+async function quickNote() {
+  if (!recognition) {
+    alert('Snelle notitie vereist stemherkenning. Gebruik Chrome of Edge.');
+    return;
+  }
+
+  const kamer = prompt('Voor welke kamer? (bijv. 12)');
+  if (!kamer) return;
+
+  alert('🎤 Klaar om in te spreken! Klik OK en spreek dan direct uw notitie in.\n\nBijvoorbeeld: "Bewoner was onrustig, weinig gegeten, arts verwittigd"');
+
+  return new Promise((resolve) => {
+    const tempRecognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    tempRecognition.lang = 'nl-NL';
+    tempRecognition.interimResults = false;
+
+    tempRecognition.onresult = async (event) => {
+      const transcript = event.results[0][0].transcript;
+
+      // Toon loader op dashboard
+      const btn = document.querySelector('.quick-note-btn');
+      const origHTML = btn.innerHTML;
+      btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;filter:brightness(10)"></div> <div><div>Verslag wordt aangemaakt...</div><div class="qn-sub">Even geduld</div></div>';
+      btn.disabled = true;
+
+      try {
+        const prompt = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in het Nederlands een kort, professioneel verpleegkundig verslag van maximaal 3 zinnen. Geen aannames, alleen wat gezegd werd.
+Kamer: ${kamer}
+Ingesproken notitie: "${transcript}"`;
+
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ module: 'snel', formData: { prompt } })
+        });
+        const data = await response.json();
+        const text = data?.output || 'Geen output ontvangen.';
+
+        document.getElementById('result-output').value = text;
+        document.getElementById('result-module-name').textContent = '⚡ Snelle Notitie';
+        showPage('page-result');
+        document.getElementById('back-btn').classList.add('visible');
+      } catch(err) {
+        alert('Fout bij aanmaken verslag: ' + err.message);
+      } finally {
+        btn.innerHTML = origHTML;
+        btn.disabled = false;
+      }
+      resolve();
+    };
+
+    tempRecognition.onerror = (e) => {
+      alert('Stemherkenning mislukt. Probeer opnieuw.');
+      resolve();
+    };
+
+    tempRecognition.start();
   });
 }
 
@@ -2005,6 +2278,7 @@ function closePopup() {
     p.style.display = 'none';
   }
   refreshGenerateButtons();
+  initVoice();
 })();
 </script>
 </body>
