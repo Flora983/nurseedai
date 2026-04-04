@@ -156,6 +156,16 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   .module-grid { grid-template-columns: 1fr; }
   .voice-btn { width: 44px; height: 44px; }
 }
+.param-warning { font-size: 0.75rem; font-weight: 700; color: var(--red); margin-top: 4px; display: none; }
+.param-warning.visible { display: block; }
+.param-field.afwijkend { border-color: var(--red) !important; background: var(--red-light) !important; }
+
+.offline-banner {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: #1f2937; color: #f9fafb; text-align: center;
+  padding: 12px 16px; font-size: 0.82rem; font-weight: 600; z-index: 500;
+}
+.offline-banner.visible { display: block; }
 </style>
 </head>
 <body>
@@ -185,6 +195,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 
 <!-- DISCLAIMER -->
 <div class="disclaimer-bar">⚠️ Persoonlijk hulpmiddel — gebruik kamernummer, geen echte naam. Kopieer handmatig naar EHR.</div>
+<div class="offline-banner" id="offline-banner">📵 Geen internetverbinding — AI-generatie niet beschikbaar. De interface werkt wel offline.</div>
 
 <!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
@@ -402,10 +413,22 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <div class="block">
         <span class="block-label">Vitale parameters (optioneel)</span>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <input type="text" class="field" id="inc-rr" placeholder="RR bv. 120/70">
-          <input type="text" class="field" id="inc-hf" placeholder="HF bv. 82">
-          <input type="text" class="field" id="inc-sat" placeholder="Sat bv. 96%">
-          <input type="text" class="field" id="inc-temp" placeholder="Temp bv. 37.1">
+          <div>
+            <input type="text" class="field param-field" id="inc-rr" placeholder="RR bv. 120/70" oninput="checkParam(this)">
+            <div class="param-warning" id="warn-rr"></div>
+          </div>
+          <div>
+            <input type="text" class="field param-field" id="inc-hf" placeholder="HF bv. 82" oninput="checkParam(this)">
+            <div class="param-warning" id="warn-hf"></div>
+          </div>
+          <div>
+            <input type="text" class="field param-field" id="inc-sat" placeholder="Sat bv. 96%" oninput="checkParam(this,'sat')">
+            <div class="param-warning" id="warn-sat"></div>
+          </div>
+          <div>
+            <input type="text" class="field param-field" id="inc-temp" placeholder="Temp bv. 37.1" oninput="checkParam(this,'temp')">
+            <div class="param-warning" id="warn-temp"></div>
+          </div>
         </div>
       </div>
       <div class="block">
@@ -937,7 +960,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block"><span class="block-label">Tijdstip (optioneel)</span><input type="time" class="field" id="kort-tijdstip"></div>
     <div class="block">
       <span class="block-label">Type communicatie ⚠️ verplicht</span>
-      <div class="btn-group" data-field="kort-scenario" id="kort-scenario-group">
+      <div class="btn-group" id="kort-scenario-group">
         <button class="opt-btn" data-val="huisarts gecontacteerd" onclick="selectKortScenario(this,'arts-gecontacteerd')">🩺 Huisarts gecontacteerd</button>
         <button class="opt-btn" data-val="huisartsadvies / laboresultaten" onclick="selectKortScenario(this,'arts-advies')">🧪 Huisartsadvies / labo</button>
         <button class="opt-btn" data-val="bewoner opgenomen" onclick="selectKortScenario(this,'opname')">🚑 Bewoner opgenomen</button>
@@ -1306,7 +1329,8 @@ function focusResultEditor() {
 
 // ── VALIDATIE GENERATE KNOPPEN ──
 function isKortReady() {
-  const scenario = getField('kort-scenario');
+  const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected');
+  const scenario = scenarioBtn ? scenarioBtn.dataset.val : 'niet ingevuld';
   if (!hasValue('kort-kamer') || scenario === 'niet ingevuld') return false;
   if (scenario === 'huisarts gecontacteerd') return getField('kort-arts-contact-reden') !== 'niet ingevuld' && getField('kort-arts-contact-antwoord') !== 'niet ingevuld' && getField('kort-arts-contact-actie') !== 'niet ingevuld';
   if (scenario === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' && getField('kort-advies-beleid') !== 'niet ingevuld';
@@ -1466,22 +1490,33 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
   }
 
   if (mod === 'wond') {
-    const afm = [document.getElementById('won-lengte')?.value, document.getElementById('won-breedte')?.value, document.getElementById('won-diepte')?.value].filter(v=>v&&v.trim()).map((v,i)=>['L','B','D'][i]+':'+v.trim()+'cm').join(', ') || '–';
+    const afm = [document.getElementById('won-lengte')?.value, document.getElementById('won-breedte')?.value, document.getElementById('won-diepte')?.value].filter(v=>v&&v.trim()).map((v,i)=>['L','B','D'][i]+':'+v.trim()+'cm').join(', ') || 'niet gemeten';
+    const classificatie = getField('won-classificatie') || '–';
+    const isISTAP = classificatie.includes('ISTAP');
+    const isDecubitus = classificatie.includes('Decubitus');
     return { prompt: `${base}
 
-Voorbeeld:
-Kamer: 5 | Type: decubitus | Locatie: stuit | Evolutie: stabiel | Wondbodem: granulatie | Exsudaat: matig, geel | Opvolging: morgen opnieuw
-→ Kamer 5 decubitus stuit stabiel. Granulatieweefsel, matig geel exsudaat. Verzorgd met schuimverband. Volgende verzorging morgen.
+Schrijf de wondzorgnotitie volgens de officiële Vlaamse wondzorgstandaard.
+${isISTAP ? 'Gebruik de ISTAP-terminologie in de notitie (huidscheur, classificatie vermelden).' : ''}
+${isDecubitus ? 'Vermeld de decubitusgraad expliciet in de notitie.' : ''}
+
+Voorbeeld ISTAP:
+Kamer: 5 | Type: huidscheur | Locatie: arm | Classificatie: ISTAP Type 2a | Evolutie: stabiel | Wondbodem: granulatie | Exsudaat: weinig, helder
+→ Kamer 5 huidscheur rechterarm (ISTAP Type 2a), stabiel. Granulatieweefsel aanwezig, weinig helder exsudaat. Verzorgd met siliconenverband. Volgende verzorging morgen.
+
+Voorbeeld Decubitus:
+Kamer: 8 | Type: decubitus | Locatie: stuit | Classificatie: Decubitus graad 2 | Evolutie: verslechterd | Exsudaat: matig, geel
+→ Kamer 8 decubitus stuit graad 2, lichte verslechtering vastgesteld. Matig geel exsudaat, wonde gereinigd met NaCl 0.9%. Arts geconsulteerd. Volgende verzorging morgen.
 
 Kamer: ${getField('won-kamer')||'–'}
 Type: ${getField('won-type')}
 Locatie: ${getField('won-locatie')}
-Classificatie: ${getField('won-classificatie')||'–'}
-Evolutie: ${getField('won-evolutie')||'–'}
+Classificatie: ${classificatie}
+Evolutie tov vorige: ${getField('won-evolutie')||'–'}
 Wondbodem: ${getField('won-bodem')||'–'}
-Exsudaat: ${getField('won-exsudaat')||'–'}, ${getField('won-exsudaat-kleur')||'–'}
+Exsudaat: ${getField('won-exsudaat')||'–'}, kleur: ${getField('won-exsudaat-kleur')||'–'}
 Alarmsignalen: ${getMulti('won-alarm')}
-Producten: ${getMulti('won-producten')}
+Gebruikte producten: ${getMulti('won-producten')}
 Afmetingen: ${afm}
 Opvolging: ${getField('won-opvolging')}
 Extra: ${document.getElementById('won-notities')?.value.trim()||'–'}` };
@@ -1525,7 +1560,7 @@ Extra: ${document.getElementById('dok-notities')?.value.trim()||'–'}` };
   }
 
   if (mod === 'kort') {
-    const scenario = getField('kort-scenario');
+    const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected'); const scenario = scenarioBtn ? scenarioBtn.dataset.val : 'niet ingevuld';
     if (scenario === 'niet ingevuld') return { error: '⚠️ Kies eerst het type communicatie.' };
     let details = '';
     if (scenario === 'huisarts gecontacteerd') {
@@ -1744,6 +1779,43 @@ Ingesproken notitie: "${transcript}"`;
   }
 }
 
+// ── PARAMETER WAARSCHUWINGEN ──
+function checkParam(input, type) {
+  const val = parseFloat(input.value.replace(',', '.'));
+  const warnId = 'warn-' + input.id.replace('inc-', '');
+  const warn = document.getElementById(warnId);
+  if (!warn) return;
+
+  let msg = '';
+  if (!isNaN(val)) {
+    if (type === 'sat' && val < 90) msg = '⚠️ Lage saturatie! Onmiddellijk actie vereist.';
+    else if (type === 'sat' && val < 95) msg = '⚠️ Saturatie aan de lage kant.';
+    else if (type === 'temp' && val >= 38.5) msg = '⚠️ Koorts vastgesteld.';
+    else if (type === 'temp' && val >= 37.5) msg = '⚠️ Licht verhoogde temperatuur.';
+    else if (type === 'temp' && val < 36) msg = '⚠️ Hypothermie — controleer opnieuw.';
+  }
+
+  if (msg) {
+    warn.textContent = msg;
+    warn.classList.add('visible');
+    input.classList.add('afwijkend');
+  } else {
+    warn.textContent = '';
+    warn.classList.remove('visible');
+    input.classList.remove('afwijkend');
+  }
+}
+
+// ── OFFLINE DETECTIE ──
+function updateOnlineStatus() {
+  const banner = document.getElementById('offline-banner');
+  if (!banner) return;
+  if (!navigator.onLine) banner.classList.add('visible');
+  else banner.classList.remove('visible');
+}
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
 // ── POPUP ──
 (function() {
   const p = document.getElementById('popup');
@@ -1751,6 +1823,7 @@ Ingesproken notitie: "${transcript}"`;
   if (sessionStorage.getItem('disclaimer-seen')) p.style.display = 'none';
   refreshGenerateButtons();
   initVoice();
+  updateOnlineStatus();
 })();
 </script>
 </body>
