@@ -1229,11 +1229,14 @@ function showPage(id) {
 
 // ── KNOP LOGICA — met deselect (opnieuw klikken = uit) ──
 document.querySelectorAll('.btn-group').forEach(group => {
+  // Sla kort-scenario-group over — die heeft eigen onclick handler
+  if (group.id === 'kort-scenario-group') return;
+  if (group.id === 'inc-type-group') return;
   group.querySelectorAll('.opt-btn:not(.multi)').forEach(btn => {
     btn.addEventListener('click', () => {
       const wasSelected = btn.classList.contains('selected');
       group.querySelectorAll('.opt-btn:not(.multi)').forEach(b => b.classList.remove('selected'));
-      if (!wasSelected) btn.classList.add('selected'); // klik opnieuw = deselect
+      if (!wasSelected) btn.classList.add('selected');
       refreshGenerateButtons();
     });
   });
