@@ -618,11 +618,10 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 </div>
 
 <!-- ═══ MEDICATIE ═══ -->
-<!-- ═══ MEDICATIE ═══ -->
 <div id="page-medicatie" class="page">
   <div class="module-page">
-    <div class="module-title">💊 Medicatie-afwijking</div>
-    <div class="module-desc">Documenteer een probleem of afwijking bij medicatietoediening</div>
+    <div class="module-title">💊 Medicatie</div>
+    <div class="module-desc">Leg medicatiewijzigingen en verpleegkundige acties snel en logisch vast</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
 
     <div class="block">
@@ -631,42 +630,82 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
     </div>
 
     <div class="block">
-      <span class="block-label">Wat is er gebeurd? ⚠️ verplicht</span>
-      <div class="btn-group" data-field="med-situatie">
-        <button class="opt-btn" data-val="bewoner weigert medicatie">❌ Bewoner weigert medicatie</button>
-        <button class="opt-btn" data-val="medicatie niet toegediend">🚫 Medicatie niet toegediend</button>
-        <button class="opt-btn" data-val="medicatie laattijdig toegediend">⏰ Medicatie laattijdig toegediend</button>
-        <button class="opt-btn" data-val="medicatie niet beschikbaar">📦 Medicatie niet beschikbaar</button>
-      </div>
-    </div>
-
-    <div class="block">
-      <span class="block-label">Reden ⚠️ verplicht</span>
-      <div class="btn-group" data-field="med-reden">
-        <button class="opt-btn" data-val="weigert inname">🚫 Weigert inname</button>
-        <button class="opt-btn" data-val="misselijkheid">🤢 Misselijkheid</button>
-        <button class="opt-btn" data-val="verslikrisico">😮 Verslikrisico</button>
-        <button class="opt-btn" data-val="bewoner afwezig">🚗 Bewoner afwezig</button>
-        <button class="opt-btn" data-val="voorraadprobleem">📦 Voorraadprobleem</button>
+      <span class="block-label">Reden / context ⚠️ verplicht</span>
+      <div class="btn-group" data-field="med-context">
+        <button class="opt-btn" data-val="pijn">😣 Pijn</button>
+        <button class="opt-btn" data-val="koorts">🌡️ Koorts</button>
+        <button class="opt-btn" data-val="infectie">🦠 Infectie</button>
+        <button class="opt-btn" data-val="onrust">😟 Onrust</button>
+        <button class="opt-btn" data-val="slaap">🌙 Slaap</button>
+        <button class="opt-btn" data-val="bloeddruk">🩺 Bloeddruk</button>
+        <button class="opt-btn" data-val="glycemie">🩸 Glycemie</button>
+        <button class="opt-btn" data-val="na dokterscontact">📞 Na dokterscontact</button>
+        <button class="opt-btn" data-val="na ziekenhuisopname">🏥 Na ziekenhuisopname</button>
         <button class="opt-btn" data-val="andere">📝 Andere</button>
       </div>
     </div>
 
     <div class="block">
-      <span class="block-label">Actie ondernomen</span>
-      <div class="btn-group" data-field="med-actie">
-        <button class="opt-btn" data-val="arts verwittigd">📞 Arts verwittigd</button>
-        <button class="opt-btn" data-val="later opnieuw aangeboden">⏰ Later opnieuw aangeboden</button>
-        <button class="opt-btn" data-val="niet opnieuw aangeboden">❌ Niet opnieuw aangeboden</button>
-        <button class="opt-btn" data-val="voorraad nagekeken">📦 Voorraad nagekeken</button>
-        <button class="opt-btn" data-val="opvolging voorzien">👁️ Opvolging voorzien</button>
-        <button class="opt-btn" data-val="volgende shift informeren">🔄 Volgende shift informeren</button>
+      <span class="block-label">Wat is er veranderd? ⚠️ verplicht</span>
+      <div class="btn-group" data-field="med-wijziging">
+        <button class="opt-btn" data-val="medicatie gestart">▶️ Gestart</button>
+        <button class="opt-btn" data-val="medicatie gestopt">⛔ Gestopt</button>
+        <button class="opt-btn" data-val="dosis aangepast">🔁 Dosis aangepast</button>
+        <button class="opt-btn" data-val="tijdelijke medicatie">💉 Tijdelijke medicatie</button>
+        <button class="opt-btn" data-val="medicatie toegediend">💊 Toegediend</button>
+        <button class="opt-btn" data-val="voorschrift vernieuwd">📄 Voorschrift vernieuwd</button>
       </div>
     </div>
 
     <div class="block">
-      <span class="block-label">Kort detail (optioneel)</span>
-      <textarea class="field" id="med-notities" placeholder="bijv. naam medicatie, dosis, bijzonderheden..."></textarea>
+      <span class="block-label">Welke medicatie?</span>
+      <input type="text" class="field" id="med-naam" placeholder="bijv. Paracetamol 1 g, Augmentin, Lasix">
+    </div>
+
+    <div class="block">
+      <span class="block-label">Opdracht van</span>
+      <div class="btn-group" data-field="med-opdracht">
+        <button class="opt-btn" data-val="huisarts">👨‍⚕️ Huisarts</button>
+        <button class="opt-btn" data-val="wachtarts">☎️ Wachtarts</button>
+        <button class="opt-btn" data-val="ziekenhuis">🏥 Ziekenhuis</button>
+        <button class="opt-btn" data-val="bestaand voorschrift">📋 Bestaand voorschrift</button>
+        <button class="opt-btn" data-val="andere">📝 Andere</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">Wat deed de verpleegkundige?</span>
+      <div class="btn-group" data-field="med-actie">
+        <button class="opt-btn" data-val="arts gecontacteerd">📞 Arts gecontacteerd</button>
+        <button class="opt-btn" data-val="medicatie toegediend">💊 Medicatie toegediend</button>
+        <button class="opt-btn" data-val="apotheek gecontacteerd">💼 Apotheek gecontacteerd</button>
+        <button class="opt-btn" data-val="familie geïnformeerd">👨‍👩‍👧 Familie geïnformeerd</button>
+        <button class="opt-btn" data-val="effect opgevolgd">👁️ Effect opgevolgd</button>
+        <button class="opt-btn" data-val="genoteerd in dossier">📝 Genoteerd in dossier</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">Antwoord / beleid</span>
+      <input type="text" class="field" id="med-beleid" placeholder="bijv. antibiotica opstarten, dosis verhogen, geen bijkomend beleid">
+    </div>
+
+    <div class="block">
+      <span class="block-label">Opvolging</span>
+      <div class="btn-group" data-field="med-opvolging">
+        <button class="opt-btn" data-val="effect evalueren">📈 Effect evalueren</button>
+        <button class="opt-btn" data-val="pijn opvolgen">😣 Pijn opvolgen</button>
+        <button class="opt-btn" data-val="temperatuur opvolgen">🌡️ Temperatuur opvolgen</button>
+        <button class="opt-btn" data-val="bloeddruk opvolgen">🩺 Bloeddruk opvolgen</button>
+        <button class="opt-btn" data-val="glycemie opvolgen">🩸 Glycemie opvolgen</button>
+        <button class="opt-btn" data-val="hercontact bij verslechtering">📞 Hercontact bij verslechtering</button>
+        <button class="opt-btn" data-val="geen verdere opvolging">✅ Geen verdere opvolging</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <span class="block-label">Extra notitie (optioneel)</span>
+      <textarea class="field" id="med-notities" placeholder="Korte extra info indien nodig..."></textarea>
     </div>
 
     <button class="btn-generate" onclick="generate('medicatie')">✨ Maak verslag</button>
@@ -1358,7 +1397,7 @@ function refreshGenerateButtons() {
     kort: () => isKortReady(),
     overdracht: () => hasValue('ov-kamer') && getField('ov-toestand') !== 'niet ingevuld',
     incident: () => hasValue('inc-kamer') && getField('inc-type') !== 'niet ingevuld' && getField('inc-locatie') !== 'niet ingevuld',
-    medicatie: () => hasValue('med-kamer') && getField('med-situatie') !== 'niet ingevuld' && getField('med-reden') !== 'niet ingevuld',
+    medicatie: () => hasValue('med-kamer') && getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld',
     wond: () => hasValue('won-kamer') && getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld',
     gedrag: () => hasValue('ged-kamer') && getField('ged-gedrag') !== 'niet ingevuld',
     dokter: () => hasValue('dok-kamer') && getField('dok-reden') !== 'niet ingevuld' && getField('dok-antwoord') !== 'niet ingevuld',
@@ -1528,15 +1567,20 @@ Extra: ${extra}` };
   }
 
   if (mod === 'medicatie') {
-    const gebeurtenis = getField('med-gebeurtenis');
-    if (gebeurtenis === 'niet ingevuld') return { error: '⚠️ Selecteer de medicatie-afwijking.' };
-    return { prompt: `${base} Schrijf een korte objectieve medicatienota in maximaal 3 zinnen.
-Kamer: ${getField('med-kamer')||'niet ingevuld'}
-Gebeurtenis: ${gebeurtenis}
-Medicatie: ${getField('med-naam')}
-Reden / context: ${getField('med-reden')}
-Actie: ${getField('med-actie')}
-Extra: ${document.getElementById('med-notities')?.value.trim()||'geen'}` };
+    const context = getField('med-context');
+    const wijziging = getField('med-wijziging');
+    if (context === 'niet ingevuld') return { error: '⚠️ Selecteer de reden of context.' };
+    if (wijziging === 'niet ingevuld') return { error: '⚠️ Selecteer wat er gewijzigd is.' };
+    return { prompt: `${base} Schrijf een kort, logisch en professioneel verpleegkundig medicatieverslag in maximaal 3 zinnen. Focus op reden of context, medicatiewijziging, verpleegkundige actie en opvolging. Vermeld alleen wat effectief geselecteerd of ingevuld werd. Gebruik geen zinnen zoals "ontbreekt" of "niet ingevuld".
+Kamer: ${getField('med-kamer') || 'niet ingevuld'}
+Reden / context: ${context}
+Wijziging: ${wijziging}
+Medicatie: ${document.getElementById('med-naam')?.value.trim() || 'geen'}
+Opdracht van: ${getField('med-opdracht')}
+Actie verpleegkundige: ${getField('med-actie')}
+Antwoord / beleid: ${document.getElementById('med-beleid')?.value.trim() || 'geen'}
+Opvolging: ${getField('med-opvolging')}
+Extra: ${document.getElementById('med-notities')?.value.trim() || 'geen'}` };
   }
 
   if (mod === 'wond') {
