@@ -361,56 +361,70 @@ textarea.field:focus, input.field:focus { border-color: var(--teal-mid); }
 <!-- ═══ OVERDRACHT ═══ -->
 <div id="page-overdracht" class="page">
   <div class="module-page">
-    <div class="module-title">🔄 Shift Briefing</div>
-    <div class="module-desc">⚡ 10 seconden → klik → genereer → klaar</div>
+    <div class="module-title">🔄 Overdracht</div>
+    <div class="module-desc">Korte, duidelijke info voor de volgende shift</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
 
     <div class="block">
       <span class="block-label">Kamer / bewoner</span>
       <input type="text" class="field" id="ov-kamer" placeholder="bijv. Kamer 12">
     </div>
-    <!-- BLOK 1: TOESTAND -->
+
     <div class="block">
-      <span class="block-label">Algemene toestand ⚠️ verplicht</span>
+      <span class="block-label">Huidige toestand ⚠️ verplicht</span>
       <div class="btn-group" data-field="ov-toestand">
         <button class="opt-btn selected" data-val="stabiel">✅ Stabiel</button>
         <button class="opt-btn" data-val="onrustig">😟 Onrustig</button>
         <button class="opt-btn" data-val="verslechterd">📉 Verslechterd</button>
+        <button class="opt-btn" data-val="wisselend">🔄 Wisselend</button>
       </div>
     </div>
 
-    <!-- BLOK 2: OBSERVATIES MULTI-SELECT -->
     <div class="block">
-      <span class="block-label">Belangrijkste observaties (meerdere mogelijk)</span>
+      <span class="block-label">Wat moet de volgende shift weten?</span>
       <div class="btn-group" id="ov-obs-group">
         <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this, 'ov-obs', true)">✅ Geen bijzonderheden</button>
-        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this, 'ov-obs', false)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="val" onclick="toggleMulti(this, 'ov-obs', false)">⚠️ Val</button>
-        <button class="opt-btn multi" data-val="verward" onclick="toggleMulti(this, 'ov-obs', false)">🧠 Verward</button>
-        <button class="opt-btn multi" data-val="slecht gegeten" onclick="toggleMulti(this, 'ov-obs', false)">🍽️ Slecht gegeten</button>
+        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this, 'ov-obs', false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="verward gedrag" onclick="toggleMulti(this, 'ov-obs', false)">🧠 Verward</button>
+        <button class="opt-btn multi" data-val="weinig gegeten" onclick="toggleMulti(this, 'ov-obs', false)">🍽️ Weinig gegeten</button>
         <button class="opt-btn multi" data-val="weinig gedronken" onclick="toggleMulti(this, 'ov-obs', false)">💧 Weinig gedronken</button>
-        <button class="opt-btn multi" data-val="nieuwe wonde" onclick="toggleMulti(this, 'ov-obs', false)">🩹 Nieuwe wonde</button>
+        <button class="opt-btn multi" data-val="mobiliteit moeilijker" onclick="toggleMulti(this, 'ov-obs', false)">🚶 Mobiliteit</button>
+        <button class="opt-btn multi" data-val="wondzorg nodig" onclick="toggleMulti(this, 'ov-obs', false)">🩹 Wondzorg</button>
+        <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this, 'ov-obs', false)">💊 Medicatie gewijzigd</button>
+        <button class="opt-btn multi" data-val="parameters afwijkend" onclick="toggleMulti(this, 'ov-obs', false)">📊 Parameters</button>
       </div>
     </div>
 
-    <!-- BLOK 3: ACTIE -->
     <div class="block">
-      <span class="block-label">Actie</span>
-      <div class="btn-group" data-field="ov-actie">
-        <button class="opt-btn selected" data-val="geen actie nodig">✅ Geen actie nodig</button>
-        <button class="opt-btn" data-val="arts verwittigd">📞 Arts verwittigd</button>
-        <button class="opt-btn" data-val="familie verwittigd">👨‍👩‍👧 Familie verwittigd</button>
-        <button class="opt-btn" data-val="opvolging nodig">👁️ Opvolging nodig</button>
+      <span class="block-label">Wat werd al gedaan?</span>
+      <div class="btn-group" id="ov-actie-group">
+        <button class="opt-btn multi selected" data-val="geen extra actie" onclick="toggleMulti(this, 'ov-actie', true)">✅ Geen extra actie</button>
+        <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this, 'ov-actie', false)">📞 Arts verwittigd</button>
+        <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this, 'ov-actie', false)">👨‍👩‍👧 Familie verwittigd</button>
+        <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this, 'ov-actie', false)">💊 Medicatie toegediend</button>
+        <button class="opt-btn multi" data-val="parameters gecontroleerd" onclick="toggleMulti(this, 'ov-actie', false)">📊 Parameters gecontroleerd</button>
+        <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this, 'ov-actie', false)">🩹 Wondzorg uitgevoerd</button>
       </div>
     </div>
 
-    <!-- BLOK 4: EXTRA -->
+    <div class="block">
+      <span class="block-label">Opvolging volgende shift</span>
+      <div class="btn-group" data-field="ov-opvolging">
+        <button class="opt-btn selected" data-val="geen bijzondere opvolging">✅ Geen bijzondere opvolging</button>
+        <button class="opt-btn" data-val="verdere observatie">👁️ Observatie</button>
+        <button class="opt-btn" data-val="pijn opvolgen">😣 Pijn opvolgen</button>
+        <button class="opt-btn" data-val="vochtinname opvolgen">💧 Vochtinname</button>
+        <button class="opt-btn" data-val="parameters opvolgen">📊 Parameters</button>
+        <button class="opt-btn" data-val="arts hercontacteren bij verslechtering">📞 Hercontact arts</button>
+      </div>
+    </div>
+
     <div class="block">
       <span class="block-label">Extra notitie (optioneel)</span>
-      <textarea class="field" id="ov-notities" placeholder="Kort detail indien nodig..."></textarea>
+      <textarea class="field" id="ov-notities" placeholder="Korte extra info voor de volgende shift..."></textarea>
     </div>
 
-    <button class="btn-generate" onclick="generate('overdracht')">✨ Maak verslag</button>
+    <button class="btn-generate" onclick="generate('overdracht')" disabled>✨ Maak verslag</button>
     <div class="loader" id="ov-loader"><div class="spinner"></div> Bezig...</div>
     <div class="error-box" id="ov-error"></div>
   </div>
@@ -1513,15 +1527,17 @@ Extra notitie: ${document.getElementById('kort-notities')?.value.trim() || 'geen
 
   if (mod === 'overdracht') {
     const toestand = getField('ov-toestand');
-    if (toestand === 'niet ingevuld') return { error: '⚠️ Selecteer de algemene toestand.' };
+    if (toestand === 'niet ingevuld') return { error: '⚠️ Selecteer de huidige toestand.' };
     const observaties = getMulti('ov-obs');
-    const actie = getField('ov-actie');
+    const acties = getMulti('ov-actie');
+    const opvolging = getField('ov-opvolging');
     const extra = document.getElementById('ov-notities')?.value.trim();
-    return { prompt: `${base} Schrijf een korte professionele shift briefing in maximaal 3 zinnen. Structuur: 1) toestand, 2) observaties, 3) actie/opvolging.
+    return { prompt: `${base} Schrijf een korte professionele overdracht voor de volgende shift in maximaal 3 zinnen. Focus op: huidige toestand, wat belangrijk is voor de volgende shift, wat al gedaan werd en welke opvolging nodig is. Schrijf compact en direct bruikbaar in het zorgdossier.
 Kamer: ${getField('ov-kamer')||'niet ingevuld'}
-Algemene toestand: ${toestand}
-Observaties: ${observaties}
-Actie: ${actie || 'geen actie nodig'}
+Huidige toestand: ${toestand}
+Belangrijk voor volgende shift: ${observaties}
+Reeds uitgevoerd: ${acties}
+Opvolging volgende shift: ${opvolging || 'geen bijzondere opvolging'}
 Extra: ${extra||'geen'}` };
   }
 
