@@ -1563,48 +1563,67 @@ Extra: ${document.getElementById('dok-notities')?.value.trim()||'–'}` };
   }
 
   if (mod === 'kort') {
-    const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected'); const scenario = scenarioBtn ? scenarioBtn.dataset.val : 'niet ingevuld';
+    const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected');
+    const scenario = scenarioBtn ? scenarioBtn.dataset.val : 'niet ingevuld';
     if (scenario === 'niet ingevuld') return { error: '⚠️ Kies eerst het type communicatie.' };
     let details = '';
     if (scenario === 'huisarts gecontacteerd') {
-      details = `Reden: ${getField('kort-arts-contact-reden')}
-Detail: ${document.getElementById('kort-arts-labo')?.value.trim()||'–'}
+      details = `Reden contact huisarts: ${getField('kort-arts-contact-reden')}
+Detail / laboresultaten: ${document.getElementById('kort-arts-labo')?.value.trim() || '–'}
 Antwoord huisarts: ${getField('kort-arts-contact-antwoord')}
 Actie verpleegkundige: ${getField('kort-arts-contact-actie')}
-Medicatie / afspraak: ${document.getElementById('kort-arts-medicatie')?.value.trim()||'–'}`;
+Medicatie / afspraak: ${document.getElementById('kort-arts-medicatie')?.value.trim() || '–'}`;
     } else if (scenario === 'huisartsadvies / laboresultaten') {
       details = `Onderwerp: ${getField('kort-advies-onderwerp')}
-Detail: ${document.getElementById('kort-advies-labo')?.value.trim()||'–'}
-Beleid: ${getField('kort-advies-beleid')}
-Medicatie: ${document.getElementById('kort-advies-start')?.value.trim()||'–'}`;
+Detail: ${document.getElementById('kort-advies-labo')?.value.trim() || '–'}
+Beleid huisarts: ${getField('kort-advies-beleid')}
+Medicatie / afspraak: ${document.getElementById('kort-advies-start')?.value.trim() || '–'}`;
     } else if (scenario === 'bewoner opgenomen') {
-      details = `Reden: ${getMulti('kort-opname-redenen')}
-Ziekenhuis: ${document.getElementById('kort-opname-ziekenhuis')?.value.trim()||'–'}
+      details = `Reden opname: ${getMulti('kort-opname-redenen')}
+Ziekenhuis: ${document.getElementById('kort-opname-ziekenhuis')?.value.trim() || '–'}
 Familie: ${getField('kort-opname-familie')}`;
     } else if (scenario === 'bewoner terug') {
       details = `Terug van: ${getField('kort-terug-van')}
-Beslissing: ${getMulti('kort-terug-beslissing')}
-Ontslagbrief: ${getField('kort-terug-ontslagbrief')||'–'}
-Detail: ${document.getElementById('kort-terug-afspraak')?.value.trim()||'–'}`;
+Beslissing / afspraken: ${getMulti('kort-terug-beslissing')}
+Ontslagbrief: ${getField('kort-terug-ontslagbrief') || '–'}
+Detail: ${document.getElementById('kort-terug-afspraak')?.value.trim() || '–'}`;
     } else if (scenario === 'telefonische goedkeuring') {
       details = `Reden: ${getField('kort-goedkeuring-reden')}
 Antwoord arts: ${getField('kort-goedkeuring-akkoord')}
-Actie: ${getField('kort-goedkeuring-actie')}`;
+Actie verpleegkundige: ${getField('kort-goedkeuring-actie')}`;
     } else if (scenario === 'andere korte communicatie') {
       details = `Type: ${getField('kort-algemeen-type')}
-Inhoud: ${document.getElementById('kort-algemeen-inhoud')?.value.trim()||'–'}`;
+Inhoud: ${document.getElementById('kort-algemeen-inhoud')?.value.trim() || '–'}`;
     }
-    return { prompt: `${base} Schrijf een ZEER korte communicatienota (max. 2 zinnen). Alleen de essentie.
+    return { prompt: `${base}
+Schrijf een ZEER korte verpleegkundige communicatienota voor een Belgisch woonzorgcentrum.
+BELANGRIJKE REGELS:
+- Maximaal 2 korte zinnen.
+- Schrijf dossierklaar, feitelijk en professioneel.
+- Gebruik alleen de info hieronder. Verzin niets.
+- Geen AI-zinnen zoals: "informatie ontbreekt", "niet ingevuld", "geen gegevens beschikbaar".
+- Focus altijd op: aanleiding → actie verpleegkundige → antwoord/beslissing → opvolging.
+- In een woonzorgcentrum contacteert de verpleegkundige de huisarts, niet omgekeerd.
+- Laboresultaten worden besproken via de huisarts.
+- Als medicatie of afspraak vermeld wordt, benoem dit kort en concreet.
+- Gebruik geen opsommingstekens.
+- Gebruik geen uitleg of interpretatie.
 
-Voorbeeld:
-Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord: medicatie starten | Actie: toegediend
-→ Huisarts gecontacteerd wegens koorts. Medicatie gestart volgens voorschrift, opvolging voorzien.
+VOORBEELDEN:
+Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord huisarts: medicatie starten | Actie verpleegkundige: toegediend
+Output: Huisarts gecontacteerd wegens koorts. Medicatie toegediend volgens voorschrift, verdere opvolging voorzien.
 
-Kamer: ${getField('kort-kamer')||'–'}
-Tijdstip: ${document.getElementById('kort-tijdstip')?.value||'–'}
+Scenario: bewoner opgenomen | Reden opname: lage saturatie en dyspneu | Ziekenhuis: UZ Leuven | Familie: verwittigd
+Output: Bewoner opgenomen in UZ Leuven wegens dyspneu en lage saturatie. Familie werd verwittigd, verdere opvolging voorzien.
+
+Scenario: huisartsadvies / laboresultaten | Onderwerp: bloedname | Beleid huisarts: geen wijziging beleid
+Output: Resultaten van bloedname besproken met de huisarts. Geen wijziging van beleid, verdere observatie voorzien.
+
+Kamer: ${getField('kort-kamer') || '–'}
+Tijdstip: ${document.getElementById('kort-tijdstip')?.value || '–'}
 Scenario: ${scenario}
 ${details}
-Extra: ${document.getElementById('kort-notities')?.value.trim()||'–'}` };
+Extra notitie: ${document.getElementById('kort-notities')?.value.trim() || '–'}` };
   }
 
   if (mod === 'familie') {
