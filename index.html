@@ -1611,13 +1611,13 @@ BELANGRIJKE REGELS:
 
 VOORBEELDEN:
 Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord huisarts: medicatie starten | Actie verpleegkundige: toegediend
-Output: Huisarts gecontacteerd wegens koorts. Medicatie toegediend volgens voorschrift, verdere opvolging voorzien.
+Output: Huisarts gecontacteerd wegens koorts. Medicatie toegediend volgens voorschrift.
 
 Scenario: bewoner opgenomen | Reden opname: lage saturatie en dyspneu | Ziekenhuis: UZ Leuven | Familie: verwittigd
-Output: Bewoner opgenomen in UZ Leuven wegens dyspneu en lage saturatie. Familie werd verwittigd, verdere opvolging voorzien.
+Output: Bewoner opgenomen in UZ Leuven wegens dyspneu en lage saturatie. Familie werd verwittigd.
 
 Scenario: huisartsadvies / laboresultaten | Onderwerp: bloedname | Beleid huisarts: geen wijziging beleid
-Output: Resultaten van bloedname besproken met de huisarts. Geen wijziging van beleid, verdere observatie voorzien.
+Output: Resultaten van bloedname besproken met de huisarts. Geen wijziging van beleid.
 
 Kamer: ${getField('kort-kamer') || '–'}
 Tijdstip: ${document.getElementById('kort-tijdstip')?.value || '–'}
