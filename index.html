@@ -1559,10 +1559,29 @@ Extra: ${document.getElementById('ged-notities')?.value.trim()||'–'}` };
 
   if (mod === 'dokter') {
     return { prompt: `${base}
+Schrijf een korte professionele verpleegkundige notitie over een doktersbezoek of artsencontact in een Belgisch woonzorgcentrum.
+REGELS:
+- Maximaal 2 tot 4 korte zinnen.
+- Dossierklaar, feitelijk en professioneel.
+- Gebruik alleen de info hieronder. Verzin niets.
+- Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld", "geen gegevens beschikbaar".
+- Focus op: reden van contact → beslissing arts → verpleegkundige actie → opvolging.
+- Schrijf concreet en praktisch.
+- Geen opsommingstekens. Geen uitleg of interpretatie.
+- Tijdstip alleen vermelden als het klinisch relevant is.
+- Als medicatie vermeld wordt, deze concreet noemen met naam, dosis en frequentie.
+- Vermijd vage zinnen zoals "arts werd op de hoogte gebracht" of "advies werd gegeven".
+- Schrijf liever concreet: "arts adviseerde observatie", "arts startte antibiotica", "arts besliste tot opname".
 
-Voorbeeld:
-Kamer: 3 | Type: telefonisch | Reden: koorts, labo | Antwoord: start medicatie, staalname | Opvolging: temperatuur, labo afnemen
-→ Kamer 3 telefonisch contact arts wegens koorts en afwijkende laboresultaten. Arts beslist antibiotica te starten en staalname aan te vragen. Temperatuur opvolgen en labo afnemen.
+VOORBEELDEN:
+Kamer: 3 | Type contact: telefonisch | Reden: koorts, afwijkende laboresultaten | Antwoord arts: antibiotica starten, staalname aanvragen | Medicatie: Augmentin 875 mg 2x/d | Opvolging: temperatuur opvolgen, labo afnemen
+Output: Arts telefonisch gecontacteerd wegens koorts en afwijkende laboresultaten. Op advies werd Augmentin 875 mg 2x/d opgestart en staalname aangevraagd. Temperatuur opvolgen en labo afnemen.
+
+Kamer: 8 | Type contact: arts ter plaatse | Reden: toegenomen dyspneu | Antwoord arts: opname ziekenhuis | Opvolging: familie verwittigen
+Output: Arts beoordeelde de bewoner wegens toegenomen dyspneu. Beslist tot opname in het ziekenhuis. Familie verwittigd en verdere transfer voorbereid.
+
+Kamer: 12 | Type contact: telefonisch | Reden: wondcontrole | Antwoord arts: wondzorg verderzetten, observatie | Opvolging: roodheid opvolgen
+Output: Arts gecontacteerd voor wondcontrole. Wondzorg verderzetten volgens advies en roodheid verder observeren.
 
 Kamer: ${getField('dok-kamer')||'–'}
 Type contact: ${getField('dok-contacttype')||'–'}
