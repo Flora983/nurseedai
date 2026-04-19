@@ -534,6 +534,17 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 
     <!-- GEMEENSCHAPPELIJKE ACTIES -->
     <div class="block" style="margin-top:16px;">
+      <span class="block-label">Fysieke klachten na incident (meerdere mogelijk)</span>
+      <div class="btn-group" id="inc-klachten-group">
+        <button class="opt-btn multi" data-val="geen bijkomende klachten" onclick="toggleMulti(this,'inc-klachten',true)">✅ Geen bijkomende klachten</button>
+        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'inc-klachten',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="zwelling" onclick="toggleMulti(this,'inc-klachten',false)">🫧 Zwelling</button>
+        <button class="opt-btn multi" data-val="verwardheid" onclick="toggleMulti(this,'inc-klachten',false)">🧠 Verwardheid</button>
+        <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'inc-klachten',false)">😮‍💨 Ademhaling</button>
+        <button class="opt-btn multi" data-val="misselijkheid" onclick="toggleMulti(this,'inc-klachten',false)">🤢 Misselijkheid</button>
+      </div>
+    </div>
+    <div class="block" style="margin-top:4px;">
       <span class="block-label">Acties ondernomen (meerdere mogelijk)</span>
       <div class="btn-group" id="inc-actie-group">
         <button class="opt-btn multi" data-val="wondverzorging uitgevoerd" onclick="toggleMulti(this,'inc-actie',false)">🩹 Wondverzorging</button>
@@ -743,6 +754,19 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block">
+      <span class="block-label">Infectietekenen / wondsymptomen (meerdere mogelijk)</span>
+      <div class="btn-group" id="won-infectie-group">
+        <button class="opt-btn multi" data-val="geen infectietekenen" onclick="toggleMulti(this,'won-infectie',true)">✅ Geen infectietekenen</button>
+        <button class="opt-btn multi" data-val="slijmerig-etterig exsudaat" onclick="toggleMulti(this,'won-infectie',false)">🟡 Slijmerig-etterig</button>
+        <button class="opt-btn multi" data-val="wondgeur aanwezig" onclick="toggleMulti(this,'won-infectie',false)">👃 Wondgeur</button>
+        <button class="opt-btn multi" data-val="necrose van wondrand" onclick="toggleMulti(this,'won-infectie',false)">⚫ Necrose wondrand</button>
+        <button class="opt-btn multi" data-val="wondpijn" onclick="toggleMulti(this,'won-infectie',false)">😣 Wondpijn</button>
+        <button class="opt-btn multi" data-val="roodheid van huid over laesie" onclick="toggleMulti(this,'won-infectie',false)">🔴 Roodheid over laesie</button>
+        <button class="opt-btn multi" data-val="huid warm over laesie" onclick="toggleMulti(this,'won-infectie',false)">🌡️ Warmte over laesie</button>
+        <button class="opt-btn multi" data-val="zwelling rondom wonde" onclick="toggleMulti(this,'won-infectie',false)">🫧 Zwelling</button>
+      </div>
+    </div>
+    <div class="block">
       <span class="block-label">Gebruikte producten (meerdere mogelijk)</span>
       <div class="btn-group" id="won-producten-group">
         <button class="opt-btn multi" data-val="NaCl 0.9%" onclick="toggleMulti(this,'won-producten',false)">🧴 NaCl 0.9%</button>
@@ -903,18 +927,44 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="dok-kamer" placeholder="bijv. Kamer 12"></div>
     <div class="block"><span class="block-label">Tijdstip contact</span><input type="time" class="field" id="dok-tijdstip"></div>
     <div class="block">
-      <span class="block-label">Reden van contact ⚠️ verplicht (meerdere mogelijk)</span>
+      <span class="block-label">Aard van de klacht ⚠️ verplicht (meerdere mogelijk)</span>
       <div class="btn-group" id="dok-reden-group">
         <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this,'dok-reden',false)">🌡️ Koorts</button>
-        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'dok-reden',false)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="verwardheid" onclick="toggleMulti(this,'dok-reden',false)">🧠 Verwardheid</button>
+        <button class="opt-btn multi" data-val="hoest en luchtwegen" onclick="toggleMulti(this,'dok-reden',false)">🫁 Hoest / luchtwegen</button>
+        <button class="opt-btn multi" data-val="maag- en darmklachten" onclick="toggleMulti(this,'dok-reden',false)">🤢 Maag / darm</button>
+        <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'dok-reden',false)">😮‍💨 Ademhaling</button>
+        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'dok-reden',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="huidproblemen" onclick="toggleMulti(this,'dok-reden',false)">🔴 Huidproblemen</button>
+        <button class="opt-btn multi" data-val="oedeem / zwelling" onclick="toggleMulti(this,'dok-reden',false)">🫧 Oedeem / zwelling</button>
+        <button class="opt-btn multi" data-val="urinewegklachten" onclick="toggleMulti(this,'dok-reden',false)">🧫 Urineweg</button>
+        <button class="opt-btn multi" data-val="eetlust- of energietekort" onclick="toggleMulti(this,'dok-reden',false)">🍽️ Eetlust / energie</button>
+        <button class="opt-btn multi" data-val="verwardheid / cognitieve verandering" onclick="toggleMulti(this,'dok-reden',false)">🧠 Verwardheid</button>
+        <button class="opt-btn multi" data-val="onwel voelen" onclick="toggleMulti(this,'dok-reden',false)">😵 Onwel</button>
         <button class="opt-btn multi" data-val="wonde" onclick="toggleMulti(this,'dok-reden',false)">🩹 Wonde</button>
-        <button class="opt-btn multi" data-val="labo bespreken" onclick="toggleMulti(this,'dok-reden',false)">🧪 Labo</button>
-        <button class="opt-btn multi" data-val="medicatievraag" onclick="toggleMulti(this,'dok-reden',false)">💊 Medicatie</button>
         <button class="opt-btn multi" data-val="val" onclick="toggleMulti(this,'dok-reden',false)">⚠️ Val</button>
-        <button class="opt-btn multi" data-val="dyspneu" onclick="toggleMulti(this,'dok-reden',false)">🫁 Dyspneu</button>
-        <button class="opt-btn multi" data-val="gedragsverandering" onclick="toggleMulti(this,'dok-reden',false)">🧠 Gedrag</button>
+        <button class="opt-btn multi" data-val="labo bespreken" onclick="toggleMulti(this,'dok-reden',false)">🧪 Labo</button>
         <button class="opt-btn multi" data-val="opvolging" onclick="toggleMulti(this,'dok-reden',false)">👁️ Opvolging</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Specifieke symptomen (optioneel, meerdere mogelijk)</span>
+      <div class="btn-group" id="dok-symptomen-group">
+        <button class="opt-btn multi" data-val="gedaald bewustzijn" onclick="toggleMulti(this,'dok-symptomen',false)">😶 Gedaald bewustzijn</button>
+        <button class="opt-btn multi" data-val="vitale functies afwijkend" onclick="toggleMulti(this,'dok-symptomen',false)">📊 Vitale functies afwijkend</button>
+        <button class="opt-btn multi" data-val="koude rillingen / rigor" onclick="toggleMulti(this,'dok-symptomen',false)">🥶 Rillingen / rigor</button>
+        <button class="opt-btn multi" data-val="transpireren" onclick="toggleMulti(this,'dok-symptomen',false)">💧 Transpireren</button>
+        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'dok-symptomen',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="verlaagde urineproductie" onclick="toggleMulti(this,'dok-symptomen',false)">🧫 Verlaagde urineproductie</button>
+        <button class="opt-btn multi" data-val="braken" onclick="toggleMulti(this,'dok-symptomen',false)">🤮 Braken</button>
+        <button class="opt-btn multi" data-val="diarree" onclick="toggleMulti(this,'dok-symptomen',false)">🚽 Diarree</button>
+        <button class="opt-btn multi" data-val="misselijkheid" onclick="toggleMulti(this,'dok-symptomen',false)">🤢 Misselijkheid</button>
+        <button class="opt-btn multi" data-val="hoest" onclick="toggleMulti(this,'dok-symptomen',false)">😮‍💨 Hoest</button>
+        <button class="opt-btn multi" data-val="kortademigheid" onclick="toggleMulti(this,'dok-symptomen',false)">🫁 Kortademigheid</button>
+        <button class="opt-btn multi" data-val="dysurie" onclick="toggleMulti(this,'dok-symptomen',false)">🔥 Dysurie</button>
+        <button class="opt-btn multi" data-val="toegenomen mictiefrequentie" onclick="toggleMulti(this,'dok-symptomen',false)">🔄 Toegenomen mictie</button>
+        <button class="opt-btn multi" data-val="wondgeur" onclick="toggleMulti(this,'dok-symptomen',false)">👃 Wondgeur</button>
+        <button class="opt-btn multi" data-val="roodheid rond wonde" onclick="toggleMulti(this,'dok-symptomen',false)">🔴 Roodheid wonde</button>
+        <button class="opt-btn multi" data-val="zwelling" onclick="toggleMulti(this,'dok-symptomen',false)">🫧 Zwelling</button>
       </div>
     </div>
     <div class="block">
@@ -958,6 +1008,43 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
     <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="kort-kamer" placeholder="bijv. Kamer 8"></div>
     <div class="block"><span class="block-label">Tijdstip (optioneel)</span><input type="time" class="field" id="kort-tijdstip"></div>
+    <div class="block">
+      <span class="block-label">Aard van de klacht (optioneel, meerdere mogelijk)</span>
+      <div class="btn-group" id="kort-klachten-group">
+        <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this,'kort-klachten',false)">🌡️ Koorts</button>
+        <button class="opt-btn multi" data-val="hoest en luchtwegen" onclick="toggleMulti(this,'kort-klachten',false)">🫁 Hoest / luchtwegen</button>
+        <button class="opt-btn multi" data-val="maag- en darmklachten" onclick="toggleMulti(this,'kort-klachten',false)">🤢 Maag / darm</button>
+        <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'kort-klachten',false)">😮‍💨 Ademhaling</button>
+        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'kort-klachten',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="huidproblemen" onclick="toggleMulti(this,'kort-klachten',false)">🔴 Huidproblemen</button>
+        <button class="opt-btn multi" data-val="oedeem / zwelling" onclick="toggleMulti(this,'kort-klachten',false)">🫧 Oedeem / zwelling</button>
+        <button class="opt-btn multi" data-val="urinewegklachten" onclick="toggleMulti(this,'kort-klachten',false)">🧫 Urineweg</button>
+        <button class="opt-btn multi" data-val="eetlust- of energietekort" onclick="toggleMulti(this,'kort-klachten',false)">🍽️ Eetlust / energie</button>
+        <button class="opt-btn multi" data-val="verwardheid / cognitieve verandering" onclick="toggleMulti(this,'kort-klachten',false)">🧠 Verwardheid</button>
+        <button class="opt-btn multi" data-val="onwel voelen" onclick="toggleMulti(this,'kort-klachten',false)">😵 Onwel</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Specifieke symptomen (optioneel, meerdere mogelijk)</span>
+      <div class="btn-group" id="kort-symptomen-group">
+        <button class="opt-btn multi" data-val="gedaald bewustzijn" onclick="toggleMulti(this,'kort-symptomen',false)">😶 Gedaald bewustzijn</button>
+        <button class="opt-btn multi" data-val="vitale functies afwijkend" onclick="toggleMulti(this,'kort-symptomen',false)">📊 Vitale functies afwijkend</button>
+        <button class="opt-btn multi" data-val="koude rillingen / rigor" onclick="toggleMulti(this,'kort-symptomen',false)">🥶 Rillingen / rigor</button>
+        <button class="opt-btn multi" data-val="transpireren" onclick="toggleMulti(this,'kort-symptomen',false)">💧 Transpireren</button>
+        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'kort-symptomen',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="verlaagde urineproductie" onclick="toggleMulti(this,'kort-symptomen',false)">🧫 Verlaagde urineproductie</button>
+        <button class="opt-btn multi" data-val="braken" onclick="toggleMulti(this,'kort-symptomen',false)">🤮 Braken</button>
+        <button class="opt-btn multi" data-val="diarree" onclick="toggleMulti(this,'kort-symptomen',false)">🚽 Diarree</button>
+        <button class="opt-btn multi" data-val="misselijkheid" onclick="toggleMulti(this,'kort-symptomen',false)">🤢 Misselijkheid</button>
+        <button class="opt-btn multi" data-val="hoest" onclick="toggleMulti(this,'kort-symptomen',false)">😮‍💨 Hoest</button>
+        <button class="opt-btn multi" data-val="kortademigheid" onclick="toggleMulti(this,'kort-symptomen',false)">🫁 Kortademigheid</button>
+        <button class="opt-btn multi" data-val="dysurie" onclick="toggleMulti(this,'kort-symptomen',false)">🔥 Dysurie</button>
+        <button class="opt-btn multi" data-val="toegenomen mictiefrequentie" onclick="toggleMulti(this,'kort-symptomen',false)">🔄 Toegenomen mictie</button>
+        <button class="opt-btn multi" data-val="wondgeur" onclick="toggleMulti(this,'kort-symptomen',false)">👃 Wondgeur</button>
+        <button class="opt-btn multi" data-val="roodheid rond wonde" onclick="toggleMulti(this,'kort-symptomen',false)">🔴 Roodheid wonde</button>
+        <button class="opt-btn multi" data-val="zwelling" onclick="toggleMulti(this,'kort-symptomen',false)">🫧 Zwelling</button>
+      </div>
+    </div>
     <div class="block">
       <span class="block-label">Type communicatie ⚠️ verplicht</span>
       <div class="btn-group" id="kort-scenario-group">
@@ -1265,10 +1352,12 @@ function hasValue(id) { const el = document.getElementById(id); return !!(el && 
 const multiSelections = {
   'ov-obs': new Set(['geen bijzonderheden']),
   'ov-actie': new Set(['geen extra actie']),
-  'inc-letsel': new Set(), 'inc-actie': new Set(),
-  'dok-reden': new Set(), 'fam-onderwerp': new Set(),
-  'ged-actie': new Set(), 'won-alarm': new Set(), 'won-producten': new Set(),
-  'kort-opname-redenen': new Set(), 'kort-terug-beslissing': new Set()
+  'inc-letsel': new Set(), 'inc-actie': new Set(), 'inc-klachten': new Set(),
+  'dok-reden': new Set(), 'dok-klachten': new Set(), 'dok-symptomen': new Set(),
+  'fam-onderwerp': new Set(),
+  'ged-actie': new Set(), 'won-alarm': new Set(), 'won-producten': new Set(), 'won-infectie': new Set(),
+  'kort-opname-redenen': new Set(), 'kort-terug-beslissing': new Set(),
+  'kort-klachten': new Set(), 'kort-symptomen': new Set()
 };
 
 function toggleMulti(btn, group, isExclusive) {
@@ -1468,6 +1557,7 @@ Kamer: 9 | Type: val | Locatie: badkamer | Letsel: schaafwonde, pijn | Acties: w
 Kamer: ${getField('inc-kamer')||'–'}
 Type incident: ${type}
 ${details}
+Fysieke klachten: ${getMulti('inc-klachten')}
 Acties: ${getMulti('inc-actie')}
 Opvolging: ${getField('inc-opvolging')}
 Extra: ${document.getElementById('inc-notities')?.value.trim()||'–'}` };
@@ -1530,6 +1620,7 @@ Classificatie: ${classificatie}
 Evolutie tov vorige: ${getField('won-evolutie')||'–'}
 Wondbodem: ${getField('won-bodem')||'–'}
 Exsudaat: ${getField('won-exsudaat')||'–'}, kleur: ${getField('won-exsudaat-kleur')||'–'}
+Infectietekenen / wondsymptomen: ${getMulti('won-infectie')}
 Alarmsignalen: ${getMulti('won-alarm')}
 Gebruikte producten: ${getMulti('won-producten')}
 Afmetingen: ${afm}
@@ -1569,23 +1660,22 @@ REGELS:
 - Medicatie concreet vermelden: naam + dosis + frequentie indien ingevuld.
 - Tijdstip alleen vermelden als klinisch relevant.
 - Vermijd: "arts werd op de hoogte gebracht", "advies werd gegeven".
-- Gebruik liever: "arts beoordeelde…", "beslist tot…", "opgestart…", "familie verwittigd…".
-- Combineer info in vloeiende zinnen, geen losse regels.
+- Gebruik: "arts beoordeelde…", "beslist tot…", "opgestart…", "familie verwittigd…".
+- Combineer klachten en symptomen natuurlijk in de tekst.
+- Schrijf gewoon "kamer 6", nooit "kamer rood 6" of andere kleur.
 
 VOORBEELDEN:
-Kamer: 3 | Type contact: telefonisch | Reden: koorts, afwijkende laboresultaten | Antwoord arts: antibiotica starten, staalname aanvragen | Medicatie: Augmentin 875 mg 2x/dag | Opvolging: temperatuur opvolgen, labo afnemen
-Output: Arts telefonisch gecontacteerd wegens koorts en afwijkende laboresultaten. Augmentin 875 mg 2x/dag opgestart en staalname aangevraagd. Temperatuur en labo verder opvolgen.
+Kamer: 3 | Type: telefonisch | Klacht: koorts, urinewegklachten | Symptomen: dysurie, koorts | Antwoord: antibiotica starten | Medicatie: Furadantine 50 mg 3x/dag
+Output: Arts telefonisch gecontacteerd wegens koorts en urinewegklachten met dysurie. Furadantine 50 mg 3x/dag opgestart volgens voorschrift.
 
-Kamer: 8 | Type contact: arts ter plaatse | Reden: toegenomen dyspneu | Antwoord arts: opname ziekenhuis | Opvolging: familie verwittigen
-Output: Arts beoordeelde de bewoner wegens toegenomen dyspneu. Beslist tot ziekenhuisopname, familie verwittigd en transfer voorbereid.
-
-Kamer: 12 | Type contact: telefonisch | Reden: wondcontrole | Antwoord arts: wondzorg verderzetten, observatie | Opvolging: roodheid opvolgen
-Output: Arts gecontacteerd voor wondcontrole. Wondzorg verderzetten en roodheid verder observeren.
+Kamer: 8 | Type: arts ter plaatse | Klacht: ademhalingsproblemen | Symptomen: kortademigheid, piepende ademhaling | Antwoord: opname ziekenhuis
+Output: Arts beoordeelde de bewoner wegens ademhalingsproblemen met kortademigheid. Beslist tot ziekenhuisopname, familie verwittigd en transfer voorbereid.
 
 Kamer: ${getField('dok-kamer')||'–'}
 Type contact: ${getField('dok-contacttype')||'–'}
 Tijdstip: ${document.getElementById('dok-tijdstip')?.value||'–'}
-Reden: ${getMulti('dok-reden')}
+Aard van de klacht: ${getMulti('dok-reden')}
+Specifieke symptomen: ${getMulti('dok-symptomen')}
 Antwoord arts: ${getField('dok-antwoord')}
 Medicatie: ${document.getElementById('dok-medicatie')?.value.trim()||'–'}
 Opvolging: ${getField('dok-opvolging')}
@@ -1631,26 +1721,25 @@ REGELS:
 - Maximaal 2 zinnen. Maximaal 18 woorden per zin.
 - Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
-- Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld", "geen gegevens beschikbaar".
+- Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
 - Structuur: aanleiding → actie verpleegkundige → beslissing → opvolging.
 - Verpleegkundige contacteert huisarts, niet omgekeerd.
-- Laboresultaten worden besproken via de huisarts.
-- Medicatie specifiek vermelden: naam + dosis + frequentie + duur indien beschikbaar.
-- Geen tijdstippen tenzij echt nodig. Geen opsommingstekens. Geen uitleg.
+- Medicatie specifiek: naam + dosis + frequentie + duur indien beschikbaar.
+- Klachten en symptomen natuurlijk samenvoegen in de tekst.
+- Geen tijdstippen tenzij echt nodig. Geen opsommingstekens.
 
 VOORBEELDEN:
-Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord huisarts: medicatie starten | Medicatie: Furadantine 50 mg 3x/dag 7 dagen | Actie: toegediend
-Output: Huisarts gecontacteerd wegens koorts. Furadantine 50 mg 3x/dag opgestart gedurende 7 dagen.
+Scenario: huisarts gecontacteerd | Klacht: koorts, urinewegklachten | Symptomen: dysurie | Medicatie: Furadantine 50 mg 3x/dag 7 dagen
+Output: Huisarts gecontacteerd wegens koorts en urinewegklachten met dysurie. Furadantine 50 mg 3x/dag opgestart gedurende 7 dagen.
 
-Scenario: bewoner opgenomen | Reden: lage saturatie, dyspneu | Ziekenhuis: UZ Leuven | Familie: verwittigd
-Output: Bewoner opgenomen in UZ Leuven wegens dyspneu en lage saturatie. Familie verwittigd.
-
-Scenario: huisartsadvies / laboresultaten | Onderwerp: bloedname | Beleid: geen wijziging
-Output: Bloedresultaten besproken met de huisarts. Geen wijziging van beleid.
+Scenario: bewoner opgenomen | Klacht: ademhalingsproblemen | Symptomen: kortademigheid | Ziekenhuis: UZ Leuven | Familie: verwittigd
+Output: Bewoner opgenomen in UZ Leuven wegens ademhalingsproblemen met kortademigheid. Familie verwittigd.
 
 Kamer: ${getField('kort-kamer') || '–'}
 Tijdstip: ${document.getElementById('kort-tijdstip')?.value || '–'}
 Scenario: ${scenario}
+Aard van de klacht: ${getMulti('kort-klachten')}
+Specifieke symptomen: ${getMulti('kort-symptomen')}
 ${details}
 Extra notitie: ${document.getElementById('kort-notities')?.value.trim() || '–'}` };
   }
