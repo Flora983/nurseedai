@@ -375,14 +375,6 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         </div>
       </div>
       <div class="block">
-        <span class="block-label">Bewustzijn</span>
-        <div class="btn-group" data-field="inc-bewustzijn">
-          <button class="opt-btn" data-val="bewust en georiënteerd">✅ Bewust & georiënteerd</button>
-          <button class="opt-btn" data-val="verward">🧠 Verward</button>
-          <button class="opt-btn" data-val="bewustzijnsverlies">❌ Bewustzijnsverlies</button>
-        </div>
-      </div>
-      <div class="block">
         <span class="block-label">Hoofdimpact?</span>
         <div class="toggle-group" data-field="inc-hoofd">
           <button class="toggle-btn yes" data-val="ja — hoofdimpact vastgesteld">✅ Ja</button>
@@ -390,55 +382,28 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         </div>
       </div>
       <div class="block">
-        <span class="block-label">Mobiliteit na val</span>
-        <div class="btn-group" data-field="inc-mobiliteit">
-          <button class="opt-btn" data-val="kan zelfstandig staan en stappen">✅ Zelfstandig</button>
-          <button class="opt-btn" data-val="kan stappen met hulp">🤝 Met hulp</button>
-          <button class="opt-btn" data-val="kan niet stappen">❌ Kan niet stappen</button>
-          <button class="opt-btn" data-val="onbekend">❓ Onbekend</button>
-        </div>
-      </div>
-      <div class="block">
-        <span class="block-label">Letsel (meerdere mogelijk)</span>
+        <span class="block-label">Toestand na incident (meerdere mogelijk)</span>
         <div class="btn-group" id="inc-letsel-group">
-          <button class="opt-btn multi" data-val="geen zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',true)">✅ Geen zichtbaar letsel</button>
-          <button class="opt-btn multi" data-val="schaafwonde" onclick="toggleMulti(this,'inc-letsel',false)">🩹 Schaafwonde</button>
-          <button class="opt-btn multi" data-val="huidletsel" onclick="toggleMulti(this,'inc-letsel',false)">🔴 Huidletsel</button>
-          <button class="opt-btn multi" data-val="bloeding" onclick="toggleMulti(this,'inc-letsel',false)">🩸 Bloeding</button>
-          <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'inc-letsel',false)">😣 Pijn</button>
-          <button class="opt-btn multi" data-val="zwelling" onclick="toggleMulti(this,'inc-letsel',false)">🫧 Zwelling</button>
+          <button class="opt-btn multi" data-val="bewust en georiënteerd" onclick="toggleMulti(this,'inc-letsel',false)">✅ Bewust & georiënteerd</button>
+          <button class="opt-btn multi" data-val="verward" onclick="toggleMulti(this,'inc-letsel',false)">🧠 Verward</button>
+          <button class="opt-btn multi" data-val="bewustzijnsverlies" onclick="toggleMulti(this,'inc-letsel',false)">❌ Bewustzijnsverlies</button>
+          <button class="opt-btn multi" data-val="kan zelfstandig bewegen" onclick="toggleMulti(this,'inc-letsel',false)">🚶 Zelfstandig bewegen</button>
+          <button class="opt-btn multi" data-val="beperkte mobiliteit" onclick="toggleMulti(this,'inc-letsel',false)">🤝 Beperkte mobiliteit</button>
+          <button class="opt-btn multi" data-val="kan niet bewegen" onclick="toggleMulti(this,'inc-letsel',false)">🛑 Kan niet bewegen</button>
+          <button class="opt-btn multi" data-val="geen zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',true)">🙌 Geen letsel</button>
+          <button class="opt-btn multi" data-val="pijn aanwezig" onclick="toggleMulti(this,'inc-letsel',false)">😣 Pijn</button>
+          <button class="opt-btn multi" data-val="zwelling aanwezig" onclick="toggleMulti(this,'inc-letsel',false)">🫧 Zwelling</button>
           <button class="opt-btn multi" data-val="vermoeden fractuur" onclick="toggleMulti(this,'inc-letsel',false)">🦴 Vermoeden fractuur</button>
         </div>
       </div>
-      <div class="block">
-        <span class="block-label">Vitale parameters (optioneel)</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-          <div>
-            <input type="text" class="field param-field" id="inc-rr" placeholder="RR bv. 120/70" oninput="checkParam(this)">
-            <div class="param-warning" id="warn-rr"></div>
-          </div>
-          <div>
-            <input type="text" class="field param-field" id="inc-hf" placeholder="HF bv. 82" oninput="checkParam(this)">
-            <div class="param-warning" id="warn-hf"></div>
-          </div>
-          <div>
-            <input type="text" class="field param-field" id="inc-sat" placeholder="Sat bv. 96%" oninput="checkParam(this,'sat')">
-            <div class="param-warning" id="warn-sat"></div>
-          </div>
-          <div>
-            <input type="text" class="field param-field" id="inc-temp" placeholder="Temp bv. 37.1" oninput="checkParam(this,'temp')">
-            <div class="param-warning" id="warn-temp"></div>
-          </div>
+      <div class="block" style="margin-top:8px;">
+        <span class="block-label" style="color:var(--ink-light);font-size:0.72rem;">Parameters (optioneel)</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px;">
+          <div><input type="text" class="field param-field" id="inc-rr" placeholder="RR bv. 120/70" oninput="checkParam(this)" style="padding:8px 10px;font-size:0.83rem;"><div class="param-warning" id="warn-rr"></div></div>
+          <div><input type="text" class="field param-field" id="inc-hf" placeholder="HF bv. 82" oninput="checkParam(this)" style="padding:8px 10px;font-size:0.83rem;"><div class="param-warning" id="warn-hf"></div></div>
+          <div><input type="text" class="field param-field" id="inc-sat" placeholder="Sat bv. 96%" oninput="checkParam(this,'sat')" style="padding:8px 10px;font-size:0.83rem;"><div class="param-warning" id="warn-sat"></div></div>
+          <div><input type="text" class="field param-field" id="inc-temp" placeholder="Temp bv. 37.1" oninput="checkParam(this,'temp')" style="padding:8px 10px;font-size:0.83rem;"><div class="param-warning" id="warn-temp"></div></div>
         </div>
-      </div>
-      <div class="block">
-        <span class="block-label">Pijnscore</span>
-        <select class="field" id="inc-pijnscore">
-          <option value="">Kies pijnscore</option>
-          <option>0/10</option><option>1/10</option><option>2/10</option><option>3/10</option>
-          <option>4/10</option><option>5/10</option><option>6/10</option><option>7/10</option>
-          <option>8/10</option><option>9/10</option><option>10/10</option>
-        </select>
       </div>
     </div>
 
@@ -1525,13 +1490,10 @@ Extra: ${document.getElementById('ov-notities')?.value.trim()||'–'}` };
     if (type === 'val' || type === 'bijna-val') {
       details = `Locatie: ${getField('inc-locatie')}
 Tijdstip: ${document.getElementById('inc-tijdstip')?.value||'–'}
-Situatie: ${getField('inc-situatie')}
-Bewustzijn: ${getField('inc-bewustzijn')}
+Vastgesteld: ${getField('inc-situatie')}
 Hoofdimpact: ${getField('inc-hoofd')}
-Mobiliteit: ${getField('inc-mobiliteit')}
-Letsel: ${getMulti('inc-letsel')}
-Vitale params: RR ${document.getElementById('inc-rr')?.value||'–'} | HF ${document.getElementById('inc-hf')?.value||'–'} | Sat ${document.getElementById('inc-sat')?.value||'–'} | Temp ${document.getElementById('inc-temp')?.value||'–'}
-Pijnscore: ${document.getElementById('inc-pijnscore')?.value||'–'}`;
+Toestand: ${getMulti('inc-letsel')}
+Parameters: RR ${document.getElementById('inc-rr')?.value||'–'} | HF ${document.getElementById('inc-hf')?.value||'–'} | Sat ${document.getElementById('inc-sat')?.value||'–'} | Temp ${document.getElementById('inc-temp')?.value||'–'}`;
     } else if (type === 'agressie') {
       details = `Tijdstip: ${document.getElementById('inc-tijdstip-agr')?.value||'–'}
 Type agressie: ${getField('inc-agressie-type')}
