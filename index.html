@@ -1405,7 +1405,7 @@ async function callAPI(prompt) {
 // ── BUILD PROMPTS MET FEW-SHOT VOORBEELDEN ──
 function buildPrompt(mod) {
   const taal = currentLang === 'fr' ? 'Frans' : currentLang === 'en' ? 'Engels' : 'Nederlands';
-  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke en professionele notitie voor het zorgdossier. Gebruik directe, actieve taal. Wees bondig (max. 2-4 zinnen). Geen herhaling, geen passieve zinnen, geen AI-taal. Schrijf zoals een collega-verpleegkundige: helder, neutraal en zonder oordeel. Gebruik alleen de verstrekte informatie. Verzin niets bij.`;
+  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke en professionele notitie voor het zorgdossier. Gebruik directe, actieve taal. Wees bondig. Geen herhaling, geen passieve zinnen, geen AI-taal. Schrijf zoals een collega-verpleegkundige: helder, neutraal en zonder oordeel. Gebruik alleen de verstrekte informatie. Verzin niets bij. Schrijf medicatienamen correct in het Nederlands (bv. paracetamol 500 mg 3x/dag). Vermijd onnodige woorden zoals exacte tijdstippen of kamernummer tenzij relevant. Schrijf beknopt en natuurlijk zoals in een professioneel verpleegkundig dossier. Gebruik nooit "ik" of persoonlijke formuleringen. Schrijf altijd in de derde persoon of onpersoonlijk (dossierstijl), bv. "Huisarts gecontacteerd wegens..." of "Medicatie toegediend volgens..."`.;
 
   if (mod === 'overdracht') {
     return { prompt: `${base}
