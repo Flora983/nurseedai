@@ -1617,14 +1617,14 @@ BELANGRIJKE REGELS:
 - Focus altijd op: aanleiding → actie verpleegkundige → antwoord/beslissing → opvolging.
 - In een woonzorgcentrum contacteert de verpleegkundige de huisarts, niet omgekeerd.
 - Laboresultaten worden besproken via de huisarts.
-- Vermeld medicatie kort en algemeen (bv. "antibiotica opgestart") — geen volledige doseringen.
+- Vermeld medicatie specifiek: naam + dosis + frequentie + duur indien beschikbaar (bv. "Furadantine 50 mg 3x/d gestart gedurende 7 dagen").
 - Vermijd exacte tijdstippen tenzij echt noodzakelijk.
 - Noem alleen opvolging als die expliciet blijkt uit de invoer.
 - Gebruik geen opsommingstekens, geen uitleg, geen herhaling.
 
 VOORBEELDEN:
-Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord huisarts: medicatie starten | Actie verpleegkundige: toegediend
-Output: Huisarts gecontacteerd wegens koorts. Antibiotica opgestart volgens voorschrift.
+Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord huisarts: medicatie starten | Medicatie: Furadantine 50mg 3x/d 7 dagen | Actie verpleegkundige: toegediend
+Output: Huisarts gecontacteerd wegens koorts. Furadantine 50 mg 3x/d gestart gedurende 7 dagen, verdere opvolging voorzien.
 
 Scenario: bewoner opgenomen | Reden opname: lage saturatie en dyspneu | Ziekenhuis: UZ Leuven | Familie: verwittigd
 Output: Bewoner opgenomen in UZ Leuven wegens dyspneu en lage saturatie. Familie werd verwittigd.
