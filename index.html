@@ -1559,29 +1559,28 @@ Extra: ${document.getElementById('ged-notities')?.value.trim()||'–'}` };
 
   if (mod === 'dokter') {
     return { prompt: `${base}
-Schrijf een korte professionele verpleegkundige notitie over een doktersbezoek of artsencontact in een Belgisch woonzorgcentrum.
+Schrijf een korte, vloeiende verpleegkundige notitie over een doktersbezoek of artsencontact in een Belgisch woonzorgcentrum.
 REGELS:
-- Maximaal 2 tot 4 korte zinnen.
-- Dossierklaar, feitelijk en professioneel.
+- 2 tot 3 zinnen. Vloeiende tekst, geen opsomming.
+- Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
-- Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld", "geen gegevens beschikbaar".
-- Focus op: reden van contact → beslissing arts → verpleegkundige actie → opvolging.
-- Schrijf concreet en praktisch.
-- Geen opsommingstekens. Geen uitleg of interpretatie.
-- Tijdstip alleen vermelden als het klinisch relevant is.
-- Als medicatie vermeld wordt, deze concreet noemen met naam, dosis en frequentie.
-- Vermijd vage zinnen zoals "arts werd op de hoogte gebracht" of "advies werd gegeven".
-- Schrijf liever concreet: "arts adviseerde observatie", "arts startte antibiotica", "arts besliste tot opname".
+- Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
+- Structuur: reden van contact → beslissing arts → verpleegkundige actie → opvolging.
+- Medicatie concreet vermelden: naam + dosis + frequentie indien ingevuld.
+- Tijdstip alleen vermelden als klinisch relevant.
+- Vermijd: "arts werd op de hoogte gebracht", "advies werd gegeven".
+- Gebruik liever: "arts beoordeelde…", "beslist tot…", "opgestart…", "familie verwittigd…".
+- Combineer info in vloeiende zinnen, geen losse regels.
 
 VOORBEELDEN:
-Kamer: 3 | Type contact: telefonisch | Reden: koorts, afwijkende laboresultaten | Antwoord arts: antibiotica starten, staalname aanvragen | Medicatie: Augmentin 875 mg 2x/d | Opvolging: temperatuur opvolgen, labo afnemen
-Output: Arts telefonisch gecontacteerd wegens koorts en afwijkende laboresultaten. Op advies werd Augmentin 875 mg 2x/d opgestart en staalname aangevraagd. Temperatuur opvolgen en labo afnemen.
+Kamer: 3 | Type contact: telefonisch | Reden: koorts, afwijkende laboresultaten | Antwoord arts: antibiotica starten, staalname aanvragen | Medicatie: Augmentin 875 mg 2x/dag | Opvolging: temperatuur opvolgen, labo afnemen
+Output: Arts telefonisch gecontacteerd wegens koorts en afwijkende laboresultaten. Augmentin 875 mg 2x/dag opgestart en staalname aangevraagd. Temperatuur en labo verder opvolgen.
 
 Kamer: 8 | Type contact: arts ter plaatse | Reden: toegenomen dyspneu | Antwoord arts: opname ziekenhuis | Opvolging: familie verwittigen
-Output: Arts beoordeelde de bewoner wegens toegenomen dyspneu. Beslist tot opname in het ziekenhuis. Familie verwittigd en verdere transfer voorbereid.
+Output: Arts beoordeelde de bewoner wegens toegenomen dyspneu. Beslist tot ziekenhuisopname, familie verwittigd en transfer voorbereid.
 
 Kamer: 12 | Type contact: telefonisch | Reden: wondcontrole | Antwoord arts: wondzorg verderzetten, observatie | Opvolging: roodheid opvolgen
-Output: Arts gecontacteerd voor wondcontrole. Wondzorg verderzetten volgens advies en roodheid verder observeren.
+Output: Arts gecontacteerd voor wondcontrole. Wondzorg verderzetten en roodheid verder observeren.
 
 Kamer: ${getField('dok-kamer')||'–'}
 Type contact: ${getField('dok-contacttype')||'–'}
@@ -1628,27 +1627,25 @@ Inhoud: ${document.getElementById('kort-algemeen-inhoud')?.value.trim() || '–'
     }
     return { prompt: `${base}
 Schrijf een ZEER korte verpleegkundige communicatienota voor een Belgisch woonzorgcentrum.
-BELANGRIJKE REGELS:
+REGELS:
 - Maximaal 2 zinnen. Maximaal 18 woorden per zin.
-- Schrijf dossierklaar, feitelijk en professioneel.
+- Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
-- Geen AI-zinnen zoals: "informatie ontbreekt", "niet ingevuld", "geen gegevens beschikbaar".
-- Focus altijd op: aanleiding → actie verpleegkundige → antwoord/beslissing → opvolging.
-- In een woonzorgcentrum contacteert de verpleegkundige de huisarts, niet omgekeerd.
+- Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld", "geen gegevens beschikbaar".
+- Structuur: aanleiding → actie verpleegkundige → beslissing → opvolging.
+- Verpleegkundige contacteert huisarts, niet omgekeerd.
 - Laboresultaten worden besproken via de huisarts.
-- Vermeld medicatie specifiek: naam + dosis + frequentie + duur indien beschikbaar (bv. "Furadantine 50 mg 3x/d gestart gedurende 7 dagen").
-- Vermijd exacte tijdstippen tenzij echt noodzakelijk.
-- Noem alleen opvolging als die expliciet blijkt uit de invoer.
-- Gebruik geen opsommingstekens, geen uitleg, geen herhaling.
+- Medicatie specifiek vermelden: naam + dosis + frequentie + duur indien beschikbaar.
+- Geen tijdstippen tenzij echt nodig. Geen opsommingstekens. Geen uitleg.
 
 VOORBEELDEN:
-Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord huisarts: medicatie starten | Medicatie: Furadantine 50mg 3x/d 7 dagen | Actie verpleegkundige: toegediend
-Output: Huisarts gecontacteerd wegens koorts. Furadantine 50 mg 3x/d gestart gedurende 7 dagen, verdere opvolging voorzien.
+Scenario: huisarts gecontacteerd | Reden: koorts | Antwoord huisarts: medicatie starten | Medicatie: Furadantine 50 mg 3x/dag 7 dagen | Actie: toegediend
+Output: Huisarts gecontacteerd wegens koorts. Furadantine 50 mg 3x/dag opgestart gedurende 7 dagen.
 
-Scenario: bewoner opgenomen | Reden opname: lage saturatie en dyspneu | Ziekenhuis: UZ Leuven | Familie: verwittigd
-Output: Bewoner opgenomen in UZ Leuven wegens dyspneu en lage saturatie. Familie werd verwittigd.
+Scenario: bewoner opgenomen | Reden: lage saturatie, dyspneu | Ziekenhuis: UZ Leuven | Familie: verwittigd
+Output: Bewoner opgenomen in UZ Leuven wegens dyspneu en lage saturatie. Familie verwittigd.
 
-Scenario: huisartsadvies / laboresultaten | Onderwerp: bloedname | Beleid huisarts: geen wijziging beleid
+Scenario: huisartsadvies / laboresultaten | Onderwerp: bloedname | Beleid: geen wijziging
 Output: Bloedresultaten besproken met de huisarts. Geen wijziging van beleid.
 
 Kamer: ${getField('kort-kamer') || '–'}
