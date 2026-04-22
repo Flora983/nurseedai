@@ -394,6 +394,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn multi" data-val="pijn aanwezig" onclick="toggleMulti(this,'inc-letsel',false)">😣 Pijn</button>
           <button class="opt-btn multi" data-val="zwelling aanwezig" onclick="toggleMulti(this,'inc-letsel',false)">🫧 Zwelling</button>
           <button class="opt-btn multi" data-val="vermoeden fractuur" onclick="toggleMulti(this,'inc-letsel',false)">🦴 Vermoeden fractuur</button>
+          <button class="opt-btn multi" data-val="misselijkheid" onclick="toggleMulti(this,'inc-letsel',false)">🤢 Misselijkheid</button>
+          <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'inc-letsel',false)">😮‍💨 Ademhaling</button>
         </div>
       </div>
       <div class="block" style="margin-top:8px;">
@@ -498,17 +500,6 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     </div>
 
     <!-- GEMEENSCHAPPELIJKE ACTIES -->
-    <div class="block" style="margin-top:16px;">
-      <span class="block-label">Fysieke klachten na incident (meerdere mogelijk)</span>
-      <div class="btn-group" id="inc-klachten-group">
-        <button class="opt-btn multi" data-val="geen bijkomende klachten" onclick="toggleMulti(this,'inc-klachten',true)">✅ Geen bijkomende klachten</button>
-        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'inc-klachten',false)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="zwelling" onclick="toggleMulti(this,'inc-klachten',false)">🫧 Zwelling</button>
-        <button class="opt-btn multi" data-val="verwardheid" onclick="toggleMulti(this,'inc-klachten',false)">🧠 Verwardheid</button>
-        <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'inc-klachten',false)">😮‍💨 Ademhaling</button>
-        <button class="opt-btn multi" data-val="misselijkheid" onclick="toggleMulti(this,'inc-klachten',false)">🤢 Misselijkheid</button>
-      </div>
-    </div>
     <div class="block" style="margin-top:4px;">
       <span class="block-label">Acties ondernomen (meerdere mogelijk)</span>
       <div class="btn-group" id="inc-actie-group">
@@ -745,6 +736,19 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block">
+      <span class="block-label">Uitgevoerde wondzorg / handeling (meerdere mogelijk)</span>
+      <div class="btn-group" id="won-handeling-group">
+        <button class="opt-btn multi" data-val="geen wondzorg uitgevoerd" onclick="toggleMulti(this,'won-handeling',true)">🚫 Geen wondzorg</button>
+        <button class="opt-btn multi" data-val="gereinigd met NaCl 0,9%" onclick="toggleMulti(this,'won-handeling',false)">🧴 Gereinigd NaCl</button>
+        <button class="opt-btn multi" data-val="ontsmet" onclick="toggleMulti(this,'won-handeling',false)">🔵 Ontsmet</button>
+        <button class="opt-btn multi" data-val="kompres aangebracht" onclick="toggleMulti(this,'won-handeling',false)">🩹 Kompres</button>
+        <button class="opt-btn multi" data-val="splitkompres aangebracht" onclick="toggleMulti(this,'won-handeling',false)">✂️ Splitkompres</button>
+        <button class="opt-btn multi" data-val="afgedekt" onclick="toggleMulti(this,'won-handeling',false)">🛡️ Afgedekt</button>
+        <button class="opt-btn multi" data-val="gefixeerd met mefix" onclick="toggleMulti(this,'won-handeling',false)">🩻 Mefix</button>
+        <button class="opt-btn multi" data-val="verband vernieuwd" onclick="toggleMulti(this,'won-handeling',false)">🔄 Verband vernieuwd</button>
+      </div>
+    </div>
+    <div class="block">
       <span class="block-label">Opvolging</span>
       <div class="btn-group" data-field="won-opvolging">
         <button class="opt-btn" data-val="volgende verzorging morgen">📅 Morgen</button>
@@ -753,6 +757,19 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn" data-val="arts consulteren">📞 Arts consulteren</button>
         <button class="opt-btn" data-val="wondverpleegkundige inschakelen">👩‍⚕️ Wondzorgref.</button>
         <button class="opt-btn" data-val="observeren">👁️ Observeren</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Aandachtspunten / wanneer arts contacteren (meerdere mogelijk)</span>
+      <div class="btn-group" id="won-aandacht-group">
+        <button class="opt-btn multi" data-val="geen bijzondere aandachtspunten" onclick="toggleMulti(this,'won-aandacht',true)">✅ Geen bijzonderheden</button>
+        <button class="opt-btn multi" data-val="roodheid rond wonde opvolgen" onclick="toggleMulti(this,'won-aandacht',false)">🔴 Roodheid opvolgen</button>
+        <button class="opt-btn multi" data-val="toename pijn opvolgen" onclick="toggleMulti(this,'won-aandacht',false)">😣 Pijn opvolgen</button>
+        <button class="opt-btn multi" data-val="wondvocht controleren" onclick="toggleMulti(this,'won-aandacht',false)">💧 Vocht controleren</button>
+        <button class="opt-btn multi" data-val="dagelijkse verzorging voorzien" onclick="toggleMulti(this,'won-aandacht',false)">📅 Dagelijks verzorgen</button>
+        <button class="opt-btn multi" data-val="arts contacteren bij roodheid" onclick="toggleMulti(this,'won-aandacht',false)">📞 Arts bij roodheid</button>
+        <button class="opt-btn multi" data-val="arts contacteren bij zwelling" onclick="toggleMulti(this,'won-aandacht',false)">📞 Arts bij zwelling</button>
+        <button class="opt-btn multi" data-val="arts contacteren bij etter of geur" onclick="toggleMulti(this,'won-aandacht',false)">📞 Arts bij etter/geur</button>
       </div>
     </div>
     <div class="block">
@@ -1320,7 +1337,7 @@ const multiSelections = {
   'inc-letsel': new Set(), 'inc-actie': new Set(), 'inc-klachten': new Set(),
   'dok-reden': new Set(), 'dok-klachten': new Set(), 'dok-symptomen': new Set(),
   'fam-onderwerp': new Set(),
-  'ged-actie': new Set(), 'won-alarm': new Set(), 'won-producten': new Set(), 'won-infectie': new Set(),
+  'ged-actie': new Set(), 'won-alarm': new Set(), 'won-producten': new Set(), 'won-infectie': new Set(), 'won-handeling': new Set(), 'won-aandacht': new Set(),
   'kort-opname-redenen': new Set(), 'kort-terug-beslissing': new Set(),
   'kort-klachten': new Set(), 'kort-symptomen': new Set()
 };
@@ -1562,31 +1579,42 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
     const isISTAP = classificatie.includes('ISTAP');
     const isDecubitus = classificatie.includes('Decubitus');
     return { prompt: `${base}
+Schrijf een korte, professionele wondzorgnotitie voor een Belgisch woonzorgcentrum.
+${isISTAP ? 'Gebruik ISTAP-terminologie en vermeld de classificatie.' : ''}
+${isDecubitus ? 'Vermeld de decubitusgraad expliciet.' : ''}
 
-Schrijf de wondzorgnotitie volgens de officiële Vlaamse wondzorgstandaard.
-${isISTAP ? 'Gebruik de ISTAP-terminologie in de notitie (huidscheur, classificatie vermelden).' : ''}
-${isDecubitus ? 'Vermeld de decubitusgraad expliciet in de notitie.' : ''}
+REGELS:
+- 2 tot 4 zinnen. Vloeiende tekst, geen opsomming.
+- Dossierklaar, professioneel Nederlands. Nooit "ik".
+- Gebruik alleen de info hieronder. Verzin niets.
+- Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
+- Structuur: observatie → infectietekenen → uitgevoerde wondzorg → opvolging.
+- Als er geen infectietekenen zijn: schrijf dit kort en natuurlijk.
+- Als er infectietekenen zijn: benoem ze concreet.
+- Als wondzorghandelingen vermeld zijn: verwerk ze beknopt in de tekst.
+- Als aandachtspunten vermeld zijn: verwerk ze logisch in de laatste zin.
 
-Voorbeeld ISTAP:
-Kamer: 5 | Type: huidscheur | Locatie: arm | Classificatie: ISTAP Type 2a | Evolutie: stabiel | Wondbodem: granulatie | Exsudaat: weinig, helder
-→ Kamer 5 huidscheur rechterarm (ISTAP Type 2a), stabiel. Granulatieweefsel aanwezig, weinig helder exsudaat. Verzorgd met siliconenverband. Volgende verzorging morgen.
+VOORBEELDEN:
+Type: huidscheur | Locatie: arm | Classificatie: ISTAP Type 2a | Infectie: geen | Handeling: gereinigd NaCl, siliconenverband | Opvolging: morgen
+Output: Huidscheur rechterarm (ISTAP Type 2a), stabiel. Geen infectietekenen. Gereinigd met NaCl 0,9% en siliconenverband aangebracht. Volgende verzorging morgen.
 
-Voorbeeld Decubitus:
-Kamer: 8 | Type: decubitus | Locatie: stuit | Classificatie: Decubitus graad 2 | Evolutie: verslechterd | Exsudaat: matig, geel
-→ Kamer 8 decubitus stuit graad 2, lichte verslechtering vastgesteld. Matig geel exsudaat, wonde gereinigd met NaCl 0.9%. Arts geconsulteerd. Volgende verzorging morgen.
+Type: decubitus | Locatie: stuit | Graad: 2 | Infectie: roodheid, wondgeur | Handeling: gereinigd, ontsmet, afgedekt | Aandacht: arts bij etter of geur
+Output: Decubitus stuit graad 2, lichte verslechtering vastgesteld. Roodheid en wondgeur aanwezig. Gereinigd met NaCl 0,9%, ontsmet en afgedekt. Arts contacteren bij toename etter of geur.
 
 Kamer: ${getField('won-kamer')||'–'}
 Type: ${getField('won-type')}
 Locatie: ${getField('won-locatie')}
 Classificatie: ${classificatie}
-Evolutie tov vorige: ${getField('won-evolutie')||'–'}
+Evolutie: ${getField('won-evolutie')||'–'}
 Wondbodem: ${getField('won-bodem')||'–'}
 Exsudaat: ${getField('won-exsudaat')||'–'}, kleur: ${getField('won-exsudaat-kleur')||'–'}
-Infectietekenen / wondsymptomen: ${getMulti('won-infectie')}
+Infectietekenen: ${getMulti('won-infectie')}
 Alarmsignalen: ${getMulti('won-alarm')}
+Uitgevoerde wondzorg: ${getMulti('won-handeling')}
 Gebruikte producten: ${getMulti('won-producten')}
 Afmetingen: ${afm}
 Opvolging: ${getField('won-opvolging')}
+Aandachtspunten: ${getMulti('won-aandacht')}
 Extra: ${document.getElementById('won-notities')?.value.trim()||'–'}` };
   }
 
