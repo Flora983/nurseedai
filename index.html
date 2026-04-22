@@ -957,9 +957,16 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn multi" data-val="misselijkheid / braken" onclick="toggleMulti(this,'kort-klachten',false)">🤢 Misselijkheid</button>
           <button class="opt-btn multi" data-val="buikpijn" onclick="toggleMulti(this,'kort-klachten',false)">🫁 Buikpijn</button>
           <button class="opt-btn multi" data-val="dysurie" onclick="toggleMulti(this,'kort-klachten',false)">🔥 Dysurie</button>
-          <button class="opt-btn multi" data-val="wondprobleem" onclick="toggleMulti(this,'kort-klachten',false)">🩹 Wond</button>
+          <button class="opt-btn multi" data-val="nieuwe wonde" onclick="toggleMulti(this,'kort-klachten',false)">🩹 Nieuwe wonde</button>
+          <button class="opt-btn multi" data-val="wonde geneest slecht" onclick="toggleMulti(this,'kort-klachten',false)">⚠️ Wonde geneest slecht</button>
+          <button class="opt-btn multi" data-val="tekenen van infectie aan wonde" onclick="toggleMulti(this,'kort-klachten',false)">🔴 Infectie wonde</button>
+          <button class="opt-btn multi" data-val="brandwonde" onclick="toggleMulti(this,'kort-klachten',false)">🔥 Brandwonde</button>
           <button class="opt-btn multi" data-val="onwel" onclick="toggleMulti(this,'kort-klachten',false)">😵 Onwel</button>
           <button class="opt-btn multi" data-val="andere klacht" onclick="toggleMulti(this,'kort-klachten',false)">📍 Andere</button>
+          <button class="opt-btn multi" data-val="vermoeden infectie" onclick="toggleMulti(this,'kort-klachten',false)">🦠 Vermoeden infectie</button>
+          <button class="opt-btn multi" data-val="urinewegklachten" onclick="toggleMulti(this,'kort-klachten',false)">🧫 Urineweg</button>
+          <button class="opt-btn multi" data-val="gewrichtsklachten" onclick="toggleMulti(this,'kort-klachten',false)">🦴 Gewricht</button>
+          <button class="opt-btn multi" data-val="roodheid / ontsteking" onclick="toggleMulti(this,'kort-klachten',false)">🔴 Roodheid / ontsteking</button>
         </div>
       </div>
       <div class="block"><span class="block-label">Detail (optioneel)</span><input type="text" class="field" id="kort-arts-labo" placeholder="bijv. CRP verhoogd, temp 39.2°C"></div>
@@ -1034,6 +1041,16 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
       <div class="block"><span class="block-label">Ziekenhuis (optioneel)</span><input type="text" class="field" id="kort-opname-ziekenhuis" placeholder="bijv. UZ Leuven, AZ Sint-Truiden"></div>
       <div class="block">
+        <span class="block-label">Beslist door</span>
+        <div class="btn-group" data-field="kort-opname-beslist">
+          <button class="opt-btn" data-val="huisarts">👨‍⚕️ Huisarts</button>
+          <button class="opt-btn" data-val="wachtdienst">🌙 Wachtdienst</button>
+          <button class="opt-btn" data-val="spoedarts">🚑 Spoedarts</button>
+          <button class="opt-btn" data-val="familie">👨‍👩‍👧 Familie</button>
+          <button class="opt-btn" data-val="andere">📍 Andere</button>
+        </div>
+      </div>
+      <div class="block">
         <span class="block-label">Familie verwittigd?</span>
         <div class="toggle-group" data-field="kort-opname-familie">
           <button class="toggle-btn yes" data-val="familie verwittigd">✅ Ja</button>
@@ -1045,13 +1062,17 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <!-- SCENARIO: TERUG UIT ZIEKENHUIS -->
     <div id="kort-terug" class="kort-section">
       <div class="block">
-        <span class="block-label">Reden ziekenhuisopname (optioneel)</span>
+        <span class="block-label">Reden / specialisatie (optioneel)</span>
         <div class="btn-group" data-field="kort-terug-van">
           <button class="opt-btn" data-val="val">⚠️ Val</button>
-          <button class="opt-btn" data-val="consultatie">🩺 Consultatie</button>
+          <button class="opt-btn" data-val="oogarts">👁️ Oogarts</button>
+          <button class="opt-btn" data-val="NKO / oor">👂 NKO / oor</button>
+          <button class="opt-btn" data-val="cardiologie">❤️ Cardiologie</button>
+          <button class="opt-btn" data-val="diabetes">🩸 Diabetes</button>
+          <button class="opt-btn" data-val="controle">🔍 Controle</button>
+          <button class="opt-btn" data-val="onderzoek">🧪 Onderzoek</button>
           <button class="opt-btn" data-val="operatie">🔪 Operatie</button>
           <button class="opt-btn" data-val="infectie">🦠 Infectie</button>
-          <button class="opt-btn" data-val="controle">🔍 Controle</button>
           <button class="opt-btn" data-val="andere reden">📍 Andere</button>
         </div>
       </div>
@@ -1294,12 +1315,12 @@ function isKortReady() {
   const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected');
   const scenario = scenarioBtn ? scenarioBtn.dataset.val : 'niet ingevuld';
   if (!hasValue('kort-kamer') || scenario === 'niet ingevuld') return false;
-  if (scenario === 'huisarts gecontacteerd') return getField('kort-arts-contact-reden') !== 'niet ingevuld' && getField('kort-arts-contact-antwoord') !== 'niet ingevuld' && getField('kort-arts-contact-actie') !== 'niet ingevuld';
+  if (scenario === 'huisarts gecontacteerd') return getMulti('kort-klachten') !== 'niet ingevuld' && getField('kort-arts-contact-antwoord') !== 'niet ingevuld';
   if (scenario === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' && getField('kort-advies-beleid') !== 'niet ingevuld';
-  if (scenario === 'bewoner opgenomen') return getMulti('kort-opname-redenen') !== 'niet ingevuld' && getField('kort-opname-familie') !== 'niet ingevuld';
-  if (scenario === 'bewoner terug') return getField('kort-terug-van') !== 'niet ingevuld' && getMulti('kort-terug-beslissing') !== 'niet ingevuld';
-  if (scenario === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' && getField('kort-goedkeuring-akkoord') !== 'niet ingevuld' && getField('kort-goedkeuring-actie') !== 'niet ingevuld';
-  if (scenario === 'andere korte communicatie') return getField('kort-algemeen-type') !== 'niet ingevuld' && hasValue('kort-algemeen-inhoud');
+  if (scenario === 'bewoner opgenomen') return getMulti('kort-opname-redenen') !== 'niet ingevuld';
+  if (scenario === 'bewoner terug uit ziekenhuis') return getField('kort-terug-van') !== 'niet ingevuld' || getMulti('kort-terug-beslissing') !== 'niet ingevuld' || hasValue('kort-notities');
+  if (scenario === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' && getField('kort-goedkeuring-akkoord') !== 'niet ingevuld';
+  if (scenario === 'andere korte communicatie') return hasValue('kort-algemeen-inhoud');
   return false;
 }
 
@@ -1565,6 +1586,7 @@ Beleid / beslissing: ${getField('kort-advies-beleid')}
 Medicatie: ${document.getElementById('kort-advies-start')?.value.trim()||'–'}`;
     } else if (scenario === 'bewoner opgenomen') {
       details = `Reden opname: ${getMulti('kort-opname-redenen')}
+Beslist door: ${getField('kort-opname-beslist')||'–'}
 Ziekenhuis: ${document.getElementById('kort-opname-ziekenhuis')?.value.trim()||'–'}
 Familie: ${getField('kort-opname-familie')}`;
     } else if (scenario === 'bewoner terug uit ziekenhuis') {
