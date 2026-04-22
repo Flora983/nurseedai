@@ -1033,11 +1033,18 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn multi" data-val="val" onclick="toggleMulti(this,'kort-opname-redenen',false)">⚠️ Val</button>
           <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this,'kort-opname-redenen',false)">🌡️ Koorts</button>
           <button class="opt-btn multi" data-val="dyspneu" onclick="toggleMulti(this,'kort-opname-redenen',false)">🫁 Dyspneu</button>
+          <button class="opt-btn multi" data-val="lage saturatie" onclick="toggleMulti(this,'kort-opname-redenen',false)">📉 Lage saturatie</button>
           <button class="opt-btn multi" data-val="verwardheid" onclick="toggleMulti(this,'kort-opname-redenen',false)">🧠 Verwardheid</button>
           <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'kort-opname-redenen',false)">😣 Pijn</button>
-          <button class="opt-btn multi" data-val="wondprobleem" onclick="toggleMulti(this,'kort-opname-redenen',false)">🩹 Wond</button>
-          <button class="opt-btn multi" data-val="andere reden" onclick="toggleMulti(this,'kort-opname-redenen',false)">📍 Andere</button>
+          <button class="opt-btn multi" data-val="dehydratie" onclick="toggleMulti(this,'kort-opname-redenen',false)">💧 Dehydratie</button>
+          <button class="opt-btn multi" data-val="acute achteruitgang" onclick="toggleMulti(this,'kort-opname-redenen',false)">📉 Acute achteruitgang</button>
+          <button class="opt-btn multi" data-val="wondprobleem" onclick="toggleMulti(this,'kort-opname-redenen',false)">🩹 Wondprobleem</button>
+          <button class="opt-btn multi" data-val="andere reden" onclick="toggleMulti(this,'kort-opname-redenen',false);document.getElementById('kort-opname-andere-wrap').style.display='block'">📍 Andere</button>
         </div>
+      </div>
+      <div id="kort-opname-andere-wrap" style="display:none;" class="block">
+        <span class="block-label">Specificeer reden opname</span>
+        <input type="text" class="field" id="kort-opname-andere" placeholder="bijv. cardiovasculair, epilepsie...">
       </div>
       <div class="block"><span class="block-label">Ziekenhuis (optioneel)</span><input type="text" class="field" id="kort-opname-ziekenhuis" placeholder="bijv. UZ Leuven, AZ Sint-Truiden"></div>
       <div class="block">
@@ -1087,7 +1094,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn multi" data-val="geen wijziging" onclick="toggleMulti(this,'kort-terug-beslissing',false)">✅ Geen wijziging</button>
         </div>
       </div>
-      <div class="block"><span class="block-label">Detail afspraak / medicatie (optioneel)</span><input type="text" class="field" id="kort-terug-afspraak" placeholder="bijv. controle cardiologie 14/04, Bisoprolol verhoogd"></div>
+      <div class="block"><span class="block-label">Nieuwe medicatie / afspraken (optioneel)</span><input type="text" class="field" id="kort-terug-medicatie" placeholder="bijv. Bisoprolol verhoogd, Eliquis gestart"></div>
+      <div class="block"><span class="block-label">Verdere controle / opvolging (optioneel)</span><input type="text" class="field" id="kort-terug-opvolging" placeholder="bijv. controle cardiologie 14/04, bloeddruk dagelijks meten"></div>
     </div>
 
     <!-- SCENARIO: TELEFONISCHE GOEDKEURING -->
@@ -1585,15 +1593,17 @@ Detail: ${document.getElementById('kort-advies-labo')?.value.trim()||'–'}
 Beleid / beslissing: ${getField('kort-advies-beleid')}
 Medicatie: ${document.getElementById('kort-advies-start')?.value.trim()||'–'}`;
     } else if (scenario === 'bewoner opgenomen') {
-      details = `Reden opname: ${getMulti('kort-opname-redenen')}
+      const andereReden = document.getElementById('kort-opname-andere')?.value.trim();
+      details = `Reden opname: ${getMulti('kort-opname-redenen')}${andereReden ? ' ('+andereReden+')' : ''}
 Beslist door: ${getField('kort-opname-beslist')||'–'}
 Ziekenhuis: ${document.getElementById('kort-opname-ziekenhuis')?.value.trim()||'–'}
 Familie: ${getField('kort-opname-familie')}`;
     } else if (scenario === 'bewoner terug uit ziekenhuis') {
-      details = `Reden ziekenhuisopname: ${getField('kort-terug-van')}
-Nieuwe afspraken / beleid: ${getMulti('kort-terug-beslissing')}
-Detail: ${document.getElementById('kort-terug-afspraak')?.value.trim()||'–'}`;
-    } else if (scenario === 'telefonische goedkeuring') {
+      details = `Reden / specialisatie: ${getField('kort-terug-van')||'–'}
+Nieuwe medicatie / afspraken: ${document.getElementById('kort-terug-medicatie')?.value.trim()||'–'}
+Verdere controle / opvolging: ${document.getElementById('kort-terug-opvolging')?.value.trim()||'–'}
+Beleid: ${getMulti('kort-terug-beslissing')}`;
+    }
       details = `Reden: ${getField('kort-goedkeuring-reden')}
 Antwoord arts: ${getField('kort-goedkeuring-akkoord')}
 Actie verpleegkundige: ${getField('kort-goedkeuring-actie')}`;
@@ -1611,6 +1621,7 @@ REGELS:
 - Structuur: aanleiding → beslissing → actie → opvolging.
 - Verpleegkundige contacteert huisarts, niet omgekeerd.
 - Medicatie specifiek indien beschikbaar: naam + dosis + frequentie + duur.
+- Vermeld huisarts NOOIT automatisch bij "bewoner terug uit ziekenhuis". Gebruik in de plaats: "Nieuwe medicatie overgenomen volgens ontslagbrief" tenzij de gebruiker expliciet iets anders heeft ingevuld bij actie.
 - Geen tijdstippen tenzij relevant. Geen opsommingstekens.
 
 VOORBEELDEN:
