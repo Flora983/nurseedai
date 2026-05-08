@@ -1251,7 +1251,7 @@ function checkDokMed(btn) {
   const link = document.getElementById('dok-med-link');
   if (link) link.style.display = medVals.includes(btn.dataset.val) ? 'block' : 'none';
   // Trigger generate button check
-  checkGenerateBtn(btn.closest('.page')?.id?.replace('page-',''));
+  refreshGenerateButtons();
 }
 
 function toggleMulti(btn, group, isExclusive) {
