@@ -1502,9 +1502,9 @@ REGELS:
 - Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
 - Geen AI-zinnen. Geen opsomming.
-- Structuur: wond + locatie + evolutie → wondbeeld / infectietekenen → wondzorg + opvolging.
-- Geen infectietekenen → schrijf "zonder tekenen van infectie".
-- Wel infectietekenen → benoem ze kort en concreet.
+- Structuur: wond + locatie + evolutie - wondbeeld / infectietekenen - wondzorg + opvolging.
+- Geen infectietekenen: schrijf "zonder tekenen van infectie".
+- Wel infectietekenen: benoem ze kort en concreet.
 - Wondzorghandelingen beknopt samenvatten in één zin.
 
 VOORBEELDEN:
@@ -1554,7 +1554,7 @@ REGELS:
 - Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
 - Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
-- Structuur: reden van contact → beslissing arts → verpleegkundige actie → opvolging.
+- Structuur: reden van contact - beslissing arts - verpleegkundige actie - opvolging.
 - Medicatie concreet vermelden: naam + dosis + frequentie indien ingevuld.
 - Geen tijdstippen tenzij klinisch relevant.
 - Schrijf gewoon "kamer 6", nooit met kleur erbij.
@@ -1603,7 +1603,7 @@ Familie: ${getField('kort-opname-familie')}`;
 Nieuwe medicatie / afspraken: ${document.getElementById('kort-terug-medicatie')?.value.trim()||'–'}
 Verdere controle / opvolging: ${document.getElementById('kort-terug-opvolging')?.value.trim()||'–'}
 Beleid: ${getMulti('kort-terug-beslissing')}`;
-    }
+    } else if (scenario === 'telefonische goedkeuring') {
       details = `Reden: ${getField('kort-goedkeuring-reden')}
 Antwoord arts: ${getField('kort-goedkeuring-akkoord')}
 Actie verpleegkundige: ${getField('kort-goedkeuring-actie')}`;
@@ -1618,7 +1618,7 @@ REGELS:
 - Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
 - Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
-- Structuur: aanleiding → beslissing → actie → opvolging.
+- Structuur: aanleiding - beslissing - actie - opvolging.
 - Verpleegkundige contacteert huisarts, niet omgekeerd.
 - Medicatie specifiek indien beschikbaar: naam + dosis + frequentie + duur.
 - Vermeld huisarts NOOIT automatisch bij "bewoner terug uit ziekenhuis". Gebruik in de plaats: "Nieuwe medicatie overgenomen volgens ontslagbrief" tenzij de gebruiker expliciet iets anders heeft ingevuld bij actie.
