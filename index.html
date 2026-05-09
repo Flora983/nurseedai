@@ -878,15 +878,15 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block">
       <span class="block-label">Beslissing arts ⚠️ verplicht</span>
       <div class="btn-group" data-field="dok-antwoord" id="dok-antwoord-group">
-        <button class="opt-btn" data-val="geen wijziging" onclick="checkDokMed(this)">✅ Geen wijziging</button>
-        <button class="opt-btn" data-val="verdere observatie" onclick="checkDokMed(this)">👁️ Observatie</button>
-        <button class="opt-btn" data-val="medicatie gestart" onclick="checkDokMed(this)">💊 Medicatie gestart</button>
-        <button class="opt-btn" data-val="medicatie gestopt" onclick="checkDokMed(this)">⛔ Medicatie gestopt</button>
-        <button class="opt-btn" data-val="medicatie aangepast" onclick="checkDokMed(this)">🔄 Medicatie aangepast</button>
-        <button class="opt-btn" data-val="opname ziekenhuis" onclick="checkDokMed(this)">🚑 Opname ziekenhuis</button>
-        <button class="opt-btn" data-val="staalname / labo aanvragen" onclick="checkDokMed(this)">🧪 Staalname / labo</button>
-        <button class="opt-btn" data-val="verdere opvolging" onclick="checkDokMed(this)">📋 Verdere opvolging</button>
-        <button class="opt-btn" data-val="andere beslissing" onclick="checkDokMed(this)">📝 Andere</button>
+        <button class="opt-btn" data-val="geen wijziging">✅ Geen wijziging</button>
+        <button class="opt-btn" data-val="verdere observatie">👁️ Observatie</button>
+        <button class="opt-btn" data-val="medicatie gestart">💊 Medicatie gestart</button>
+        <button class="opt-btn" data-val="medicatie gestopt">⛔ Medicatie gestopt</button>
+        <button class="opt-btn" data-val="medicatie aangepast">🔄 Medicatie aangepast</button>
+        <button class="opt-btn" data-val="opname ziekenhuis">🚑 Opname ziekenhuis</button>
+        <button class="opt-btn" data-val="staalname / labo aanvragen">🧪 Staalname / labo</button>
+        <button class="opt-btn" data-val="verdere opvolging">📋 Verdere opvolging</button>
+        <button class="opt-btn" data-val="andere beslissing">📝 Andere</button>
       </div>
     </div>
     <div class="block"><span class="block-label">Medicatie (optioneel)</span><input type="text" class="field" id="dok-medicatie" placeholder="bijv. Augmentin 875 mg 2x/dag gestart"></div>
@@ -1240,19 +1240,22 @@ const multiSelections = {
 };
 
 function checkDokMed(btn) {
-  // Selecteer de knop normaal via data-field logica
-  const group = btn.closest('[data-field]');
-  if (group) {
-    group.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-  }
-  // Toon medicatielink als medicatie gestart/gestopt/aangepast
   const medVals = ['medicatie gestart','medicatie gestopt','medicatie aangepast'];
   const link = document.getElementById('dok-med-link');
   if (link) link.style.display = medVals.includes(btn.dataset.val) ? 'block' : 'none';
-  // Trigger generate button check
   refreshGenerateButtons();
 }
+
+// Koppel medicatielink aan dok-antwoord knoppen via event delegation
+document.addEventListener('DOMContentLoaded', function() {
+  const group = document.getElementById('dok-antwoord-group');
+  if (group) {
+    group.addEventListener('click', function(e) {
+      const btn = e.target.closest('.opt-btn');
+      if (btn) checkDokMed(btn);
+    });
+  }
+});
 
 function toggleMulti(btn, group, isExclusive) {
   if (!multiSelections[group]) multiSelections[group] = new Set();
@@ -1322,12 +1325,12 @@ function focusResultEditor() {
 function isKortReady() {
   const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected');
   const scenario = scenarioBtn ? scenarioBtn.dataset.val : 'niet ingevuld';
-  if (!hasValue('kort-kamer') || scenario === 'niet ingevuld') return false;
-  if (scenario === 'huisarts gecontacteerd') return getMulti('kort-klachten') !== 'niet ingevuld' && getField('kort-arts-contact-antwoord') !== 'niet ingevuld';
-  if (scenario === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' && getField('kort-advies-beleid') !== 'niet ingevuld';
+  if (scenario === 'niet ingevuld') return false;
+  if (scenario === 'huisarts gecontacteerd') return getField('kort-arts-contact-antwoord') !== 'niet ingevuld';
+  if (scenario === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' || getField('kort-advies-beleid') !== 'niet ingevuld';
   if (scenario === 'bewoner opgenomen') return getMulti('kort-opname-redenen') !== 'niet ingevuld';
-  if (scenario === 'bewoner terug uit ziekenhuis') return getField('kort-terug-van') !== 'niet ingevuld' || getMulti('kort-terug-beslissing') !== 'niet ingevuld' || hasValue('kort-notities');
-  if (scenario === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' && getField('kort-goedkeuring-akkoord') !== 'niet ingevuld';
+  if (scenario === 'bewoner terug uit ziekenhuis') return true;
+  if (scenario === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' || getField('kort-goedkeuring-akkoord') !== 'niet ingevuld';
   if (scenario === 'andere korte communicatie') return hasValue('kort-algemeen-inhoud');
   return false;
 }
@@ -1335,16 +1338,27 @@ function isKortReady() {
 function refreshGenerateButtons() {
   const rules = {
     kort: () => isKortReady(),
-    overdracht: () => hasValue('ov-kamer') && getField('ov-toestand') !== 'niet ingevuld',
-    incident: () => hasValue('inc-kamer') && currentIncidentType !== null,
-    medicatie: () => hasValue('med-kamer') && getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'),
-    wond: () => hasValue('won-kamer') && getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld',
-    gedrag: () => hasValue('ged-kamer') && getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld',
-    dokter: () => hasValue('dok-kamer') && getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld' && getField('dok-antwoord') !== 'niet ingevuld'
+    overdracht: () => getField('ov-toestand') !== 'niet ingevuld',
+    incident: () => currentIncidentType !== null,
+    medicatie: () => getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'),
+    wond: () => getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld',
+    gedrag: () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld',
+    dokter: () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld'
   };
   Object.entries(rules).forEach(([mod, check]) => {
     const btn = document.querySelector(`#page-${mod} .btn-generate`);
-    if (btn) btn.disabled = !check();
+    if (!btn) return;
+    const ready = check();
+    btn.disabled = !ready;
+    // Toon of verberg hint
+    let hint = document.querySelector(`#page-${mod} .generate-hint`);
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.className = 'generate-hint';
+      hint.style.cssText = 'text-align:center;font-size:0.76rem;color:#90a4ae;margin-top:6px;';
+      btn.parentNode.insertBefore(hint, btn.nextSibling);
+    }
+    hint.textContent = ready ? '' : '⚠️ Vul eerst de verplichte velden in.';
   });
 }
 
@@ -1502,9 +1516,9 @@ REGELS:
 - Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
 - Geen AI-zinnen. Geen opsomming.
-- Structuur: wond + locatie + evolutie - wondbeeld / infectietekenen - wondzorg + opvolging.
-- Geen infectietekenen: schrijf "zonder tekenen van infectie".
-- Wel infectietekenen: benoem ze kort en concreet.
+- Structuur: wond + locatie + evolutie → wondbeeld / infectietekenen → wondzorg + opvolging.
+- Geen infectietekenen → schrijf "zonder tekenen van infectie".
+- Wel infectietekenen → benoem ze kort en concreet.
 - Wondzorghandelingen beknopt samenvatten in één zin.
 
 VOORBEELDEN:
@@ -1554,7 +1568,7 @@ REGELS:
 - Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
 - Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
-- Structuur: reden van contact - beslissing arts - verpleegkundige actie - opvolging.
+- Structuur: reden van contact → beslissing arts → verpleegkundige actie → opvolging.
 - Medicatie concreet vermelden: naam + dosis + frequentie indien ingevuld.
 - Geen tijdstippen tenzij klinisch relevant.
 - Schrijf gewoon "kamer 6", nooit met kleur erbij.
@@ -1618,7 +1632,7 @@ REGELS:
 - Dossierklaar, professioneel Nederlands. Nooit "ik".
 - Gebruik alleen de info hieronder. Verzin niets.
 - Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
-- Structuur: aanleiding - beslissing - actie - opvolging.
+- Structuur: aanleiding → beslissing → actie → opvolging.
 - Verpleegkundige contacteert huisarts, niet omgekeerd.
 - Medicatie specifiek indien beschikbaar: naam + dosis + frequentie + duur.
 - Vermeld huisarts NOOIT automatisch bij "bewoner terug uit ziekenhuis". Gebruik in de plaats: "Nieuwe medicatie overgenomen volgens ontslagbrief" tenzij de gebruiker expliciet iets anders heeft ingevuld bij actie.
