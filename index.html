@@ -636,19 +636,19 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 <!-- WONDZORG -->
 <div id="page-wond" class="page">
   <div class="module-page">
-    <div class="module-title">🩹 Wondverzorgingsrapport</div>
-    <div class="module-desc">Documenteer wondverzorging snel en duidelijk</div>
+    <div class="module-title">🩹 Wondzorg</div>
+    <div class="module-desc">Snelle wondnotitie voor het dossier</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
     <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="won-kamer" placeholder="bijv. Kamer 2"></div>
     <div class="block">
       <span class="block-label">Type wonde ⚠️ verplicht</span>
       <div class="btn-group" data-field="won-type">
-        <button class="opt-btn" data-val="huidscheur">🔸 Huidscheur</button>
+        <button class="opt-btn" data-val="skintear">🔸 Skintear</button>
         <button class="opt-btn" data-val="decubitus">🔴 Decubitus</button>
         <button class="opt-btn" data-val="diabetisch ulcus">💉 Diabetisch ulcus</button>
         <button class="opt-btn" data-val="chirurgische wonde">🔪 Chirurgisch</button>
         <button class="opt-btn" data-val="schaafwonde">🩹 Schaafwonde</button>
-        <button class="opt-btn" data-val="andere">📍 Andere</button>
+        <button class="opt-btn" data-val="andere wonde">📍 Andere</button>
       </div>
     </div>
     <div class="block">
@@ -661,7 +661,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn" data-val="voet">🦶 Voet</button>
         <button class="opt-btn" data-val="stuit">🔻 Stuit</button>
         <button class="opt-btn" data-val="rug">🔙 Rug</button>
-        <button class="opt-btn" data-val="andere">📍 Andere</button>
+        <button class="opt-btn" data-val="andere locatie">📍 Andere</button>
       </div>
     </div>
     <div class="block">
@@ -680,49 +680,49 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block">
       <span class="block-label">Evolutie</span>
       <div class="btn-group" data-field="won-evolutie">
-        <button class="opt-btn" data-val="wonde verbeterd">✅ Verbeterd</button>
-        <button class="opt-btn" data-val="wonde stabiel">😐 Stabiel</button>
-        <button class="opt-btn" data-val="wonde verslechterd">📉 Verslechterd</button>
+        <button class="opt-btn" data-val="verbeterd">✅ Verbeterd</button>
+        <button class="opt-btn" data-val="stabiel">😐 Stabiel</button>
+        <button class="opt-btn" data-val="verslechterd">📉 Verslechterd</button>
         <button class="opt-btn" data-val="eerste verzorging">🆕 Eerste verzorging</button>
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Wondbeeld (meerdere mogelijk)</span>
+      <span class="block-label">Wondaspect (meerdere mogelijk)</span>
       <div class="btn-group" id="won-infectie-group">
-        <button class="opt-btn multi" data-val="granulatieweefsel" onclick="toggleMulti(this,'won-infectie',false)">✅ Granulatie</button>
-        <button class="opt-btn multi" data-val="vochtig wondbed" onclick="toggleMulti(this,'won-infectie',false)">💧 Vochtig</button>
-        <button class="opt-btn multi" data-val="droog wondbed" onclick="toggleMulti(this,'won-infectie',false)">🏜️ Droog</button>
+        <button class="opt-btn multi" data-val="granulatie" onclick="toggleMulti(this,'won-infectie',false)">✅ Granulatie</button>
+        <button class="opt-btn multi" data-val="vochtig aspect" onclick="toggleMulti(this,'won-infectie',false)">💧 Vochtig</button>
+        <button class="opt-btn multi" data-val="droog aspect" onclick="toggleMulti(this,'won-infectie',false)">🏜️ Droog</button>
         <button class="opt-btn multi" data-val="necrose" onclick="toggleMulti(this,'won-infectie',false)">⚫ Necrose</button>
-        <button class="opt-btn multi" data-val="weinig exsudaat" onclick="toggleMulti(this,'won-infectie',false)">🟡 Weinig exsudaat</button>
-        <button class="opt-btn multi" data-val="matig exsudaat" onclick="toggleMulti(this,'won-infectie',false)">🟠 Matig exsudaat</button>
-        <button class="opt-btn multi" data-val="veel exsudaat" onclick="toggleMulti(this,'won-infectie',false)">🔴 Veel exsudaat</button>
-        <button class="opt-btn multi" data-val="geel of etterig exsudaat" onclick="toggleMulti(this,'won-infectie',false)">🟡 Geel / etterig</button>
-        <button class="opt-btn multi" data-val="bloederig exsudaat" onclick="toggleMulti(this,'won-infectie',false)">🩸 Bloederig</button>
+        <button class="opt-btn multi" data-val="weinig vocht" onclick="toggleMulti(this,'won-infectie',false)">🟡 Weinig vocht</button>
+        <button class="opt-btn multi" data-val="matig vocht" onclick="toggleMulti(this,'won-infectie',false)">🟠 Matig vocht</button>
+        <button class="opt-btn multi" data-val="veel vocht" onclick="toggleMulti(this,'won-infectie',false)">🔴 Veel vocht</button>
+        <button class="opt-btn multi" data-val="etterig" onclick="toggleMulti(this,'won-infectie',false)">🟡 Etterig</button>
+        <button class="opt-btn multi" data-val="bloederig" onclick="toggleMulti(this,'won-infectie',false)">🩸 Bloederig</button>
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Tekenen van infectie (meerdere mogelijk)</span>
+      <span class="block-label">Infectietekenen (meerdere mogelijk)</span>
       <div class="btn-group" id="won-alarm-group">
-        <button class="opt-btn multi" data-val="geen tekenen van infectie" onclick="toggleMulti(this,'won-alarm',true)">✅ Geen</button>
-        <button class="opt-btn multi" data-val="roodheid rondom wonde" onclick="toggleMulti(this,'won-alarm',false)">🔴 Roodheid</button>
-        <button class="opt-btn multi" data-val="warmte over laesie" onclick="toggleMulti(this,'won-alarm',false)">🌡️ Warmte</button>
+        <button class="opt-btn multi" data-val="geen infectietekenen" onclick="toggleMulti(this,'won-alarm',true)">✅ Geen</button>
+        <button class="opt-btn multi" data-val="roodheid" onclick="toggleMulti(this,'won-alarm',false)">🔴 Roodheid</button>
+        <button class="opt-btn multi" data-val="warmte" onclick="toggleMulti(this,'won-alarm',false)">🌡️ Warmte</button>
         <button class="opt-btn multi" data-val="zwelling" onclick="toggleMulti(this,'won-alarm',false)">🫧 Zwelling</button>
-        <button class="opt-btn multi" data-val="wondpijn" onclick="toggleMulti(this,'won-alarm',false)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="wondgeur" onclick="toggleMulti(this,'won-alarm',false)">👃 Geur</button>
-        <button class="opt-btn multi" data-val="etterig of slijmerig exsudaat" onclick="toggleMulti(this,'won-alarm',false)">🟡 Etter / slijm</button>
-        <button class="opt-btn multi" data-val="necrose van wondrand" onclick="toggleMulti(this,'won-alarm',false)">⚫ Necrose wondrand</button>
+        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'won-alarm',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="geur" onclick="toggleMulti(this,'won-alarm',false)">👃 Geur</button>
+        <button class="opt-btn multi" data-val="etter / slijm" onclick="toggleMulti(this,'won-alarm',false)">🟡 Etter</button>
+        <button class="opt-btn multi" data-val="necrose wondrand" onclick="toggleMulti(this,'won-alarm',false)">⚫ Necrose rand</button>
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Uitgevoerde wondzorg (meerdere mogelijk)</span>
+      <span class="block-label">Wondzorg (meerdere mogelijk)</span>
       <div class="btn-group" id="won-handeling-group">
-        <button class="opt-btn multi" data-val="geen wondzorg uitgevoerd" onclick="toggleMulti(this,'won-handeling',true)">🚫 Geen</button>
-        <button class="opt-btn multi" data-val="gereinigd met NaCl 0,9%" onclick="toggleMulti(this,'won-handeling',false)">🧴 Gereinigd</button>
+        <button class="opt-btn multi" data-val="geen wondzorg" onclick="toggleMulti(this,'won-handeling',true)">🚫 Geen</button>
+        <button class="opt-btn multi" data-val="gereinigd" onclick="toggleMulti(this,'won-handeling',false)">🧴 Gereinigd</button>
         <button class="opt-btn multi" data-val="ontsmet" onclick="toggleMulti(this,'won-handeling',false)">🔵 Ontsmet</button>
         <button class="opt-btn multi" data-val="afgedekt" onclick="toggleMulti(this,'won-handeling',false)">🛡️ Afgedekt</button>
         <button class="opt-btn multi" data-val="verband vernieuwd" onclick="toggleMulti(this,'won-handeling',false)">🔄 Verband vernieuwd</button>
-        <button class="opt-btn multi" data-val="siliconenverband aangebracht" onclick="toggleMulti(this,'won-handeling',false)">🩹 Silicone</button>
-        <button class="opt-btn multi" data-val="kompres aangebracht" onclick="toggleMulti(this,'won-handeling',false)">🩹 Kompres</button>
+        <button class="opt-btn multi" data-val="siliconenverband" onclick="toggleMulti(this,'won-handeling',false)">🩹 Silicone</button>
+        <button class="opt-btn multi" data-val="kompres" onclick="toggleMulti(this,'won-handeling',false)">🩹 Kompres</button>
       </div>
     </div>
     <div class="block">
@@ -1589,35 +1589,32 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
     const isISTAP = classificatie.includes('ISTAP');
     const isDecubitus = classificatie.includes('Decubitus');
     return { prompt: `${base}
-Schrijf een korte wondzorgnotitie voor een Belgisch woonzorgcentrum.
+Schrijf een korte, praktische wondnotitie zoals een WZC-verpleegkundige die zou opschrijven.
 ${isISTAP ? 'Vermeld de ISTAP-classificatie.' : ''}
 ${isDecubitus ? 'Vermeld de decubitusgraad.' : ''}
 
 REGELS:
 - Maximaal 2 à 3 korte zinnen.
-- Dossierklaar, professioneel Nederlands. Nooit "ik".
-- Gebruik alleen de info hieronder. Verzin niets.
-- Geen AI-zinnen. Geen opsomming.
-- Structuur: wond + locatie + evolutie → wondbeeld / infectietekenen → wondzorg + opvolging.
-- Geen infectietekenen → schrijf "zonder tekenen van infectie".
-- Wel infectietekenen → benoem ze kort en concreet.
-- Wondzorghandelingen beknopt samenvatten in één zin.
+- Schrijf natuurlijk en impliciet, geen ziekenhuisstijl.
+- Gebruik "skintear" als type wonde (niet "huidscheur").
+- Aspect en infectietekenen kort samenvatten.
+- Verzorgingshandelingen impliciet: "gereinigd, ontsmet en afgedekt".
+- Opvolging kort: "controle over 3 dagen", "arts verwittigen bij verslechtering".
+- Nooit "ik". Geen opsommingstekens.
 
 VOORBEELDEN:
-Huidscheur ter hoogte van de arm, eerste verzorging. Wonde met granulatieweefsel, zonder tekenen van infectie. Gereinigd en afgedekt, verdere observatie voorzien.
-
-Schaafwonde ter hoogte van het been, met roodheid rond de laesie. Wonde gereinigd en verzorgd, roodheid verder opvolgen en arts consulteren.
-
-Wonde ter hoogte van de stuit verzorgd. Wondgeur en roodheid aanwezig. Gereinigd en afgedekt, verdere opvolging nodig.
+Skintear arm, vochtig aspect, geen infectietekenen. Gereinigd, ontsmet en afgedekt. Controle over 3 dagen.
+Decubitus stuit graad 2, stabiel. Roodheid en geur aanwezig. Gereinigd en siliconenverband aangebracht. Arts verwittigen bij verdere verslechtering.
+Schaafwonde been, eerste verzorging. Geen infectietekenen. Gereinigd en afgedekt.
 
 Kamer: ${getField('won-kamer')||'–'}
 Type: ${getField('won-type')}
 Locatie: ${getField('won-locatie')}
 Classificatie: ${classificatie}
 Evolutie: ${getField('won-evolutie')||'–'}
-Wondbeeld: ${getMulti('won-infectie')}
+Aspect: ${getMulti('won-infectie')}
 Infectietekenen: ${getMulti('won-alarm')}
-Uitgevoerde wondzorg: ${getMulti('won-handeling')}
+Wondzorg: ${getMulti('won-handeling')}
 Opvolging: ${getField('won-opvolging')}
 Extra: ${document.getElementById('won-notities')?.value.trim()||'–'}` };
   }
