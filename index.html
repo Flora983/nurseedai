@@ -1183,7 +1183,12 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 <script>
 // ── NAVIGATIE ──
 let currentModule = null;
-function openModule(mod) { currentModule = mod; showPage('page-' + mod); document.getElementById('back-btn').classList.add('visible'); }
+function openModule(mod) {
+  currentModule = mod;
+  showPage('page-' + mod);
+  document.getElementById('back-btn').classList.add('visible');
+  refreshGenerateButtons();
+}
 function goBack() {
   if (document.getElementById('page-result').classList.contains('active')) { showPage('page-' + currentModule); }
   else { showPage('page-dashboard'); document.getElementById('back-btn').classList.remove('visible'); }
@@ -1197,7 +1202,6 @@ function showPage(id) {
 
 // ── KNOP LOGICA — met deselect (opnieuw klikken = uit) ──
 document.querySelectorAll('.btn-group').forEach(group => {
-  // Sla kort-scenario-group over — die heeft eigen onclick handler
   if (group.id === 'kort-scenario-group') return;
   if (group.id === 'inc-type-group') return;
   group.querySelectorAll('.opt-btn:not(.multi)').forEach(btn => {
@@ -1205,6 +1209,8 @@ document.querySelectorAll('.btn-group').forEach(group => {
       const wasSelected = btn.classList.contains('selected');
       group.querySelectorAll('.opt-btn:not(.multi)').forEach(b => b.classList.remove('selected'));
       if (!wasSelected) btn.classList.add('selected');
+      // Medicatielink voor doktersbezoek
+      if (group.id === 'dok-antwoord-group') checkDokMed(btn.classList.contains('selected') ? btn : null);
       refreshGenerateButtons();
     });
   });
@@ -1218,6 +1224,10 @@ document.querySelectorAll('.toggle-group').forEach(group => {
       refreshGenerateButtons();
     });
   });
+});
+// Textarea input triggert ook validatie
+document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
+  el.addEventListener('input', () => refreshGenerateButtons());
 });
 
 // ── VELD WAARDEN ──
@@ -1243,20 +1253,9 @@ const multiSelections = {
 function checkDokMed(btn) {
   const medVals = ['medicatie gestart','medicatie gestopt','medicatie aangepast'];
   const link = document.getElementById('dok-med-link');
-  if (link) link.style.display = medVals.includes(btn.dataset.val) ? 'block' : 'none';
+  if (link) link.style.display = medVals.includes(btn?.dataset?.val) ? 'block' : 'none';
   refreshGenerateButtons();
 }
-
-// Koppel medicatielink aan dok-antwoord knoppen via event delegation
-document.addEventListener('DOMContentLoaded', function() {
-  const group = document.getElementById('dok-antwoord-group');
-  if (group) {
-    group.addEventListener('click', function(e) {
-      const btn = e.target.closest('.opt-btn');
-      if (btn) checkDokMed(btn);
-    });
-  }
-});
 
 function toggleMulti(btn, group, isExclusive) {
   if (!multiSelections[group]) multiSelections[group] = new Set();
