@@ -1325,35 +1325,35 @@ function focusResultEditor() {
 // ── VALIDATIE GENERATE KNOPPEN ──
 function isKortReady() {
   const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected');
-  const scenario = scenarioBtn ? scenarioBtn.dataset.val : 'niet ingevuld';
-  if (scenario === 'niet ingevuld') return false;
-  if (scenario === 'huisarts gecontacteerd') return getField('kort-arts-contact-antwoord') !== 'niet ingevuld';
-  if (scenario === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' || getField('kort-advies-beleid') !== 'niet ingevuld';
-  if (scenario === 'bewoner opgenomen') return getMulti('kort-opname-redenen') !== 'niet ingevuld';
+  const scenario = scenarioBtn ? scenarioBtn.dataset.val : '';
+  if (!scenario) return false;
+  if (scenario === 'huisarts gecontacteerd') return getField('kort-arts-contact-antwoord') !== 'niet ingevuld' || getMulti('kort-klachten') !== 'niet ingevuld' || hasValue('kort-notities');
+  if (scenario === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' || getField('kort-advies-beleid') !== 'niet ingevuld' || hasValue('kort-notities');
+  if (scenario === 'bewoner opgenomen') return getMulti('kort-opname-redenen') !== 'niet ingevuld' || hasValue('kort-notities');
   if (scenario === 'bewoner terug uit ziekenhuis') return true;
-  if (scenario === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' || getField('kort-goedkeuring-akkoord') !== 'niet ingevuld';
-  if (scenario === 'andere korte communicatie') return hasValue('kort-algemeen-inhoud');
-  return false;
+  if (scenario === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' || getField('kort-goedkeuring-akkoord') !== 'niet ingevuld' || hasValue('kort-notities');
+  if (scenario === 'andere korte communicatie') return hasValue('kort-algemeen-inhoud') || hasValue('kort-notities');
+  return true;
 }
 
 function refreshGenerateButtons() {
   const hints = {
-    kort: 'Kies eerst een scenario.',
-    overdracht: 'Kies de toestand van de bewoner.',
-    incident: 'Kies het type incident.',
+    kort:      'Kies eerst een scenario.',
+    overdracht:'Kies de toestand van de bewoner.',
+    incident:  'Kies het type incident.',
     medicatie: 'Vul context, wijziging en medicatienaam in.',
-    wond: 'Kies type wonde en locatie.',
-    gedrag: 'Kies type gedrag en moment.',
-    dokter: 'Kies type contact en reden.'
+    wond:      'Kies type wonde en locatie.',
+    gedrag:    'Kies type gedrag en moment.',
+    dokter:    'Kies type contact en reden van contact.'
   };
   const rules = {
-    kort: () => isKortReady(),
-    overdracht: () => getField('ov-toestand') !== 'niet ingevuld',
-    incident: () => currentIncidentType !== null,
+    kort:      () => isKortReady(),
+    overdracht:() => getField('ov-toestand') !== 'niet ingevuld',
+    incident:  () => currentIncidentType !== null,
     medicatie: () => getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'),
-    wond: () => getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld',
-    gedrag: () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld',
-    dokter: () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld'
+    wond:      () => getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld',
+    gedrag:    () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld',
+    dokter:    () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld'
   };
   Object.entries(rules).forEach(([mod, check]) => {
     const btn = document.querySelector(`#page-${mod} .btn-generate`);
@@ -1367,7 +1367,7 @@ function refreshGenerateButtons() {
       hint.style.cssText = 'text-align:center;font-size:0.76rem;color:#90a4ae;margin-top:6px;min-height:18px;';
       btn.parentNode.insertBefore(hint, btn.nextSibling);
     }
-    hint.textContent = ready ? '' : '⚠️ ' + (hints[mod] || 'Vul verplichte velden in.');
+    hint.textContent = ready ? '' : '⚠️ ' + hints[mod];
   });
 }
 
