@@ -289,16 +289,18 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <span class="block-label">Wat moet de volgende shift weten?</span>
       <div class="btn-group" id="ov-obs-group">
         <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this,'ov-obs',true)">✅ Geen bijzonderheden</button>
-        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'ov-obs',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'ov-obs',false);document.getElementById('ov-pijn-loc-wrap').style.display=this.classList.contains('selected')?'none':'block'">😣 Pijn</button>
         <button class="opt-btn multi" data-val="verward gedrag" onclick="toggleMulti(this,'ov-obs',false)">🧠 Verward</button>
         <button class="opt-btn multi" data-val="mobiliteit moeilijker" onclick="toggleMulti(this,'ov-obs',false)">🚶 Mobiliteit</button>
         <button class="opt-btn multi" data-val="wondzorg nodig" onclick="toggleMulti(this,'ov-obs',false)">🩹 Wondzorg</button>
         <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this,'ov-obs',false)">💊 Medicatie gewijzigd</button>
         <button class="opt-btn multi" data-val="parameters afwijkend" onclick="toggleMulti(this,'ov-obs',false)">📊 Parameters</button>
       </div>
+      <div id="ov-pijn-loc-wrap" style="display:none;margin-top:8px;">
+        <input type="text" class="field" id="ov-pijn-locatie" placeholder="📍 Pijn — waar? (bijv. linkerheup, knie, rug)">
+      </div>
     </div>
     <div class="block">
-      <span class="block-label">Wat werd al gedaan?</span>
       <div class="btn-group" id="ov-actie-group">
         <button class="opt-btn multi selected" data-val="geen extra actie" onclick="toggleMulti(this,'ov-actie',true)">✅ Geen extra actie</button>
         <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'ov-actie',false)">📞 Arts verwittigd</button>
@@ -605,16 +607,6 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Toedieningsweg</span>
-      <div class="btn-group" data-field="med-weg">
-        <button class="opt-btn" data-val="oraal">💊 Oraal</button>
-        <button class="opt-btn" data-val="subcut">💉 Subcut</button>
-        <button class="opt-btn" data-val="IV">🩸 IV</button>
-        <button class="opt-btn" data-val="transdermaal">🩹 Transdermaal</button>
-        <button class="opt-btn" data-val="rectaal">📋 Rectaal</button>
-      </div>
-    </div>
-    <div class="block">
       <span class="block-label">Opdracht van</span>
       <div class="btn-group" data-field="med-opdracht">
         <button class="opt-btn" data-val="huisarts">👨‍⚕️ Huisarts</button>
@@ -624,13 +616,12 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Actie verpleegkundige</span>
+      <span class="block-label">Opvolging</span>
       <div class="btn-group" data-field="med-actie">
-        <button class="opt-btn" data-val="medicatie toegediend">💊 Toegediend</button>
+        <button class="opt-btn" data-val="toegediend, effect opvolgen">✅ Toegediend</button>
         <button class="opt-btn" data-val="arts gecontacteerd">📞 Arts gecontacteerd</button>
-        <button class="opt-btn" data-val="apotheek gecontacteerd">💼 Apotheek</button>
         <button class="opt-btn" data-val="familie geïnformeerd">👨‍👩‍👧 Familie geïnformeerd</button>
-        <button class="opt-btn" data-val="effect opgevolgd">👁️ Effect opgevolgd</button>
+        <button class="opt-btn" data-val="effect verder opvolgen">👁️ Effect opvolgen</button>
       </div>
     </div>
     <div class="block">
@@ -1494,7 +1485,7 @@ async function callAPI(prompt) {
 // ── BUILD PROMPTS MET FEW-SHOT VOORBEELDEN ──
 function buildPrompt(mod) {
   const taal = currentLang === 'fr' ? 'Frans' : currentLang === 'en' ? 'Engels' : 'Nederlands';
-  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart". Schrijf kort en praktisch — max 2-3 zinnen.`;
+  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie". Gebruik liever: "verder opvolgen", "gedrag reeds vaker vastgesteld", "toestand verder observeren". Schrijf kort en praktisch — max 2-3 zinnen.`;
 
   if (mod === 'overdracht') {
     return { prompt: `${base}
@@ -1513,7 +1504,7 @@ Toestand: ${getField('ov-toestand')}
 Pijnscore: ${getField('ov-pijn')||'–'}
 Voeding: ${getField('ov-voeding')||'–'}
 Vocht: ${getField('ov-vocht')||'–'}
-Belangrijk: ${getMulti('ov-obs')}
+Belangrijk: ${getMulti('ov-obs')}${document.getElementById('ov-pijn-locatie')?.value.trim() ? ' (pijn ter hoogte van ' + document.getElementById('ov-pijn-locatie').value.trim() + ')' : ''}
 Reeds gedaan: ${getMulti('ov-actie')}
 Opvolging: ${getField('ov-opvolging')||'geen bijzondere opvolging'}
 Extra: ${document.getElementById('ov-notities')?.value.trim()||'–'}` };
@@ -1594,7 +1585,6 @@ Reden / context: ${getField('med-context')}
 Wijziging: ${getField('med-wijziging')}
 Medicatie: ${[document.getElementById('med-naam')?.value.trim(), document.getElementById('med-dosis')?.value.trim(), getField('med-freq') === 'andere' ? document.getElementById('med-freq-andere')?.value.trim() : getField('med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}
 Duur: ${getField('med-duur')||'–'}
-Toedieningsweg: ${getField('med-weg')||'–'}
 Opdracht van: ${getField('med-opdracht')}
 Actie verpleegkundige: ${getField('med-actie')}
 Opvolging: ${getField('med-opvolging')}
