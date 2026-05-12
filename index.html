@@ -306,7 +306,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this,'ov-actie',false)">💊 Medicatie toegediend</button>
         <button class="opt-btn multi" data-val="parameters gecontroleerd" onclick="toggleMulti(this,'ov-actie',false)">📊 Parameters gecontroleerd</button>
         <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🩹 Wondzorg uitgevoerd</button>
-        <button class="opt-btn multi" data-val="observatie opgestart" onclick="toggleMulti(this,'ov-actie',false)">👁️ Observatie opgestart</button>
+        <button class="opt-btn multi" data-val="toestand verder opvolgen" onclick="toggleMulti(this,'ov-actie',false)">👁️ Toestand opvolgen</button>
       </div>
     </div>
     <div class="block">
@@ -391,13 +391,18 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn multi" data-val="kan zelfstandig bewegen" onclick="toggleMulti(this,'inc-letsel',false)">🚶 Zelfstandig bewegen</button>
           <button class="opt-btn multi" data-val="beperkte mobiliteit" onclick="toggleMulti(this,'inc-letsel',false)">🤝 Beperkte mobiliteit</button>
           <button class="opt-btn multi" data-val="kan niet bewegen" onclick="toggleMulti(this,'inc-letsel',false)">🛑 Kan niet bewegen</button>
-          <button class="opt-btn multi" data-val="geen zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',true)">🙌 Geen letsel</button>
-          <button class="opt-btn multi" data-val="pijn aanwezig" onclick="toggleMulti(this,'inc-letsel',false)">😣 Pijn</button>
-          <button class="opt-btn multi" data-val="zwelling aanwezig" onclick="toggleMulti(this,'inc-letsel',false)">🫧 Zwelling</button>
-          <button class="opt-btn multi" data-val="vermoeden fractuur" onclick="toggleMulti(this,'inc-letsel',false)">🦴 Vermoeden fractuur</button>
+          <button class="opt-btn multi" data-val="geen zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',true);toggleIncLocatie('all',false)">🙌 Geen letsel</button>
+          <button class="opt-btn multi" data-val="pijn aanwezig" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('pijn',this.classList.contains('selected'))">😣 Pijn</button>
+          <button class="opt-btn multi" data-val="zwelling aanwezig" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('zwelling',this.classList.contains('selected'))">🫧 Zwelling</button>
+          <button class="opt-btn multi" data-val="vermoeden fractuur" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('fractuur',this.classList.contains('selected'))">🦴 Vermoeden fractuur</button>
+          <button class="opt-btn multi" data-val="zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('letsel',this.classList.contains('selected'))">🩹 Zichtbaar letsel</button>
           <button class="opt-btn multi" data-val="misselijkheid" onclick="toggleMulti(this,'inc-letsel',false)">🤢 Misselijkheid</button>
           <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'inc-letsel',false)">😮‍💨 Ademhaling</button>
         </div>
+        <div id="inc-loc-pijn" style="display:none;margin-top:8px;"><input type="text" class="field" id="inc-loc-pijn-txt" placeholder="📍 Pijn — waar? (bijv. linkerheup, rug)"></div>
+        <div id="inc-loc-zwelling" style="display:none;margin-top:6px;"><input type="text" class="field" id="inc-loc-zwelling-txt" placeholder="📍 Zwelling — locatie? (bijv. rechterenkel)"></div>
+        <div id="inc-loc-fractuur" style="display:none;margin-top:6px;"><input type="text" class="field" id="inc-loc-fractuur-txt" placeholder="📍 Vermoeden fractuur — waar? (bijv. rechterpols)"></div>
+        <div id="inc-loc-letsel" style="display:none;margin-top:6px;"><input type="text" class="field" id="inc-loc-letsel-txt" placeholder="📍 Letsel — waar? (bijv. voorhoofd, knie)"></div>
       </div>
       <div class="block" style="margin-top:8px;">
         <span class="block-label" style="color:var(--ink-light);font-size:0.72rem;">Parameters (optioneel)</span>
@@ -506,7 +511,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <div class="btn-group" id="inc-actie-group">
         <button class="opt-btn multi" data-val="wondverzorging uitgevoerd" onclick="toggleMulti(this,'inc-actie',false)">🩹 Wondverzorging</button>
         <button class="opt-btn multi" data-val="pijnstilling gegeven" onclick="toggleMulti(this,'inc-actie',false)">💊 Pijnstilling</button>
-        <button class="opt-btn multi" data-val="observatie opgestart" onclick="toggleMulti(this,'inc-actie',false)">👁️ Observatie</button>
+        <button class="opt-btn multi" data-val="verder observeren" onclick="toggleMulti(this,'inc-actie',false)">👁️ Observatie</button>
         <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'inc-actie',false)">📞 Arts verwittigd</button>
         <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'inc-actie',false)">👨‍👩‍👧 Familie verwittigd</button>
         <button class="opt-btn multi" data-val="bewoner gerustgesteld" onclick="toggleMulti(this,'inc-actie',false)">🤝 Gerustgesteld</button>
@@ -566,18 +571,26 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block"><span class="block-label">Medicatie ⚠️ verplicht</span>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-        <input type="text" class="field" id="med-naam" placeholder="Naam (bijv. Paracetamol)">
-        <input type="text" class="field" id="med-dosis" placeholder="Dosis (bijv. 500 mg)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div>
+          <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:4px;font-weight:600;">Naam</div>
+          <input type="text" class="field" id="med-naam" placeholder="bijv. Paracetamol">
+        </div>
+        <div>
+          <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:4px;font-weight:600;">Dosis</div>
+          <input type="text" class="field" id="med-dosis" placeholder="bijv. 500 mg">
+        </div>
       </div>
-      <div class="btn-group" data-field="med-freq">
+      <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:6px;font-weight:600;">Frequentie</div>
+      <div class="btn-group" data-field="med-freq" id="med-freq-group">
         <button class="opt-btn" data-val="1x/dag">1x/dag</button>
         <button class="opt-btn" data-val="2x/dag">2x/dag</button>
         <button class="opt-btn" data-val="3x/dag">3x/dag</button>
         <button class="opt-btn" data-val="4x/dag">4x/dag</button>
         <button class="opt-btn" data-val="zo nodig">zo nodig</button>
-        <button class="opt-btn" data-val="andere">andere</button>
+        <button class="opt-btn" data-val="andere" onclick="document.getElementById('med-freq-andere').style.display='block'">andere</button>
       </div>
+      <input type="text" class="field" id="med-freq-andere" placeholder="bijv. elke 8u, 's avonds" style="display:none;margin-top:8px;">
     </div>
     <div class="block">
       <span class="block-label">Duur</span>
@@ -908,7 +921,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <span class="block-label">Verpleegkundige actie</span>
       <div class="btn-group" data-field="dok-actie">
         <button class="opt-btn" data-val="medicatie toegediend">💊 Toegediend</button>
-        <button class="opt-btn" data-val="observatie opgestart">👁️ Observatie</button>
+        <button class="opt-btn" data-val="verder observeren">👁️ Observatie</button>
         <button class="opt-btn" data-val="familie verwittigd">👨‍👩‍👧 Familie</button>
         <button class="opt-btn" data-val="transfer voorbereid">🚑 Transfer</button>
         <button class="opt-btn" data-val="labo afgenomen">🧪 Labo afgenomen</button>
@@ -1008,18 +1021,26 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         </div>
       </div>
       <div class="block"><span class="block-label">Medicatie (optioneel)</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-          <input type="text" class="field" id="kort-arts-med-naam" placeholder="Naam (bijv. Furadantine)">
-          <input type="text" class="field" id="kort-arts-med-dosis" placeholder="Dosis (bijv. 50 mg)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div>
+            <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:4px;font-weight:600;">Naam</div>
+            <input type="text" class="field" id="kort-arts-med-naam" placeholder="bijv. Furadantine">
+          </div>
+          <div>
+            <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:4px;font-weight:600;">Dosis</div>
+            <input type="text" class="field" id="kort-arts-med-dosis" placeholder="bijv. 50 mg">
+          </div>
         </div>
+        <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:6px;font-weight:600;">Frequentie</div>
         <div class="btn-group" data-field="kort-arts-med-freq">
           <button class="opt-btn" data-val="1x/dag">1x/dag</button>
           <button class="opt-btn" data-val="2x/dag">2x/dag</button>
           <button class="opt-btn" data-val="3x/dag">3x/dag</button>
           <button class="opt-btn" data-val="4x/dag">4x/dag</button>
           <button class="opt-btn" data-val="zo nodig">zo nodig</button>
-          <button class="opt-btn" data-val="andere">andere</button>
+          <button class="opt-btn" data-val="andere" onclick="document.getElementById('kort-arts-med-andere').style.display='block'">andere</button>
         </div>
+        <input type="text" class="field" id="kort-arts-med-andere" placeholder="bijv. elke 8u" style="display:none;margin-top:8px;">
       </div>
     </div>
 
@@ -1050,18 +1071,26 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         </div>
       </div>
       <div class="block"><span class="block-label">Medicatie (optioneel)</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-          <input type="text" class="field" id="kort-advies-med-naam" placeholder="Naam (bijv. Augmentin)">
-          <input type="text" class="field" id="kort-advies-med-dosis" placeholder="Dosis (bijv. 875 mg)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+          <div>
+            <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:4px;font-weight:600;">Naam</div>
+            <input type="text" class="field" id="kort-advies-med-naam" placeholder="bijv. Augmentin">
+          </div>
+          <div>
+            <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:4px;font-weight:600;">Dosis</div>
+            <input type="text" class="field" id="kort-advies-med-dosis" placeholder="bijv. 875 mg">
+          </div>
         </div>
+        <div style="font-size:0.72rem;color:var(--ink-mid);margin-bottom:6px;font-weight:600;">Frequentie</div>
         <div class="btn-group" data-field="kort-advies-med-freq">
           <button class="opt-btn" data-val="1x/dag">1x/dag</button>
           <button class="opt-btn" data-val="2x/dag">2x/dag</button>
           <button class="opt-btn" data-val="3x/dag">3x/dag</button>
           <button class="opt-btn" data-val="4x/dag">4x/dag</button>
           <button class="opt-btn" data-val="zo nodig">zo nodig</button>
-          <button class="opt-btn" data-val="andere">andere</button>
+          <button class="opt-btn" data-val="andere" onclick="document.getElementById('kort-advies-med-andere').style.display='block'">andere</button>
         </div>
+        <input type="text" class="field" id="kort-advies-med-andere" placeholder="bijv. elke 8u" style="display:none;margin-top:8px;">
       </div>
     </div>
 
@@ -1290,6 +1319,18 @@ const multiSelections = {
   'kort-arts-antwoord': new Set(), 'kort-advies-beleid': new Set()
 };
 
+function toggleIncLocatie(type, show) {
+  if (type === 'all') {
+    ['pijn','zwelling','fractuur','letsel'].forEach(t => {
+      const el = document.getElementById('inc-loc-' + t);
+      if (el) el.style.display = 'none';
+    });
+    return;
+  }
+  const el = document.getElementById('inc-loc-' + type);
+  if (el) el.style.display = show ? 'none' : 'block';
+}
+
 function checkDokMed(btn) {
   const medVals = ['medicatie gestart','medicatie gestopt','medicatie aangepast'];
   const link = document.getElementById('dok-med-link');
@@ -1453,7 +1494,7 @@ async function callAPI(prompt) {
 // ── BUILD PROMPTS MET FEW-SHOT VOORBEELDEN ──
 function buildPrompt(mod) {
   const taal = currentLang === 'fr' ? 'Frans' : currentLang === 'en' ? 'Engels' : 'Nederlands';
-  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke en professionele notitie voor het zorgdossier. Gebruik directe, actieve taal. Wees bondig. Geen herhaling, geen passieve zinnen, geen AI-taal. Schrijf zoals een collega-verpleegkundige: helder, neutraal en zonder oordeel. Gebruik alleen de verstrekte informatie. Verzin niets bij. Schrijf medicatienamen correct in het Nederlands (bv. paracetamol 500 mg 3x/dag). Vermijd onnodige woorden zoals exacte tijdstippen of kamernummer tenzij relevant. Schrijf beknopt en natuurlijk zoals in een professioneel verpleegkundig dossier. Gebruik nooit "ik" of persoonlijke formuleringen. Schrijf altijd in de derde persoon of onpersoonlijk (dossierstijl), bv. "Huisarts gecontacteerd wegens..." of "Medicatie toegediend volgens..."`;
+  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart". Schrijf kort en praktisch — max 2-3 zinnen.`;
 
   if (mod === 'overdracht') {
     return { prompt: `${base}
@@ -1482,11 +1523,22 @@ Extra: ${document.getElementById('ov-notities')?.value.trim()||'–'}` };
     const type = currentIncidentType || '–';
     let details = '';
     if (type === 'val' || type === 'bijna-val') {
-      details = `Locatie: ${getField('inc-locatie')}
+      const pijnLoc = document.getElementById('inc-loc-pijn-txt')?.value.trim();
+      const zwelLoc = document.getElementById('inc-loc-zwelling-txt')?.value.trim();
+      const fracLoc = document.getElementById('inc-loc-fractuur-txt')?.value.trim();
+      const letselLoc = document.getElementById('inc-loc-letsel-txt')?.value.trim();
+      const toestand = getMulti('inc-letsel');
+      const locaties = [
+        pijnLoc ? `pijn ter hoogte van ${pijnLoc}` : '',
+        zwelLoc ? `zwelling ter hoogte van ${zwelLoc}` : '',
+        fracLoc ? `vermoeden fractuur ter hoogte van ${fracLoc}` : '',
+        letselLoc ? `letsel ter hoogte van ${letselLoc}` : ''
+      ].filter(Boolean).join(', ');
+      details = `Locatie incident: ${getField('inc-locatie')}
 Tijdstip: ${document.getElementById('inc-tijdstip')?.value||'–'}
 Vastgesteld: ${getField('inc-situatie')}
 Hoofdimpact: ${getField('inc-hoofd')}
-Toestand: ${getMulti('inc-letsel')}
+Toestand: ${toestand}${locaties ? '\nLocatie klachten: ' + locaties : ''}
 Parameters: RR ${document.getElementById('inc-rr')?.value||'–'} | HF ${document.getElementById('inc-hf')?.value||'–'} | Sat ${document.getElementById('inc-sat')?.value||'–'} | Temp ${document.getElementById('inc-temp')?.value||'–'}`;
     } else if (type === 'agressie') {
       details = `Tijdstip: ${document.getElementById('inc-tijdstip-agr')?.value||'–'}
@@ -1540,7 +1592,7 @@ Paracetamol 1g 4x/dag werd op voorschrift van de huisarts verhoogd wegens pijnkl
 Kamer: ${getField('med-kamer')||'–'}
 Reden / context: ${getField('med-context')}
 Wijziging: ${getField('med-wijziging')}
-Medicatie: ${[document.getElementById('med-naam')?.value.trim(), document.getElementById('med-dosis')?.value.trim(), getField('med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}
+Medicatie: ${[document.getElementById('med-naam')?.value.trim(), document.getElementById('med-dosis')?.value.trim(), getField('med-freq') === 'andere' ? document.getElementById('med-freq-andere')?.value.trim() : getField('med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}
 Duur: ${getField('med-duur')||'–'}
 Toedieningsweg: ${getField('med-weg')||'–'}
 Opdracht van: ${getField('med-opdracht')}
@@ -1647,12 +1699,12 @@ Extra: ${document.getElementById('dok-notities')?.value.trim()||'–'}` };
 Detail: ${document.getElementById('kort-arts-labo')?.value.trim()||'–'}
 Beslissing / beleid: ${getMulti('kort-arts-antwoord')}
 Actie verpleegkundige: ${getField('kort-arts-contact-actie')}
-Medicatie: ${[document.getElementById('kort-arts-med-naam')?.value.trim(), document.getElementById('kort-arts-med-dosis')?.value.trim(), getField('kort-arts-med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}`;
+Medicatie: ${[document.getElementById('kort-arts-med-naam')?.value.trim(), document.getElementById('kort-arts-med-dosis')?.value.trim(), getField('kort-arts-med-freq') === 'andere' ? document.getElementById('kort-arts-med-andere')?.value.trim() : getField('kort-arts-med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}`;
     } else if (scenario === 'huisartsadvies / laboresultaten') {
       details = `Onderwerp: ${getField('kort-advies-onderwerp')}
 Detail: ${document.getElementById('kort-advies-labo')?.value.trim()||'–'}
 Beleid / beslissing: ${getMulti('kort-advies-beleid')}
-Medicatie: ${[document.getElementById('kort-advies-med-naam')?.value.trim(), document.getElementById('kort-advies-med-dosis')?.value.trim(), getField('kort-advies-med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}`;
+Medicatie: ${[document.getElementById('kort-advies-med-naam')?.value.trim(), document.getElementById('kort-advies-med-dosis')?.value.trim(), getField('kort-advies-med-freq') === 'andere' ? document.getElementById('kort-advies-med-andere')?.value.trim() : getField('kort-advies-med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}`;
     } else if (scenario === 'bewoner opgenomen') {
       const andereReden = document.getElementById('kort-opname-andere')?.value.trim();
       details = `Reden opname: ${getMulti('kort-opname-redenen')}${andereReden ? ' ('+andereReden+')' : ''}
