@@ -1324,37 +1324,36 @@ function focusResultEditor() {
 // ── VALIDATIE GENERATE KNOPPEN ──
 function isKortReady() {
   const scenarioBtn = document.querySelector('#kort-scenario-group .opt-btn.selected');
-  const scenario = scenarioBtn ? scenarioBtn.dataset.val : '';
-  if (!scenario) return false;
-  if (scenario === 'huisarts gecontacteerd') return getField('kort-arts-contact-antwoord') !== 'niet ingevuld' || getMulti('kort-klachten') !== 'niet ingevuld' || hasValue('kort-notities');
-  if (scenario === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' || getField('kort-advies-beleid') !== 'niet ingevuld' || hasValue('kort-notities');
-  if (scenario === 'bewoner opgenomen') return getMulti('kort-opname-redenen') !== 'niet ingevuld' || hasValue('kort-notities');
-  if (scenario === 'bewoner terug uit ziekenhuis') return true;
-  if (scenario === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' || getField('kort-goedkeuring-akkoord') !== 'niet ingevuld' || hasValue('kort-notities');
-  if (scenario === 'andere korte communicatie') return hasValue('kort-algemeen-inhoud') || hasValue('kort-notities');
-  return true;
+  if (!scenarioBtn) return false;
+  const s = scenarioBtn.dataset.val;
+  if (s === 'andere korte communicatie') return hasValue('kort-algemeen-inhoud');
+  if (s === 'bewoner terug uit ziekenhuis') return true;
+  if (s === 'huisarts gecontacteerd') return getMulti('kort-klachten') !== 'niet ingevuld' || getField('kort-arts-contact-antwoord') !== 'niet ingevuld' || hasValue('kort-arts-medicatie') || hasValue('kort-notities');
+  if (s === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' || getField('kort-advies-beleid') !== 'niet ingevuld' || hasValue('kort-notities');
+  if (s === 'bewoner opgenomen') return getMulti('kort-opname-redenen') !== 'niet ingevuld' || hasValue('kort-notities');
+  if (s === 'telefonische goedkeuring') return getField('kort-goedkeuring-reden') !== 'niet ingevuld' || getField('kort-goedkeuring-akkoord') !== 'niet ingevuld' || hasValue('kort-notities');
+  return hasValue('kort-notities');
+}
+
+function isIncidentReady() {
+  if (!currentIncidentType) return false;
+  if (currentIncidentType === 'val') return getMulti('inc-letsel') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
+  if (currentIncidentType === 'agressie') return getField('inc-agressie-richting') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
+  if (currentIncidentType === 'dwaling') return getField('inc-dwaling-gevonden') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
+  return getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
 }
 
 function refreshGenerateButtons() {
-  const hints = {
-    kort:      'Kies eerst een scenario.',
-    overdracht:'Kies de toestand van de bewoner.',
-    incident:  'Kies het type incident.',
-    medicatie: 'Vul context, wijziging en medicatienaam in.',
-    wond:      'Kies type wonde en locatie.',
-    gedrag:    'Kies type gedrag en moment.',
-    dokter:    'Kies type contact en reden van contact.'
+  const config = {
+    kort:      { check: isKortReady,   missing: 'Kies een scenario en vul minstens één detail in.' },
+    overdracht:{ check: () => getField('ov-toestand') !== 'niet ingevuld', missing: 'Kies de huidige toestand.' },
+    incident:  { check: isIncidentReady, missing: 'Kies het type incident en vul minstens één detail in.' },
+    medicatie: { check: () => getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'), missing: 'Vul context, wijziging én medicatienaam in.' },
+    wond:      { check: () => getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld', missing: 'Kies type wonde én locatie.' },
+    gedrag:    { check: () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld', missing: 'Kies type gedrag én moment.' },
+    dokter:    { check: () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld', missing: 'Kies type contact én reden van contact.' }
   };
-  const rules = {
-    kort:      () => isKortReady(),
-    overdracht:() => getField('ov-toestand') !== 'niet ingevuld',
-    incident:  () => currentIncidentType !== null,
-    medicatie: () => getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'),
-    wond:      () => getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld',
-    gedrag:    () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld',
-    dokter:    () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld'
-  };
-  Object.entries(rules).forEach(([mod, check]) => {
+  Object.entries(config).forEach(([mod, { check, missing }]) => {
     const btn = document.querySelector(`#page-${mod} .btn-generate`);
     if (!btn) return;
     const ready = check();
@@ -1366,7 +1365,7 @@ function refreshGenerateButtons() {
       hint.style.cssText = 'text-align:center;font-size:0.76rem;color:#90a4ae;margin-top:6px;min-height:18px;';
       btn.parentNode.insertBefore(hint, btn.nextSibling);
     }
-    hint.textContent = ready ? '' : '⚠️ ' + hints[mod];
+    hint.textContent = ready ? '' : '⚠️ ' + missing;
   });
 }
 
