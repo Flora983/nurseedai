@@ -617,15 +617,6 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     </div>
     <div class="block">
       <span class="block-label">Opvolging</span>
-      <div class="btn-group" data-field="med-actie">
-        <button class="opt-btn" data-val="toegediend, effect opvolgen">✅ Toegediend</button>
-        <button class="opt-btn" data-val="arts gecontacteerd">📞 Arts gecontacteerd</button>
-        <button class="opt-btn" data-val="familie geïnformeerd">👨‍👩‍👧 Familie geïnformeerd</button>
-        <button class="opt-btn" data-val="effect verder opvolgen">👁️ Effect opvolgen</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Opvolging</span>
       <div class="btn-group" data-field="med-opvolging">
         <button class="opt-btn" data-val="effect evalueren">📈 Effect evalueren</button>
         <button class="opt-btn" data-val="pijn opvolgen">😣 Pijn opvolgen</button>
@@ -1586,7 +1577,6 @@ Wijziging: ${getField('med-wijziging')}
 Medicatie: ${[document.getElementById('med-naam')?.value.trim(), document.getElementById('med-dosis')?.value.trim(), getField('med-freq') === 'andere' ? document.getElementById('med-freq-andere')?.value.trim() : getField('med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}
 Duur: ${getField('med-duur')||'–'}
 Opdracht van: ${getField('med-opdracht')}
-Actie verpleegkundige: ${getField('med-actie')}
 Opvolging: ${getField('med-opvolging')}
 Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
   }
