@@ -1463,10 +1463,11 @@ async function callAPI(prompt) {
   });
   const rawText = await response.text();
   let data;
-  try { data = JSON.parse(rawText); } catch(e) { throw new Error('Server fout: ' + rawText); }
+  try { data = JSON.parse(rawText); } catch(e) { throw new Error('Server fout: ' + rawText.substring(0, 100)); }
+  if (data?.success === false) throw new Error(data.error || 'Onbekende fout.');
   if (!response.ok) throw new Error(data?.error || `HTTP ${response.status}`);
-  const text = data?.output || 'Geen output gegenereerd.';
-  if (!text) throw new Error('Geen antwoord ontvangen.');
+  const text = data?.output;
+  if (!text) throw new Error('Geen antwoord ontvangen van de server.');
   return text;
 }
 
