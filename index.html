@@ -41,13 +41,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--i
 @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
 
 .dashboard { padding: 0 0 60px; max-width: 620px; margin: 0 auto; }
-.dashboard-hero { background: linear-gradient(135deg, #0a5260 0%, var(--teal-light) 100%); padding: 36px 28px 30px; color: #fff; position: relative; overflow: hidden; }
-.dashboard-hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%; }
-.dashboard-hero::after { content: ''; position: absolute; bottom: -70px; right: 30px; width: 140px; height: 140px; background: rgba(255,255,255,0.04); border-radius: 50%; }
-.hero-badge { display: inline-block; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); color: #a7f3d0; font-size: 0.7rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; margin-bottom: 14px; }
-.dashboard-title { font-family: 'DM Serif Display', serif; font-size: 2.4rem; color: #fff; line-height: 1.15; margin-bottom: 10px; }
+.dashboard-hero { background: linear-gradient(135deg, #0a5260 0%, var(--teal-light) 100%); padding: 20px 22px 18px; color: #fff; position: relative; overflow: hidden; }
+.dashboard-hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 160px; height: 160px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+.dashboard-hero::after { content: ''; position: absolute; bottom: -60px; right: 20px; width: 110px; height: 110px; background: rgba(255,255,255,0.04); border-radius: 50%; }
+.hero-badge { display: inline-block; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); color: #a7f3d0; font-size: 0.66rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
+.dashboard-title { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: #fff; line-height: 1.15; margin-bottom: 6px; }
 .dashboard-title span { color: #7de8f0; font-style: italic; }
-.dashboard-sub { font-size: 0.87rem; color: rgba(255,255,255,0.78); line-height: 1.65; max-width: 360px; }
+.dashboard-sub { font-size: 0.8rem; color: rgba(255,255,255,0.78); line-height: 1.5; max-width: 360px; }
 
 .module-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 22px 18px 0; }
 .module-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--radius); padding: 24px 18px 20px; cursor: pointer; transition: all 0.22s; text-align: center; box-shadow: var(--shadow); position: relative; overflow: hidden; }
@@ -126,9 +126,9 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 .popup-rules { background: var(--amber); border-radius: 10px; padding: 13px 15px; text-align: left; font-size: 0.8rem; color: #78350f; margin-bottom: 22px; line-height: 1.75; font-weight: 500; }
 .popup-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #0a5260, var(--teal-light)); color: #fff; border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; }
 
-.lang-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.28); color: #fff; padding: 6px 14px; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.lang-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.28); color: #fff; padding: 4px 11px; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .lang-btn.active { background: rgba(255,255,255,0.9); color: var(--teal); }
-.shift-btn { background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.88); padding: 7px 16px; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.shift-btn { background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.88); padding: 5px 13px; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
 .shift-btn.active { background: rgba(255,255,255,0.9); color: var(--teal); border-color: rgba(255,255,255,0.9); }
 
 .voice-btn { background: var(--teal-pale); border: 1.5px solid var(--teal-light); color: var(--teal); width: 40px; height: 40px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; margin-left: 8px; transition: all 0.2s; flex-shrink: 0; }
@@ -205,14 +205,14 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <div class="hero-badge">🇧🇪 Belgische woonzorgcentra</div>
       <div class="dashboard-title">Nurse<span>Ed</span>AI</div>
       <div class="dashboard-sub">Snelle en professionele verslaggeving — rapport klaar in 30 seconden</div>
-      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;">
         <button class="lang-btn active" onclick="setLang('nl', this)">🇧🇪 NL</button>
         <button class="lang-btn" onclick="setLang('fr', this)">🇫🇷 FR</button>
         <button class="lang-btn" onclick="setLang('en', this)">🇬🇧 EN</button>
       </div>
-      <div style="margin-top:14px;">
-        <div style="font-size:0.75rem;color:rgba(255,255,255,0.7);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px;">Huidige shift</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="shift-group">
+      <div style="margin-top:10px;">
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;">Huidige shift</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;" id="shift-group">
           <button class="shift-btn" data-shift="dagdienst" onclick="selectShift(this)">🌅 Dagdienst</button>
           <button class="shift-btn" data-shift="avonddienst" onclick="selectShift(this)">🌆 Avonddienst</button>
           <button class="shift-btn" data-shift="nachtdienst" onclick="selectShift(this)">🌙 Nachtdienst</button>
@@ -732,19 +732,33 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 <div id="page-gedrag" class="page">
   <div class="module-page">
     <div class="module-title">🧠 Gedrag & Dementiezorg</div>
-    <div class="module-desc">Documenteer gedrag neutraal, respectvol en professioneel</div>
+    <div class="module-desc">Gedragsnotitie — neutraal, contextueel en dementiegevoelig</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
     <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="ged-kamer" placeholder="bijv. Kamer 1"></div>
     <div class="block">
       <span class="block-label">Type gedrag ⚠️ verplicht</span>
       <div class="btn-group" data-field="ged-gedrag">
         <button class="opt-btn" data-val="onrust">😰 Onrust</button>
-        <button class="opt-btn" data-val="agitatie">😤 Agitatie</button>
-        <button class="opt-btn" data-val="agressie">😠 Agressie</button>
-        <button class="opt-btn" data-val="roepen">📢 Roepen</button>
+        <button class="opt-btn" data-val="verbale agitatie">😤 Verbale agitatie</button>
+        <button class="opt-btn" data-val="verbale agressie">😠 Verbale agressie</button>
+        <button class="opt-btn" data-val="fysieke agressie">👊 Fysieke agressie</button>
+        <button class="opt-btn" data-val="roepen / schreeuwen">📢 Roepen</button>
         <button class="opt-btn" data-val="dwalen">🚶 Dwalen</button>
         <button class="opt-btn" data-val="zorgweigering">🚫 Zorgweigering</button>
-        <button class="opt-btn" data-val="apathie">😶 Apathie</button>
+        <button class="opt-btn" data-val="apathie / terugtrekking">😶 Apathie</button>
+        <button class="opt-btn" data-val="verwardheid">🧠 Verwardheid</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Wanneer / context ⚠️ verplicht</span>
+      <div class="btn-group" data-field="ged-context">
+        <button class="opt-btn" data-val="tijdens zorgmoment">🛁 Tijdens zorgmoment</button>
+        <button class="opt-btn" data-val="tijdens ADL">🧴 Tijdens ADL</button>
+        <button class="opt-btn" data-val="tijdens maaltijd">🍽️ Tijdens maaltijd</button>
+        <button class="opt-btn" data-val="tijdens transfer">🦽 Tijdens transfer</button>
+        <button class="opt-btn" data-val="nachtelijk">🌙 Nachtelijk</button>
+        <button class="opt-btn" data-val="bij wakker worden">🌅 Bij wakker worden</button>
+        <button class="opt-btn" data-val="zonder duidelijke aanleiding">❓ Geen aanleiding</button>
       </div>
     </div>
     <div class="block">
@@ -756,49 +770,33 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Moment ⚠️ verplicht</span>
-      <div class="btn-group" data-field="ged-moment">
-        <button class="opt-btn" data-val="ochtend">🌅 Ochtend</button>
-        <button class="opt-btn" data-val="namiddag">☀️ Namiddag</button>
-        <button class="opt-btn" data-val="avond">🌆 Avond</button>
-        <button class="opt-btn" data-val="nacht">🌙 Nacht</button>
-      </div>
-    </div>
-    <div class="block"><span class="block-label">Tijdstip (aanbevolen)</span><input type="time" class="field" id="ged-tijdstip"></div>
-    <div class="block">
-      <span class="block-label">Duur</span>
-      <div class="btn-group" data-field="ged-duur">
-        <button class="opt-btn" data-val="korte episode (< 15 min)">⚡ Kort (< 15 min)</button>
-        <button class="opt-btn" data-val="matige episode (15-60 min)">🕐 Matig (15-60 min)</button>
-        <button class="opt-btn" data-val="langdurige episode (> 1 uur)">⏳ Lang (> 1 uur)</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Is dit herhaald gedrag?</span>
-      <div class="toggle-group" data-field="ged-herhaling">
-        <button class="toggle-btn yes" data-val="herhaald gedrag — patroon vastgesteld">✅ Ja, herhaald</button>
-        <button class="toggle-btn no" data-val="eerste episode">🆕 Eerste keer</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Context van het moment</span>
-      <div class="btn-group" data-field="ged-context">
-        <button class="opt-btn" data-val="tijdens zorgmoment">🛁 Tijdens zorgmoment</button>
-        <button class="opt-btn" data-val="na maaltijd">🍽️ Na maaltijd</button>
-        <button class="opt-btn" data-val="na familiebezoek">👨‍👩‍👧 Na familiebezoek</button>
-        <button class="opt-btn" data-val="bij wakker worden">🌅 Bij wakker worden</button>
-        <button class="opt-btn" data-val="zonder duidelijke aanleiding">❓ Geen aanleiding</button>
-      </div>
-    </div>
-    <div class="block">
       <span class="block-label">Mogelijke aanleiding</span>
       <div class="btn-group" data-field="ged-aanleiding">
         <button class="opt-btn" data-val="pijn">😣 Pijn</button>
         <button class="opt-btn" data-val="angst">😨 Angst</button>
-        <button class="opt-btn" data-val="prikkelende omgeving">🔊 Prikkelomgeving</button>
         <button class="opt-btn" data-val="vermoeidheid">😴 Vermoeidheid</button>
+        <button class="opt-btn" data-val="prikkelende omgeving">🔊 Prikkelomgeving</button>
         <button class="opt-btn" data-val="verandering in routine">🔄 Verandering</button>
         <button class="opt-btn" data-val="onbekend">❓ Onbekend</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Reactie op benadering</span>
+      <div class="btn-group" data-field="ged-reactie">
+        <button class="opt-btn" data-val="geruststelling hielp">✅ Geruststelling hielp</button>
+        <button class="opt-btn" data-val="afleiding werkte">🎵 Afleiding werkte</button>
+        <button class="opt-btn" data-val="kalmeerde spontaan">😌 Spontaan gekalmeerd</button>
+        <button class="opt-btn" data-val="moeilijk gerust te stellen">⚠️ Moeilijk gerust te stellen</button>
+        <button class="opt-btn" data-val="gedrag bleef aanwezig">🔄 Gedrag bleef aanwezig</button>
+      </div>
+    </div>
+    <div class="block">
+      <span class="block-label">Patroon</span>
+      <div class="btn-group" data-field="ged-patroon">
+        <button class="opt-btn" data-val="eerste keer vastgesteld">🆕 Eerste keer</button>
+        <button class="opt-btn" data-val="gedrag reeds vaker vastgesteld">🔁 Reeds vaker</button>
+        <button class="opt-btn" data-val="wisselend gedrag">〰️ Wisselend</button>
+        <button class="opt-btn" data-val="vooral avond / nacht">🌙 Vooral avond / nacht</button>
       </div>
     </div>
     <div class="block">
@@ -806,20 +804,12 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <div class="btn-group" id="ged-actie-group">
         <button class="opt-btn multi" data-val="bewoner gerustgesteld" onclick="toggleMulti(this,'ged-actie',false)">🤝 Gerustgesteld</button>
         <button class="opt-btn multi" data-val="afleiding aangeboden" onclick="toggleMulti(this,'ged-actie',false)">🎵 Afleiding</button>
-        <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this,'ged-actie',false)">💊 Medicatie</button>
+        <button class="opt-btn multi" data-val="rustige omgeving gecreëerd" onclick="toggleMulti(this,'ged-actie',false)">🏠 Rustige omgeving</button>
+        <button class="opt-btn multi" data-val="begeleiding aangeboden" onclick="toggleMulti(this,'ged-actie',false)">🚶 Begeleiding</button>
         <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'ged-actie',false)">📞 Arts verwittigd</button>
-        <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'ged-actie',false)">👨‍👩‍👧 Familie verwittigd</button>
-        <button class="opt-btn multi" data-val="geobserveerd" onclick="toggleMulti(this,'ged-actie',false)">👁️ Geobserveerd</button>
-        <button class="opt-btn multi" data-val="omgeving aangepast" onclick="toggleMulti(this,'ged-actie',false)">🏠 Omgeving aangepast</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Resultaat</span>
-      <div class="btn-group" data-field="ged-resultaat">
-        <button class="opt-btn" data-val="verbetering vastgesteld">✅ Verbetering</button>
-        <button class="opt-btn" data-val="geen verandering vastgesteld">😐 Geen verandering</button>
-        <button class="opt-btn" data-val="verslechtering vastgesteld">📉 Verslechtering</button>
-        <button class="opt-btn" data-val="nog te evalueren">⏳ Te evalueren</button>
+        <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'ged-actie',false)">👨‍👩‍👧 Familie</button>
+        <button class="opt-btn multi" data-val="medewerker kon situatie de-escaleren" onclick="toggleMulti(this,'ged-actie',false)">✅ De-escalatie</button>
+        <button class="opt-btn multi" data-val="geen letsel vastgesteld" onclick="toggleMulti(this,'ged-actie',false)">🙌 Geen letsel</button>
       </div>
     </div>
     <div class="block"><span class="block-label">Extra detail (optioneel)</span>
@@ -1438,7 +1428,7 @@ function refreshGenerateButtons() {
     incident:  { check: isIncidentReady, missing: 'Kies het type incident en vul minstens één detail in.' },
     medicatie: { check: () => getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'), missing: 'Vul context, wijziging én medicatienaam in.' },
     wond:      { check: () => !!document.querySelector('#won-type-group .opt-btn.selected') && !!document.querySelector('#won-locatie-group .opt-btn.selected'), missing: 'Kies type wonde én locatie.' },
-    gedrag:    { check: () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld', missing: 'Kies type gedrag én moment.' },
+    gedrag:    { check: () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-context') !== 'niet ingevuld', missing: 'Kies type gedrag én context.' },
     dokter:    { check: () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld', missing: 'Kies type contact én reden van contact.' }
   };
   Object.entries(config).forEach(([mod, { check, missing }]) => {
@@ -1672,30 +1662,30 @@ Extra: ${document.getElementById('won-notities')?.value.trim()||'–'}` };
   }
 
   if (mod === 'gedrag') {
-    return { prompt: `${base}
-Schrijf een korte gedragsnotitie voor een Belgisch woonzorgcentrum. Max 2-3 zinnen. Nooit "ik". Neutraal en respectvol — geen oordeel over de bewoner.
+    return { prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum dementieafdeling. Schrijf een korte, neutrale gedragsnotitie. Max 2-3 zinnen. Nooit "ik". Nooit stigmatiserend.
 
-REGELS:
-- Beschrijf het gedrag feitelijk en kort.
-- Vermeld moment, context en interventie beknopt.
-- Vermeld resultaat alleen als duidelijk.
-- VERBODEN: "herhaald gedrag", "patroon vastgesteld", "gedrag genoteerd".
-- Gebruik liever: "gedrag reeds vaker vastgesteld", "toestand verder observeren".
+TAALREGELS:
+- Nooit: "agressieve bewoner", "lastig gedrag", "moeilijke bewoner"
+- Gebruik: "bewoner reageerde verbaal agressief", "verbale agitatie", "bewoner moeilijk gerust te stellen"
+- Nooit: "herhaald gedrag", "patroon vastgesteld" → gebruik "gedrag reeds vaker vastgesteld"
+- Context altijd vermelden (tijdens zorgmoment, nachtelijk, enz.)
+- Reactie op benadering kort vermelden als relevant
+- Patroon vermelden als het gedrag reeds vaker was
 
 VOORBEELDEN:
-Matige agitatie tijdens zorgmoment namiddag. Gerustgesteld en afleiding aangeboden, lichte verbetering vastgesteld.
-Verbaal agressief gedrag 's avonds, reeds vaker vastgesteld. Rustige omgeving gecreëerd. Gedrag verder observeren.
+Bewoner onrustig tijdens avondzorg. Moeilijk gerust te stellen. Gedrag reeds vaker vastgesteld.
+Verbale agitatie tijdens maaltijdmoment. Afleiding hielp gedeeltelijk.
+Nachtelijk dwalen met verwardheid. Bewoner rustig begeleid naar kamer.
+Bewoner reageerde verbaal agressief tijdens transferzorg. Medewerker kon de-escaleren. Geen letsel vastgesteld.
 
 Kamer: ${getField('ged-kamer')||'–'}
 Gedrag: ${getField('ged-gedrag')}
+Context / wanneer: ${getField('ged-context')}
 Intensiteit: ${getField('ged-intensiteit')||'–'}
-Moment: ${getField('ged-moment')} ${document.getElementById('ged-tijdstip')?.value ? 'om ' + document.getElementById('ged-tijdstip').value : ''}
-Duur: ${getField('ged-duur')||'–'}
-Herhaling: ${getField('ged-herhaling')||'–'}
-Context: ${getField('ged-context')||'–'}
 Aanleiding: ${getField('ged-aanleiding')||'–'}
-Interventie: ${getMulti('ged-actie')}
-Resultaat: ${getField('ged-resultaat')||'–'}
+Reactie op benadering: ${getField('ged-reactie')||'–'}
+Patroon: ${getField('ged-patroon')||'–'}
+Acties: ${getMulti('ged-actie')}
 Extra: ${document.getElementById('ged-notities')?.value.trim()||'–'}` };
   }
 
