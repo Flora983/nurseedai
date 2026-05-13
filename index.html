@@ -1497,27 +1497,28 @@ function buildPrompt(mod) {
   if (mod === 'overdracht') {
     const medDetail = document.getElementById('ov-med-detail')?.value.trim();
     const pijnLoc = document.getElementById('ov-pijn-locatie')?.value.trim();
-    return { prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, directe shift briefing. Geen "ik". Geen lange zinnen. Compact en praktisch — wat moet de volgende shift weten?
+    return { prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, directe shift briefing. Geen "ik". Compact en praktisch.
 
 STIJL:
 - 2 tot 3 korte zinnen maximum
-- Direct en compact, geen overbodige woorden
-- Shift vermelden als intro indien beschikbaar
+- Shift als intro indien beschikbaar
+- Opvolging impliciet schrijven — geen "volgende shift moet", geen "verpleegkundige volgt"
+- Gebruik infinitief: "temperatuur opvolgen", "gedrag observeren", "klinische toestand opvolgen"
 - Medicatiewijziging specifiek benoemen indien ingevuld
-- Opvolgpunten samenvatten in de laatste zin
-- VERBODEN: "observatie opgestart", "in het zorgdossier", "werd geregistreerd"
+- VERBODEN: "volgende shift parameters controleren", "verpleegkundige volgt op", "observatie opgestart", "in het zorgdossier"
 
 VOORBEELDEN:
-Nachtdienst: onrustig en verward. Matig gegeten. Pijn linkerheup. Volgende shift pijn en gedrag opvolgen.
-Avonddienst rustig verlopen. Antibiotica gestart wegens urineweginfectie. Temperatuur verder opvolgen.
-Bewoner verward tijdens zorgmoment. Nachtelijk dwalen vastgesteld. Gedrag verder observeren, arts contacteren bij verslechtering.
+Nachtdienst: toestand verslechterd met koorts en ademhalingsproblemen. Parameters afwijkend, arts verwittigd. Klinische toestand verder opvolgen.
+Bewoner onrustig tijdens avondzorg. Gedrag verder observeren.
+Koorts en verminderde intake tijdens nachtdienst. Temperatuur en vochtinname opvolgen.
+Avonddienst rustig verlopen. Antibiotica gestart wegens urineweginfectie. Temperatuur opvolgen.
 
 Shift: ${currentShift || '–'}
 Kamer: ${getField('ov-kamer')||'–'}
 Toestand: ${getField('ov-toestand')}
 Aandachtspunten: ${getMulti('ov-obs')}${pijnLoc ? ' (pijn ter hoogte van ' + pijnLoc + ')' : ''}
 Praktische details: ${getMulti('ov-actie')}${medDetail ? ' — medicatiewijziging: ' + medDetail : ''}
-Opvolging volgende shift: ${getMulti('ov-opvolging')}
+Opvolging: ${getMulti('ov-opvolging')}
 Extra: ${document.getElementById('ov-notities')?.value.trim()||'–'}` };
   }
 
