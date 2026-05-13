@@ -244,89 +244,75 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 <!-- OVERDRACHT -->
 <div id="page-overdracht" class="page">
   <div class="module-page">
-    <div class="module-title">🔄 Overdracht</div>
-    <div class="module-desc">Korte, duidelijke info voor de volgende shift</div>
+    <div class="module-title">🔄 Shift Briefing</div>
+    <div class="module-desc">Wat moet de volgende shift weten?</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
     <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="ov-kamer" placeholder="bijv. Kamer 12"></div>
     <div class="block">
-      <span class="block-label">Huidige toestand ⚠️ verplicht</span>
+      <span class="block-label">Algemene toestand ⚠️ verplicht</span>
       <div class="btn-group" data-field="ov-toestand">
-        <button class="opt-btn" data-val="stabiel">✅ Stabiel</button>
+        <button class="opt-btn" data-val="geen bijzonderheden">✅ Geen bijzonderheden</button>
+        <button class="opt-btn" data-val="rustig">😌 Rustig</button>
         <button class="opt-btn" data-val="onrustig">😟 Onrustig</button>
+        <button class="opt-btn" data-val="verward">🧠 Verward</button>
+        <button class="opt-btn" data-val="slaperig">😴 Slaperig</button>
+        <button class="opt-btn" data-val="agressief">😠 Agressief</button>
         <button class="opt-btn" data-val="verslechterd">📉 Verslechterd</button>
-        <button class="opt-btn" data-val="wisselend">🔄 Wisselend</button>
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Voeding</span>
-      <div class="btn-group" data-field="ov-voeding">
-        <button class="opt-btn" data-val="goed gegeten">✅ Goed gegeten</button>
-        <button class="opt-btn" data-val="matig gegeten">🟡 Matig gegeten</button>
-        <button class="opt-btn" data-val="slecht gegeten">🔴 Slecht gegeten</button>
-        <button class="opt-btn" data-val="maaltijd geweigerd">🚫 Geweigerd</button>
-        <button class="opt-btn" data-val="sondevoeding">🧴 Sondevoeding</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Vochtinname</span>
-      <div class="btn-group" data-field="ov-vocht">
-        <button class="opt-btn" data-val="voldoende gedronken">✅ Voldoende</button>
-        <button class="opt-btn" data-val="weinig gedronken">🟡 Weinig</button>
-        <button class="opt-btn" data-val="nauwelijks gedronken">🔴 Nauwelijks</button>
-        <button class="opt-btn" data-val="vocht geweigerd">🚫 Geweigerd</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Pijnscore</span>
-      <div class="btn-group" data-field="ov-pijn">
-        <button class="opt-btn" data-val="geen pijn">✅ Geen pijn</button>
-        <button class="opt-btn" data-val="lichte pijn (1-3/10)">🟡 Licht (1-3)</button>
-        <button class="opt-btn" data-val="matige pijn (4-6/10)">🟠 Matig (4-6)</button>
-        <button class="opt-btn" data-val="ernstige pijn (7-10/10)">🔴 Ernstig (7-10)</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Wat moet de volgende shift weten?</span>
+      <span class="block-label">Belangrijk aandachtspunt (meerdere mogelijk)</span>
       <div class="btn-group" id="ov-obs-group">
-        <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this,'ov-obs',true)">✅ Geen bijzonderheden</button>
-        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'ov-obs',false);document.getElementById('ov-pijn-loc-wrap').style.display=this.classList.contains('selected')?'none':'block'">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="verward gedrag" onclick="toggleMulti(this,'ov-obs',false)">🧠 Verward</button>
-        <button class="opt-btn multi" data-val="mobiliteit moeilijker" onclick="toggleMulti(this,'ov-obs',false)">🚶 Mobiliteit</button>
-        <button class="opt-btn multi" data-val="wondzorg nodig" onclick="toggleMulti(this,'ov-obs',false)">🩹 Wondzorg</button>
-        <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this,'ov-obs',false)">💊 Medicatie gewijzigd</button>
-        <button class="opt-btn multi" data-val="parameters afwijkend" onclick="toggleMulti(this,'ov-obs',false)">📊 Parameters</button>
+        <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this,'ov-obs',true)">✅ Geen</button>
+        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'ov-obs',false);document.getElementById('ov-pijn-loc-wrap').style.display=multiSelections['ov-obs']?.has('pijnklachten')?'none':'block'">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="voeding" onclick="toggleMulti(this,'ov-obs',false)">🍽️ Voeding</button>
+        <button class="opt-btn multi" data-val="gedrag" onclick="toggleMulti(this,'ov-obs',false)">🧠 Gedrag</button>
+        <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this,'ov-obs',false)">🌡️ Koorts</button>
+        <button class="opt-btn multi" data-val="wond" onclick="toggleMulti(this,'ov-obs',false)">🩹 Wond</button>
+        <button class="opt-btn multi" data-val="ademhaling" onclick="toggleMulti(this,'ov-obs',false)">🫁 Ademhaling</button>
+        <button class="opt-btn multi" data-val="glycemie" onclick="toggleMulti(this,'ov-obs',false)">🩸 Glycemie</button>
+        <button class="opt-btn multi" data-val="mobiliteit" onclick="toggleMulti(this,'ov-obs',false)">🚶 Mobiliteit</button>
       </div>
       <div id="ov-pijn-loc-wrap" style="display:none;margin-top:8px;">
-        <input type="text" class="field" id="ov-pijn-locatie" placeholder="📍 Pijn — waar? (bijv. linkerheup, knie, rug)">
+        <input type="text" class="field" id="ov-pijn-locatie" placeholder="📍 Pijn — waar? (bijv. linkerheup, rug)">
       </div>
     </div>
     <div class="block">
+      <span class="block-label">Praktische details (meerdere mogelijk)</span>
       <div class="btn-group" id="ov-actie-group">
-        <button class="opt-btn multi selected" data-val="geen extra actie" onclick="toggleMulti(this,'ov-actie',true)">✅ Geen extra actie</button>
+        <button class="opt-btn multi selected" data-val="geen extra actie" onclick="toggleMulti(this,'ov-actie',true)">✅ Geen bijzondere acties</button>
+        <button class="opt-btn multi" data-val="matig gegeten" onclick="toggleMulti(this,'ov-actie',false)">🍽️ Matig gegeten</button>
+        <button class="opt-btn multi" data-val="slecht gegeten" onclick="toggleMulti(this,'ov-actie',false)">⚠️ Slecht gegeten</button>
+        <button class="opt-btn multi" data-val="weinig gedronken" onclick="toggleMulti(this,'ov-actie',false)">💧 Weinig gedronken</button>
+        <button class="opt-btn multi" data-val="nachtelijk dwalen" onclick="toggleMulti(this,'ov-actie',false)">🚶 Nachtelijk dwalen</button>
         <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'ov-actie',false)">📞 Arts verwittigd</button>
         <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'ov-actie',false)">👨‍👩‍👧 Familie verwittigd</button>
-        <button class="opt-btn multi" data-val="medicatie toegediend" onclick="toggleMulti(this,'ov-actie',false)">💊 Medicatie toegediend</button>
-        <button class="opt-btn multi" data-val="parameters gecontroleerd" onclick="toggleMulti(this,'ov-actie',false)">📊 Parameters gecontroleerd</button>
         <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🩹 Wondzorg uitgevoerd</button>
-        <button class="opt-btn multi" data-val="toestand verder opvolgen" onclick="toggleMulti(this,'ov-actie',false)">👁️ Toestand opvolgen</button>
+        <button class="opt-btn multi" data-val="parameters afwijkend" onclick="toggleMulti(this,'ov-actie',false)">📊 Parameters afwijkend</button>
+        <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this,'ov-actie',false);document.getElementById('ov-med-wrap').style.display=multiSelections['ov-actie']?.has('medicatie gewijzigd')?'none':'block'">💊 Medicatie gewijzigd</button>
+      </div>
+      <div id="ov-med-wrap" style="display:none;margin-top:8px;">
+        <input type="text" class="field" id="ov-med-detail" placeholder="📍 Welke wijziging? (bijv. antibiotica gestart, pijnmedicatie aangepast)">
       </div>
     </div>
     <div class="block">
-      <span class="block-label">Opvolging volgende shift</span>
-      <div class="btn-group" data-field="ov-opvolging">
-        <button class="opt-btn" data-val="geen bijzondere opvolging">✅ Geen bijzondere opvolging</button>
-        <button class="opt-btn" data-val="verdere observatie">👁️ Observatie</button>
-        <button class="opt-btn" data-val="pijn opvolgen">😣 Pijn opvolgen</button>
-        <button class="opt-btn" data-val="vochtinname opvolgen">💧 Vochtinname</button>
-        <button class="opt-btn" data-val="wondzorg opvolgen">🩹 Wondzorg opvolgen</button>
-        <button class="opt-btn" data-val="parameters opvolgen">📊 Parameters</button>
-        <button class="opt-btn" data-val="arts hercontacteren bij verslechtering">📞 Hercontact arts</button>
+      <span class="block-label">Opvolging volgende shift (meerdere mogelijk)</span>
+      <div class="btn-group" id="ov-opvolging-group">
+        <button class="opt-btn multi selected" data-val="geen bijzondere opvolging" onclick="toggleMulti(this,'ov-opvolging',true)">✅ Geen bijzondere opvolging</button>
+        <button class="opt-btn multi" data-val="pijn opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">😣 Pijn opvolgen</button>
+        <button class="opt-btn multi" data-val="temperatuur opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">🌡️ Temperatuur</button>
+        <button class="opt-btn multi" data-val="parameters controleren" onclick="toggleMulti(this,'ov-opvolging',false)">📊 Parameters</button>
+        <button class="opt-btn multi" data-val="gedrag observeren" onclick="toggleMulti(this,'ov-opvolging',false)">🧠 Gedrag</button>
+        <button class="opt-btn multi" data-val="vochtinname opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">💧 Vochtinname</button>
+        <button class="opt-btn multi" data-val="wondzorg verderzetten" onclick="toggleMulti(this,'ov-opvolging',false)">🩹 Wondzorg</button>
+        <button class="opt-btn multi" data-val="arts contacteren bij verslechtering" onclick="toggleMulti(this,'ov-opvolging',false)">📞 Arts bij verslechtering</button>
+        <button class="opt-btn multi" data-val="mobiliteit observeren" onclick="toggleMulti(this,'ov-opvolging',false)">🚶 Mobiliteit</button>
       </div>
     </div>
     <div class="block"><span class="block-label">Extra notitie (optioneel)</span>
       <div class="voice-row"><textarea class="field" id="ov-notities" placeholder="Korte extra info voor de volgende shift..."></textarea><button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'ov-notities')">🎤</button></div>
     </div>
-    <button class="btn-generate" onclick="generate('overdracht')" disabled>✨ Maak overdracht</button>
+    <button class="btn-generate" onclick="generate('overdracht')" disabled>✨ Maak shift briefing</button>
     <div class="loader" id="ov-loader"><div class="spinner"></div> Bezig...</div>
     <div class="error-box" id="ov-error"></div>
   </div>
@@ -432,12 +418,12 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         </div>
       </div>
       <div class="block">
-        <span class="block-label">Gericht naar</span>
-        <div class="btn-group" data-field="inc-agressie-naar">
-          <button class="opt-btn" data-val="verpleegkundige">👩‍⚕️ Verpleegkundige</button>
-          <button class="opt-btn" data-val="collega">👥 Collega</button>
-          <button class="opt-btn" data-val="andere bewoner">🏠 Andere bewoner</button>
-          <button class="opt-btn" data-val="bezoeker">👤 Bezoeker</button>
+        <span class="block-label">Gericht naar (meerdere mogelijk)</span>
+        <div class="btn-group" id="inc-agressie-naar-group">
+          <button class="opt-btn multi" data-val="verpleegkundige" onclick="toggleMulti(this,'inc-agressie-naar',false)">👩‍⚕️ Verpleegkundige</button>
+          <button class="opt-btn multi" data-val="collega" onclick="toggleMulti(this,'inc-agressie-naar',false)">👥 Collega</button>
+          <button class="opt-btn multi" data-val="andere bewoner" onclick="toggleMulti(this,'inc-agressie-naar',false)">🏠 Andere bewoner</button>
+          <button class="opt-btn multi" data-val="bezoeker" onclick="toggleMulti(this,'inc-agressie-naar',false)">👤 Bezoeker</button>
         </div>
       </div>
       <div class="block">
@@ -446,8 +432,9 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn" data-val="pijn">😣 Pijn</button>
           <button class="opt-btn" data-val="angst / verwardheid">😨 Angst / verwardheid</button>
           <button class="opt-btn" data-val="zorgweigering">🚫 Zorgweigering</button>
-          <button class="opt-btn" data-val="geen duidelijke aanleiding">❓ Onbekend</button>
+          <button class="opt-btn" data-val="geen duidelijke aanleiding" onclick="document.getElementById('inc-agressie-onbekend').style.display='block'">❓ Onbekend</button>
         </div>
+        <input type="text" class="field" id="inc-agressie-onbekend" placeholder="Specificeer indien mogelijk... (bijv. plots ontstaan, tijdens zorgmoment)" style="display:none;margin-top:8px;">
       </div>
       <div class="block">
         <span class="block-label">Letsel bij betrokkene?</span>
@@ -881,12 +868,24 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn multi" data-val="medicatie gestart" onclick="toggleMulti(this,'dok-beslissing',false);checkDokMed(this)">💊 Medicatie gestart</button>
         <button class="opt-btn multi" data-val="medicatie gestopt" onclick="toggleMulti(this,'dok-beslissing',false);checkDokMed(this)">⛔ Medicatie gestopt</button>
         <button class="opt-btn multi" data-val="medicatie aangepast" onclick="toggleMulti(this,'dok-beslissing',false);checkDokMed(this)">🔄 Medicatie aangepast</button>
-        <button class="opt-btn multi" data-val="staalname aanvragen" onclick="toggleMulti(this,'dok-beslissing',false)">🧪 Staalname</button>
+        <button class="opt-btn multi" data-val="staalname aanvragen" onclick="toggleMulti(this,'dok-beslissing',false);document.getElementById('dok-staal-blok').style.display=multiSelections['dok-beslissing']?.has('staalname aanvragen')?'block':'none'">🧪 Staalname</button>
         <button class="opt-btn multi" data-val="parameters opvolgen" onclick="toggleMulti(this,'dok-beslissing',false)">📊 Parameters</button>
         <button class="opt-btn multi" data-val="wondzorg aanpassen" onclick="toggleMulti(this,'dok-beslissing',false)">🩹 Wondzorg aanpassen</button>
         <button class="opt-btn multi" data-val="controle plannen" onclick="toggleMulti(this,'dok-beslissing',false)">📅 Controle plannen</button>
         <button class="opt-btn multi" data-val="ziekenhuisopname" onclick="toggleMulti(this,'dok-beslissing',false)">🚑 Ziekenhuisopname</button>
         <button class="opt-btn multi" data-val="andere beslissing" onclick="toggleMulti(this,'dok-beslissing',false)">📝 Andere</button>
+      </div>
+      <div id="dok-staal-blok" style="display:none;margin-top:10px;">
+        <span class="block-label" style="font-size:0.75rem;color:var(--ink-mid);font-weight:600;">Type staal</span>
+        <div class="btn-group" id="dok-staal-type-group" style="margin-top:6px;">
+          <button class="opt-btn" data-val="urinestaal">🧫 Urinestaal</button>
+          <button class="opt-btn" data-val="bloedname">🩸 Bloedname</button>
+          <button class="opt-btn" data-val="wondstaal">🩹 Wondstaal</button>
+          <button class="opt-btn" data-val="stoelgangstaal">🔬 Stoelgang</button>
+          <button class="opt-btn" data-val="COVID-test">😷 COVID-test</button>
+          <button class="opt-btn" data-val="andere staal" onclick="document.getElementById('dok-staal-andere').style.display='block'">📝 Andere</button>
+        </div>
+        <input type="text" class="field" id="dok-staal-andere" placeholder="Specificeer type staal..." style="display:none;margin-top:8px;">
       </div>
     </div>
     <div class="block"><span class="block-label">Medicatie (optioneel)</span><input type="text" class="field" id="dok-medicatie" placeholder="bijv. Augmentin 875 mg 2x/dag gestart"></div>
@@ -1237,6 +1236,8 @@ function showPage(id) {
 document.querySelectorAll('.btn-group').forEach(group => {
   if (group.id === 'kort-scenario-group') return;
   if (group.id === 'inc-type-group') return;
+  if (group.id === 'won-type-group') return;
+  if (group.id === 'dok-staal-type-group') return;
   group.querySelectorAll('.opt-btn:not(.multi)').forEach(btn => {
     btn.addEventListener('click', () => {
       const wasSelected = btn.classList.contains('selected');
@@ -1259,6 +1260,17 @@ document.querySelectorAll('.toggle-group').forEach(group => {
   });
 });
 // Textarea input triggert ook validatie
+// Staaltype knoppen in doktersbezoek
+document.querySelectorAll('#dok-staal-type-group .opt-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wasSelected = btn.classList.contains('selected');
+    document.querySelectorAll('#dok-staal-type-group .opt-btn').forEach(b => b.classList.remove('selected'));
+    if (!wasSelected) btn.classList.add('selected');
+    const andereVeld = document.getElementById('dok-staal-andere');
+    if (andereVeld) andereVeld.style.display = (!wasSelected && btn.dataset.val === 'andere staal') ? 'block' : 'none';
+    refreshGenerateButtons();
+  });
+});
 document.querySelectorAll('textarea, input[type="text"]').forEach(el => {
   el.addEventListener('input', () => refreshGenerateButtons());
 });
@@ -1276,7 +1288,8 @@ function hasValue(id) { const el = document.getElementById(id); return !!(el && 
 const multiSelections = {
   'ov-obs': new Set(['geen bijzonderheden']),
   'ov-actie': new Set(['geen extra actie']),
-  'inc-letsel': new Set(), 'inc-actie': new Set(), 'inc-klachten': new Set(),
+  'ov-opvolging': new Set(['geen bijzondere opvolging']),
+  'inc-letsel': new Set(), 'inc-actie': new Set(), 'inc-klachten': new Set(), 'inc-agressie-naar': new Set(),
   'dok-reden': new Set(), 'dok-beslissing': new Set(), 'dok-actie': new Set(),
   'ged-actie': new Set(), 'won-alarm': new Set(), 'won-infectie': new Set(), 'won-handeling': new Set(),
   'kort-opname-redenen': new Set(), 'kort-terug-beslissing': new Set(),
@@ -1400,7 +1413,7 @@ function isKortReady() {
 function isIncidentReady() {
   if (!currentIncidentType) return false;
   if (currentIncidentType === 'val') return getMulti('inc-letsel') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
-  if (currentIncidentType === 'agressie') return getField('inc-agressie-richting') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
+  if (currentIncidentType === 'agressie') return getMulti('inc-agressie-naar') !== 'niet ingevuld' || getField('inc-agressie-aanleiding') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
   if (currentIncidentType === 'dwaling') return getField('inc-dwaling-gevonden') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
   return getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
 }
@@ -1479,25 +1492,29 @@ function buildPrompt(mod) {
   const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie", "verdere opvolging gepland". Gebruik "verdere opvolging voorzien" of "verder opvolgen". Schrijf lichaamszijden aaneengesloten: "linkerheup", "rechterheup", "linkerknie", "rechterpols", "linkerschouder". Schrijf kort en praktisch — max 2-3 zinnen.`;
 
   if (mod === 'overdracht') {
-    return { prompt: `${base}
+    const medDetail = document.getElementById('ov-med-detail')?.value.trim();
+    const pijnLoc = document.getElementById('ov-pijn-locatie')?.value.trim();
+    return { prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, directe shift briefing. Geen "ik". Geen lange zinnen. Compact en praktisch — wat moet de volgende shift weten?
 
-Voorbeeld 1:
-Kamer: 14 | Toestand: stabiel | Voeding: goed gegeten | Belangrijk: parameters afwijkend | Reeds gedaan: arts verwittigd | Opvolging: parameters opvolgen
-→ Kamer 14 stabiel, goed gegeten. Parameters afwijkend — arts reeds verwittigd. Volgende shift parameters opvolgen.
+STIJL:
+- 2 tot 3 korte zinnen maximum
+- Direct en compact, geen overbodige woorden
+- Shift vermelden als intro indien beschikbaar
+- Medicatiewijziging specifiek benoemen indien ingevuld
+- Opvolgpunten samenvatten in de laatste zin
+- VERBODEN: "observatie opgestart", "in het zorgdossier", "werd geregistreerd"
 
-Voorbeeld 2:
-Kamer: 7 | Toestand: onrustig | Voeding: slecht gegeten | Belangrijk: verward gedrag | Reeds gedaan: geen extra actie | Opvolging: verdere observatie
-→ Kamer 7 onrustig met verward gedrag. Slecht gegeten. Geen extra actie ondernomen. Verdere observatie nodig.
+VOORBEELDEN:
+Nachtdienst: onrustig en verward. Matig gegeten. Pijn linkerheup. Volgende shift pijn en gedrag opvolgen.
+Avonddienst rustig verlopen. Antibiotica gestart wegens urineweginfectie. Temperatuur verder opvolgen.
+Bewoner verward tijdens zorgmoment. Nachtelijk dwalen vastgesteld. Gedrag verder observeren, arts contacteren bij verslechtering.
 
 Shift: ${currentShift || '–'}
 Kamer: ${getField('ov-kamer')||'–'}
 Toestand: ${getField('ov-toestand')}
-Pijnscore: ${getField('ov-pijn')||'–'}
-Voeding: ${getField('ov-voeding')||'–'}
-Vocht: ${getField('ov-vocht')||'–'}
-Belangrijk: ${getMulti('ov-obs')}${document.getElementById('ov-pijn-locatie')?.value.trim() ? ' (pijn ter hoogte van ' + document.getElementById('ov-pijn-locatie').value.trim() + ')' : ''}
-Reeds gedaan: ${getMulti('ov-actie')}
-Opvolging: ${getField('ov-opvolging')||'geen bijzondere opvolging'}
+Aandachtspunten: ${getMulti('ov-obs')}${pijnLoc ? ' (pijn ter hoogte van ' + pijnLoc + ')' : ''}
+Praktische details: ${getMulti('ov-actie')}${medDetail ? ' — medicatiewijziging: ' + medDetail : ''}
+Opvolging volgende shift: ${getMulti('ov-opvolging')}
 Extra: ${document.getElementById('ov-notities')?.value.trim()||'–'}` };
   }
 
@@ -1525,8 +1542,8 @@ Parameters: RR ${document.getElementById('inc-rr')?.value||'–'} | HF ${documen
     } else if (type === 'agressie') {
       details = `Tijdstip: ${document.getElementById('inc-tijdstip-agr')?.value||'–'}
 Type agressie: ${getField('inc-agressie-type')}
-Gericht naar: ${getField('inc-agressie-naar')}
-Aanleiding: ${getField('inc-agressie-aanleiding')}
+Gericht naar: ${getMulti('inc-agressie-naar')}
+Aanleiding: ${getField('inc-agressie-aanleiding')}${document.getElementById('inc-agressie-onbekend')?.value.trim() ? ' (' + document.getElementById('inc-agressie-onbekend').value.trim() + ')' : ''}
 Letsel bij betrokkene: ${getField('inc-agressie-letsel')}`;
     } else if (type === 'dwaling') {
       details = `Tijdstip ontdekking: ${document.getElementById('inc-tijdstip-dwal')?.value||'–'}
@@ -1671,7 +1688,7 @@ Laboresultaten besproken met huisarts. Staalname aangevraagd, verdere opvolging 
 Kamer: ${getField('dok-kamer')||'–'}
 Type contact: ${getField('dok-contacttype')||'–'}
 Reden: ${getMulti('dok-reden')}
-Beslissing arts: ${getMulti('dok-beslissing')}
+Beslissing arts: ${getMulti('dok-beslissing')}${(() => { const s = document.querySelector('#dok-staal-type-group .opt-btn.selected'); if (!s) return ''; const a = document.getElementById('dok-staal-andere')?.value.trim(); return ' — staaltype: ' + (s.dataset.val === 'andere staal' && a ? a : s.dataset.val); })()}
 Medicatie: ${document.getElementById('dok-medicatie')?.value.trim()||'–'}
 Verpleegkundige actie: ${getMulti('dok-actie')}
 Extra: ${document.getElementById('dok-notities')?.value.trim()||'–'}` };
