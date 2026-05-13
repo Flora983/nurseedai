@@ -615,7 +615,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block">
       <span class="block-label">Opvolging</span>
       <div class="btn-group" data-field="med-opvolging">
-        <button class="opt-btn" data-val="effect evalueren">📈 Effect evalueren</button>
+        <button class="opt-btn" data-val="effect verder opvolgen">📈 Effect opvolgen</button>
         <button class="opt-btn" data-val="pijn opvolgen">😣 Pijn opvolgen</button>
         <button class="opt-btn" data-val="temperatuur opvolgen">🌡️ Temperatuur</button>
         <button class="opt-btn" data-val="bloeddruk opvolgen">🩺 Bloeddruk</button>
@@ -1474,7 +1474,7 @@ async function callAPI(prompt) {
 // ── BUILD PROMPTS MET FEW-SHOT VOORBEELDEN ──
 function buildPrompt(mod) {
   const taal = currentLang === 'fr' ? 'Frans' : currentLang === 'en' ? 'Engels' : 'Nederlands';
-  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie". Gebruik liever: "verder opvolgen", "gedrag reeds vaker vastgesteld", "toestand verder observeren". Schrijf kort en praktisch — max 2-3 zinnen.`;
+  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie", "verdere opvolging gepland". Gebruik "verdere opvolging voorzien" of "verder opvolgen". Schrijf lichaamszijden aaneengesloten: "linkerheup", "rechterheup", "linkerknie", "rechterpols", "linkerschouder". Schrijf kort en praktisch — max 2-3 zinnen.`;
 
   if (mod === 'overdracht') {
     return { prompt: `${base}
@@ -1564,7 +1564,7 @@ REGELS:
 
 VOORBEELDEN:
 Aanleiding: infectie | Wijziging: nieuw opgestart | Medicatie: Furadantine 50 mg 3x/dag | Duur: 7 dagen
-Output: Furadantine 50 mg 3x/dag opgestart wegens infectie, 7 dagen. Effect evalueren.
+Output: Furadantine 50 mg 3x/dag opgestart wegens infectie, 7 dagen. Effect verder opvolgen.
 
 Aanleiding: pijn | Wijziging: dosis aangepast | Medicatie: Paracetamol 1g 4x/dag
 Output: Paracetamol verhoogd naar 1g 4x/dag wegens pijnklachten. Pijn verder opvolgen.
