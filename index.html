@@ -642,14 +642,15 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="won-kamer" placeholder="bijv. Kamer 2"></div>
     <div class="block">
       <span class="block-label">Type wonde ⚠️ verplicht</span>
-      <div class="btn-group" data-field="won-type">
-        <button class="opt-btn" data-val="skintear">🔸 Skintear</button>
-        <button class="opt-btn" data-val="decubitus">🔴 Decubitus</button>
-        <button class="opt-btn" data-val="diabetisch ulcus">💉 Diabetisch ulcus</button>
-        <button class="opt-btn" data-val="chirurgische wonde">🔪 Chirurgisch</button>
-        <button class="opt-btn" data-val="schaafwonde">🩹 Schaafwonde</button>
-        <button class="opt-btn" data-val="andere wonde">📍 Andere</button>
+      <div class="btn-group" id="won-type-group">
+        <button class="opt-btn" data-val="skintear" onclick="selectWondType(this,'skintear')">🔸 Skintear</button>
+        <button class="opt-btn" data-val="decubitus" onclick="selectWondType(this,'decubitus')">🔴 Decubitus</button>
+        <button class="opt-btn" data-val="vochtletsel" onclick="selectWondType(this,'other')">💧 Vochtletsel</button>
+        <button class="opt-btn" data-val="schaafwonde" onclick="selectWondType(this,'other')">🩹 Schaafwonde</button>
+        <button class="opt-btn" data-val="wonde" onclick="selectWondType(this,'other')">🩺 Wonde</button>
+        <button class="opt-btn" data-val="andere" onclick="selectWondType(this,'andere')">📍 Andere</button>
       </div>
+      <input type="text" class="field" id="won-type-andere" placeholder="📍 Specificeer type wonde..." style="display:none;margin-top:8px;">
     </div>
     <div class="block">
       <span class="block-label">Locatie ⚠️ verplicht</span>
@@ -664,17 +665,22 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn" data-val="andere locatie">📍 Andere</button>
       </div>
     </div>
-    <div class="block">
-      <span class="block-label">Classificatie (optioneel)</span>
+    <div class="block" id="won-istap-blok" style="display:none;">
+      <span class="block-label">ISTAP classificatie (optioneel)</span>
       <div class="btn-group" data-field="won-classificatie">
         <button class="opt-btn" data-val="ISTAP Type 1">ISTAP 1</button>
         <button class="opt-btn" data-val="ISTAP Type 2a">ISTAP 2a</button>
         <button class="opt-btn" data-val="ISTAP Type 2b">ISTAP 2b</button>
         <button class="opt-btn" data-val="ISTAP Type 3">ISTAP 3</button>
-        <button class="opt-btn" data-val="Decubitus graad 1">Dec. Gr.1</button>
-        <button class="opt-btn" data-val="Decubitus graad 2">Dec. Gr.2</button>
-        <button class="opt-btn" data-val="Decubitus graad 3">Dec. Gr.3</button>
-        <button class="opt-btn" data-val="Decubitus graad 4">Dec. Gr.4</button>
+      </div>
+    </div>
+    <div class="block" id="won-dec-blok" style="display:none;">
+      <span class="block-label">Decubitus graad (optioneel)</span>
+      <div class="btn-group" data-field="won-classificatie">
+        <button class="opt-btn" data-val="Decubitus graad 1">Graad 1</button>
+        <button class="opt-btn" data-val="Decubitus graad 2">Graad 2</button>
+        <button class="opt-btn" data-val="Decubitus graad 3">Graad 3</button>
+        <button class="opt-btn" data-val="Decubitus graad 4">Graad 4</button>
       </div>
     </div>
     <div class="block">
@@ -689,28 +695,14 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block">
       <span class="block-label">Wondaspect (meerdere mogelijk)</span>
       <div class="btn-group" id="won-infectie-group">
-        <button class="opt-btn multi" data-val="granulatie" onclick="toggleMulti(this,'won-infectie',false)">✅ Granulatie</button>
+        <button class="opt-btn multi" data-val="geen bijzonderheden" onclick="toggleMulti(this,'won-infectie',true)">✅ Geen bijzonderheden</button>
+        <button class="opt-btn multi" data-val="roodheid" onclick="toggleMulti(this,'won-infectie',false)">🔴 Roodheid</button>
         <button class="opt-btn multi" data-val="vochtig aspect" onclick="toggleMulti(this,'won-infectie',false)">💧 Vochtig</button>
         <button class="opt-btn multi" data-val="droog aspect" onclick="toggleMulti(this,'won-infectie',false)">🏜️ Droog</button>
+        <button class="opt-btn multi" data-val="etter" onclick="toggleMulti(this,'won-infectie',false)">🟡 Etter</button>
+        <button class="opt-btn multi" data-val="geur" onclick="toggleMulti(this,'won-infectie',false)">👃 Geur</button>
+        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'won-infectie',false)">😣 Pijn</button>
         <button class="opt-btn multi" data-val="necrose" onclick="toggleMulti(this,'won-infectie',false)">⚫ Necrose</button>
-        <button class="opt-btn multi" data-val="weinig vocht" onclick="toggleMulti(this,'won-infectie',false)">🟡 Weinig vocht</button>
-        <button class="opt-btn multi" data-val="matig vocht" onclick="toggleMulti(this,'won-infectie',false)">🟠 Matig vocht</button>
-        <button class="opt-btn multi" data-val="veel vocht" onclick="toggleMulti(this,'won-infectie',false)">🔴 Veel vocht</button>
-        <button class="opt-btn multi" data-val="etterig" onclick="toggleMulti(this,'won-infectie',false)">🟡 Etterig</button>
-        <button class="opt-btn multi" data-val="bloederig" onclick="toggleMulti(this,'won-infectie',false)">🩸 Bloederig</button>
-      </div>
-    </div>
-    <div class="block">
-      <span class="block-label">Infectietekenen (meerdere mogelijk)</span>
-      <div class="btn-group" id="won-alarm-group">
-        <button class="opt-btn multi" data-val="geen infectietekenen" onclick="toggleMulti(this,'won-alarm',true)">✅ Geen</button>
-        <button class="opt-btn multi" data-val="roodheid" onclick="toggleMulti(this,'won-alarm',false)">🔴 Roodheid</button>
-        <button class="opt-btn multi" data-val="warmte" onclick="toggleMulti(this,'won-alarm',false)">🌡️ Warmte</button>
-        <button class="opt-btn multi" data-val="zwelling" onclick="toggleMulti(this,'won-alarm',false)">🫧 Zwelling</button>
-        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'won-alarm',false)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="geur" onclick="toggleMulti(this,'won-alarm',false)">👃 Geur</button>
-        <button class="opt-btn multi" data-val="etter / slijm" onclick="toggleMulti(this,'won-alarm',false)">🟡 Etter</button>
-        <button class="opt-btn multi" data-val="necrose wondrand" onclick="toggleMulti(this,'won-alarm',false)">⚫ Necrose rand</button>
       </div>
     </div>
     <div class="block">
@@ -721,17 +713,17 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn multi" data-val="ontsmet" onclick="toggleMulti(this,'won-handeling',false)">🔵 Ontsmet</button>
         <button class="opt-btn multi" data-val="afgedekt" onclick="toggleMulti(this,'won-handeling',false)">🛡️ Afgedekt</button>
         <button class="opt-btn multi" data-val="verband vernieuwd" onclick="toggleMulti(this,'won-handeling',false)">🔄 Verband vernieuwd</button>
-        <button class="opt-btn multi" data-val="siliconenverband" onclick="toggleMulti(this,'won-handeling',false)">🩹 Silicone</button>
         <button class="opt-btn multi" data-val="kompres" onclick="toggleMulti(this,'won-handeling',false)">🩹 Kompres</button>
+        <button class="opt-btn multi" data-val="siliconenverband" onclick="toggleMulti(this,'won-handeling',false)">🩹 Silicone</button>
       </div>
     </div>
     <div class="block">
       <span class="block-label">Opvolging</span>
       <div class="btn-group" data-field="won-opvolging">
-        <button class="opt-btn" data-val="volgende verzorging morgen">📅 Morgen</button>
-        <button class="opt-btn" data-val="volgende verzorging over 2 dagen">📅 Over 2 dagen</button>
-        <button class="opt-btn" data-val="volgende verzorging over 3 dagen">📅 Over 3 dagen</button>
-        <button class="opt-btn" data-val="arts consulteren">📞 Arts</button>
+        <button class="opt-btn" data-val="controle morgen">📅 Morgen</button>
+        <button class="opt-btn" data-val="controle over 2 dagen">📅 Over 2 dagen</button>
+        <button class="opt-btn" data-val="controle over 3 dagen">📅 Over 3 dagen</button>
+        <button class="opt-btn" data-val="arts verwittigen">📞 Arts</button>
         <button class="opt-btn" data-val="wondverpleegkundige inschakelen">👩‍⚕️ Wondzorgref.</button>
         <button class="opt-btn" data-val="verdere observatie">👁️ Observeren</button>
       </div>
@@ -1298,6 +1290,17 @@ const multiSelections = {
   'kort-arts-antwoord': new Set(), 'kort-advies-beleid': new Set()
 };
 
+function selectWondType(btn, type) {
+  document.querySelectorAll('#won-type-group .opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('won-istap-blok').style.display = type === 'skintear' ? 'block' : 'none';
+  document.getElementById('won-dec-blok').style.display = type === 'decubitus' ? 'block' : 'none';
+  document.getElementById('won-type-andere').style.display = type === 'andere' ? 'block' : 'none';
+  // Reset classificatie als type verandert
+  document.querySelectorAll('#won-istap-blok .opt-btn, #won-dec-blok .opt-btn').forEach(b => b.classList.remove('selected'));
+  refreshGenerateButtons();
+}
+
 function toggleIncLocatie(type, show) {
   if (type === 'all') {
     ['pijn','zwelling','fractuur','letsel'].forEach(t => {
@@ -1586,6 +1589,10 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
   }
 
   if (mod === 'wond') {
+    const typeBtn = document.querySelector('#won-type-group .opt-btn.selected');
+    const typeVal = typeBtn ? typeBtn.dataset.val : '–';
+    const typeAndere = document.getElementById('won-type-andere')?.value.trim();
+    const wondType = typeVal === 'andere' && typeAndere ? typeAndere : typeVal;
     const classificatie = getField('won-classificatie') || '–';
     const isISTAP = classificatie.includes('ISTAP');
     const isDecubitus = classificatie.includes('Decubitus');
@@ -1597,24 +1604,24 @@ ${isDecubitus ? 'Vermeld de decubitusgraad.' : ''}
 REGELS:
 - Maximaal 2 à 3 korte zinnen.
 - Schrijf natuurlijk en impliciet, geen ziekenhuisstijl.
-- Gebruik "skintear" als type wonde (niet "huidscheur").
-- Aspect en infectietekenen kort samenvatten.
-- Verzorgingshandelingen impliciet: "gereinigd, ontsmet en afgedekt".
+- Gebruik het exacte wondtype zoals opgegeven (skintear, vochtletsel, schaafwonde, wonde...).
+- Aspect kort samenvatten in de eerste zin.
+- Verzorgingshandelingen impliciet samenvatten: "gereinigd, ontsmet en afgedekt".
 - Opvolging kort: "controle over 3 dagen", "arts verwittigen bij verslechtering".
 - Nooit "ik". Geen opsommingstekens.
 
 VOORBEELDEN:
-Skintear arm, vochtig aspect, geen infectietekenen. Gereinigd, ontsmet en afgedekt. Controle over 3 dagen.
-Decubitus stuit graad 2, stabiel. Roodheid en geur aanwezig. Gereinigd en siliconenverband aangebracht. Arts verwittigen bij verdere verslechtering.
-Schaafwonde been, eerste verzorging. Geen infectietekenen. Gereinigd en afgedekt.
+Skintear arm met roodheid en vochtig aspect. Gereinigd, ontsmet en afgedekt. Controle over 3 dagen.
+Vochtletsel ter hoogte van de stuit. Gereinigd en afgedekt. Verdere observatie.
+Wonde rechterbeen met roodheid en pijn. Verband vernieuwd.
+Decubitus stuit graad 2, stabiel. Etter en geur aanwezig. Gereinigd en siliconenverband aangebracht. Arts verwittigen.
 
 Kamer: ${getField('won-kamer')||'–'}
-Type: ${getField('won-type')}
+Type wonde: ${wondType}
 Locatie: ${getField('won-locatie')}
 Classificatie: ${classificatie}
 Evolutie: ${getField('won-evolutie')||'–'}
-Aspect: ${getMulti('won-infectie')}
-Infectietekenen: ${getMulti('won-alarm')}
+Wondaspect: ${getMulti('won-infectie')}
 Wondzorg: ${getMulti('won-handeling')}
 Opvolging: ${getField('won-opvolging')}
 Extra: ${document.getElementById('won-notities')?.value.trim()||'–'}` };
