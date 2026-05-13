@@ -641,15 +641,18 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     </div>
     <div class="block">
       <span class="block-label">Locatie ⚠️ verplicht</span>
-      <div class="btn-group" data-field="won-locatie">
-        <button class="opt-btn" data-val="arm">💪 Arm</button>
-        <button class="opt-btn" data-val="hand">✋ Hand</button>
-        <button class="opt-btn" data-val="been">🦵 Been</button>
-        <button class="opt-btn" data-val="hiel">👟 Hiel</button>
-        <button class="opt-btn" data-val="voet">🦶 Voet</button>
-        <button class="opt-btn" data-val="stuit">🔻 Stuit</button>
-        <button class="opt-btn" data-val="rug">🔙 Rug</button>
-        <button class="opt-btn" data-val="andere locatie">📍 Andere</button>
+      <div class="btn-group" id="won-locatie-group">
+        <button class="opt-btn" data-val="arm" onclick="selectWondLocatie(this,true)">💪 Arm</button>
+        <button class="opt-btn" data-val="hand" onclick="selectWondLocatie(this,true)">✋ Hand</button>
+        <button class="opt-btn" data-val="been" onclick="selectWondLocatie(this,true)">🦵 Been</button>
+        <button class="opt-btn" data-val="hiel" onclick="selectWondLocatie(this,true)">👟 Hiel</button>
+        <button class="opt-btn" data-val="voet" onclick="selectWondLocatie(this,true)">🦶 Voet</button>
+        <button class="opt-btn" data-val="stuit" onclick="selectWondLocatie(this,false)">🔻 Stuit</button>
+        <button class="opt-btn" data-val="rug" onclick="selectWondLocatie(this,false)">🔙 Rug</button>
+        <button class="opt-btn" data-val="andere locatie" onclick="selectWondLocatie(this,true)">📍 Andere</button>
+      </div>
+      <div id="won-locatie-detail-wrap" style="display:none;margin-top:8px;">
+        <input type="text" class="field" id="won-locatie-detail" placeholder="📍 Specificeer locatie (bijv. rechter onderbeen, linkerarm)">
       </div>
     </div>
     <div class="block" id="won-istap-blok" style="display:none;">
@@ -682,7 +685,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div class="block">
       <span class="block-label">Wondaspect (meerdere mogelijk)</span>
       <div class="btn-group" id="won-infectie-group">
-        <button class="opt-btn multi" data-val="geen bijzonderheden" onclick="toggleMulti(this,'won-infectie',true)">✅ Geen bijzonderheden</button>
+        <button class="opt-btn multi" data-val="geen tekenen van infectie" onclick="toggleMulti(this,'won-infectie',true)">✅ Geen infectie</button>
         <button class="opt-btn multi" data-val="roodheid" onclick="toggleMulti(this,'won-infectie',false)">🔴 Roodheid</button>
         <button class="opt-btn multi" data-val="vochtig aspect" onclick="toggleMulti(this,'won-infectie',false)">💧 Vochtig</button>
         <button class="opt-btn multi" data-val="droog aspect" onclick="toggleMulti(this,'won-infectie',false)">🏜️ Droog</button>
@@ -1237,6 +1240,7 @@ document.querySelectorAll('.btn-group').forEach(group => {
   if (group.id === 'kort-scenario-group') return;
   if (group.id === 'inc-type-group') return;
   if (group.id === 'won-type-group') return;
+  if (group.id === 'won-locatie-group') return;
   if (group.id === 'dok-staal-type-group') return;
   group.querySelectorAll('.opt-btn:not(.multi)').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1296,6 +1300,14 @@ const multiSelections = {
   'kort-klachten': new Set(), 'kort-symptomen': new Set(),
   'kort-arts-antwoord': new Set(), 'kort-advies-beleid': new Set()
 };
+
+function selectWondLocatie(btn, showDetail) {
+  document.querySelectorAll('#won-locatie-group .opt-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const wrap = document.getElementById('won-locatie-detail-wrap');
+  if (wrap) wrap.style.display = showDetail ? 'block' : 'none';
+  refreshGenerateButtons();
+}
 
 function selectWondType(btn, type) {
   document.querySelectorAll('#won-type-group .opt-btn').forEach(b => b.classList.remove('selected'));
@@ -1424,7 +1436,7 @@ function refreshGenerateButtons() {
     overdracht:{ check: () => getField('ov-toestand') !== 'niet ingevuld', missing: 'Kies de huidige toestand.' },
     incident:  { check: isIncidentReady, missing: 'Kies het type incident en vul minstens één detail in.' },
     medicatie: { check: () => getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'), missing: 'Vul context, wijziging én medicatienaam in.' },
-    wond:      { check: () => !!document.querySelector('#won-type-group .opt-btn.selected') && getField('won-locatie') !== 'niet ingevuld', missing: 'Kies type wonde én locatie.' },
+    wond:      { check: () => !!document.querySelector('#won-type-group .opt-btn.selected') && !!document.querySelector('#won-locatie-group .opt-btn.selected'), missing: 'Kies type wonde én locatie.' },
     gedrag:    { check: () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld', missing: 'Kies type gedrag én moment.' },
     dokter:    { check: () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld', missing: 'Kies type contact én reden van contact.' }
   };
@@ -1609,6 +1621,10 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
     const typeVal = typeBtn ? typeBtn.dataset.val : '–';
     const typeAndere = document.getElementById('won-type-andere')?.value.trim();
     const wondType = (typeVal === 'andere' && typeAndere) ? typeAndere : typeVal;
+    const locBtn = document.querySelector('#won-locatie-group .opt-btn.selected');
+    const locVal = locBtn ? locBtn.dataset.val : '–';
+    const locDetail = document.getElementById('won-locatie-detail')?.value.trim();
+    const locatie = locDetail ? locDetail : locVal;
     const classificatie = getField('won-classificatie') || '–';
     const isISTAP = classificatie.includes('ISTAP');
     const isDecubitus = classificatie.includes('Decubitus');
@@ -1623,18 +1639,17 @@ REGELS:
 - Gebruik het exacte wondtype zoals opgegeven (skintear, vochtletsel, schaafwonde, wonde...).
 - Aspect kort samenvatten in de eerste zin.
 - Verzorgingshandelingen impliciet samenvatten: "gereinigd, ontsmet en afgedekt".
-- Opvolging kort: "controle over 3 dagen", "arts verwittigen bij verslechtering".
-- Nooit "ik". Geen opsommingstekens.
+- Gebruik "geen tekenen van infectie" (niet "rustig wondaspect" of "geen bijzonderheden").
+- Nooit "ik". Geen opsommingstekens. Max 2 zinnen.
 
 VOORBEELDEN:
-Skintear arm met roodheid en vochtig aspect. Gereinigd, ontsmet en afgedekt. Controle over 3 dagen.
-Vochtletsel ter hoogte van de stuit. Gereinigd en afgedekt. Verdere observatie.
-Wonde rechterbeen met roodheid en pijn. Verband vernieuwd.
-Decubitus stuit graad 2, stabiel. Etter en geur aanwezig. Gereinigd en siliconenverband aangebracht. Arts verwittigen.
+Decubitus ter hoogte van de stuit met roodheid. Wonde gereinigd, ontsmet en afgedekt.
+Skintear rechter onderarm met vochtig aspect. Verband vernieuwd.
+Wonde linker onderbeen zonder tekenen van infectie. Gereinigd en afgedekt.
 
 Kamer: ${getField('won-kamer')||'–'}
 Type wonde: ${wondType}
-Locatie: ${getField('won-locatie')}
+Locatie: ${locatie}
 Classificatie: ${classificatie}
 Evolutie: ${getField('won-evolutie')||'–'}
 Wondaspect: ${getMulti('won-infectie')}
