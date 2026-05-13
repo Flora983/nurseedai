@@ -1627,32 +1627,44 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
     const locDetail = document.getElementById('won-locatie-detail')?.value.trim();
     const locatie = locDetail ? locDetail : locVal;
     const classificatie = getField('won-classificatie') || '–';
+    const evolutie = getField('won-evolutie') || '–';
     const isISTAP = classificatie.includes('ISTAP');
     const isDecubitus = classificatie.includes('Decubitus');
-    return { prompt: `${base}
-Schrijf een korte, praktische wondnotitie zoals een WZC-verpleegkundige die zou opschrijven.
+    return { prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, naturelle wondnotitie van maximaal 2 zinnen.
 ${isISTAP ? 'Vermeld de ISTAP-classificatie.' : ''}
 ${isDecubitus ? 'Vermeld de decubitusgraad.' : ''}
 
-REGELS:
-- Maximaal 2 à 3 korte zinnen.
-- Schrijf natuurlijk en impliciet, geen ziekenhuisstijl.
-- Gebruik het exacte wondtype zoals opgegeven (skintear, vochtletsel, schaafwonde, wonde...).
-- Aspect kort samenvatten in de eerste zin.
-- Verzorgingshandelingen impliciet samenvatten: "gereinigd, ontsmet en afgedekt".
-- Gebruik "geen tekenen van infectie" (niet "rustig wondaspect" of "geen bijzonderheden").
+EVOLUTIELOGICA — pas de taal aan op basis van evolutie:
+- "eerste verzorging" → geen "bestaande", gewoon beschrijven
+- "verslechterd" → begin met "Bestaande [type]..." en gebruik "toegenomen roodheid", "meer wondvocht", "verslechtering vastgesteld"
+- "verbeterd" → gebruik "wonde in herstel", "verbeterd aspect", "minder exsudaat"
+- "stabiel" → gebruik "stabiel", "ongewijzigd aspect"
+
+VERBODEN:
+- "aspect verslechterd" → gebruik "verslechtering vastgesteld" of "toegenomen roodheid/pijn/geur"
+- "rustig wondaspect" → gebruik "zonder tekenen van infectie"
+- "controle morgen voorzien" → gebruik "controle over X dagen" of weglaten
+- "verdere observatie voorzien" → weglaten of "arts verwittigd"
 - Nooit "ik". Geen opsommingstekens. Max 2 zinnen.
 
 VOORBEELDEN:
-Decubitus ter hoogte van de stuit met roodheid. Wonde gereinigd, ontsmet en afgedekt.
-Skintear rechter onderarm met vochtig aspect. Verband vernieuwd.
-Wonde linker onderbeen zonder tekenen van infectie. Gereinigd en afgedekt.
+Type: decubitus | Locatie: stuit | Evolutie: verslechterd | Aspect: roodheid, pijn, geur, etter
+Output: Bestaande decubitus ter hoogte van de stuit met toegenomen roodheid, pijn, geur en etter. Wonde gereinigd, ontsmet en afgedekt. Arts verwittigd.
+
+Type: skintear | Locatie: linker onderarm | Evolutie: stabiel | Aspect: vochtig aspect
+Output: Skintear linker onderarm met vochtig aspect, stabiel. Verband vernieuwd.
+
+Type: wonde | Locatie: linker onderbeen | Evolutie: verbeterd | Aspect: geen tekenen van infectie
+Output: Wonde linker onderbeen in herstel, zonder tekenen van infectie. Gereinigd en afgedekt.
+
+Type: schaafwonde | Locatie: knie | Evolutie: eerste verzorging | Aspect: geen tekenen van infectie
+Output: Schaafwonde ter hoogte van de knie, eerste verzorging. Gereinigd en afgedekt.
 
 Kamer: ${getField('won-kamer')||'–'}
 Type wonde: ${wondType}
 Locatie: ${locatie}
 Classificatie: ${classificatie}
-Evolutie: ${getField('won-evolutie')||'–'}
+Evolutie: ${evolutie}
 Wondaspect: ${getMulti('won-infectie')}
 Wondzorg: ${getMulti('won-handeling')}
 Opvolging: ${getField('won-opvolging')}
