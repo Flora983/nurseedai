@@ -1,116 +1,83 @@
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
   try {
-    const { module, formData } = req.body || {};
+    const { formData } = req.body || {};
+    const prompt = formData?.prompt;
 
-    let prompt = "";
-
-    // ⚡ SNELLE MODULE: KORTE COMMUNICATIE
-    if (module === "kort") {
-      prompt = `
-Schrijf 1 tot 2 korte, professionele verpleegkundige zinnen in het Nederlands.
-
-Regels:
-- Zeer kort
-- Geen uitleg
-- Geen herhaling
-- Direct bruikbaar in dossier
-
-Gegevens:
-${JSON.stringify(formData || {}, null, 2)}
-`;
+    if (!prompt) {
+      return res.status(400).json({ success: false, error: 'Geen prompt ontvangen.' });
     }
 
-    // 🩺 DOKTERSBEZOEK
-    else if (module === "dokter") {
-      prompt = `
-Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum.
-
-Schrijf een kort, duidelijk en professioneel verpleegkundig verslag van een doktersbezoek of telefonisch overleg.
-
-BELANGRIJKE REGELS:
-- Schrijf objectief en praktisch
-- Gebruik eenvoudige, professionele zorgtaal
-- Schrijf 2 tot 4 zinnen
-- Vermeld alleen wat effectief gebeurd is of beslist werd
-- Schrijf NOOIT dat iets "niet ingevuld", "niet genoteerd" of "ontbreekt"
-- Vermijd aannames
-- Geen uitleg, geen titel, alleen het verslag
-
-ALS ER WEINIG INFO IS:
-- schrijf toch een bruikbaar, neutraal kort verslag
-- focus op reden van contact en eventuele opvolging
-
-Gegevens:
-${JSON.stringify(formData || {}, null, 2)}
-
-Schrijf zoals in een echt zorgdossier.
-`;
+    const apiKey = process.env.ANTHROPIC_API_KEY;
+    if (!apiKey) {
+      return res.status(500).json({ success: false, error: 'API sleutel ontbreekt op de server.' });
     }
 
-    // 📋 ANDERE MODULES
-    else {
-      prompt = `
-Schrijf een kort, professioneel verpleegkundig verslag in het Nederlands.
-
-Regels:
-- Kort en duidelijk
-- Professioneel en objectief
-- Geen uitleg
-- Geen AI-zinnen zoals "ontbreekt" of "niet ingevuld"
-- Alleen bruikbare dossiertekst
-
-Gegevens:
-${JSON.stringify(formData || {}, null, 2)}
-`;
-    }
-
-    const response = await fetch("https://api.openai.com/v1/responses", {
-      method: "POST",
+    // Roep Anthropic API aan
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: "gpt-5-mini",
-        input: prompt,
-      }),
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }]
+      })
     });
 
-    let data;
-    try {
-      data = await response.json();
-    } catch (e) {
-      const text = await response.text();
-      throw new Error("Server fout: " + text);
+    // Controleer of de API-aanroep gelukt is
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('Anthropic API error:', response.status, errText);
+      return res.status(response.status).json({
+        success: false,
+        error: `API fout (${response.status}): ${errText.substring(0, 200)}`
+      });
     }
 
-    let text = "";
+    const data = await response.json();
 
-    if (typeof data.output_text === "string") {
-      text = data.output_text;
+    // Haal de tekst op uit de response
+    let text = '';
+    if (data?.content && Array.isArray(data.content)) {
+      text = data.content
+        .filter(block => block.type === 'text')
+        .map(block => block.text)
+        .join('');
     }
 
-    if (!text && Array.isArray(data.output)) {
-      for (const item of data.output) {
-        for (const content of item.content || []) {
-          if (content.type === "output_text") {
-            text += content.text;
-          }
-        }
-      }
+    if (!text || !text.trim()) {
+      return res.status(500).json({
+        success: false,
+        error: 'Geen tekst ontvangen van de AI.'
+      });
     }
 
-    if (!text) {
-      return res.status(500).json({ error: "Geen output gegenereerd." });
-    }
+    return res.status(200).json({
+      success: true,
+      output: text.trim()
+    });
 
-    return res.status(200).json({ output: text.trim() });
   } catch (error) {
-    console.error("API fout:", error);
-    return res.status(500).json({ error: "Server error" });
+    console.error('Server error:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Onverwachte serverfout.'
+    });
   }
 }
