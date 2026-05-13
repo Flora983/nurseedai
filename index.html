@@ -1287,10 +1287,12 @@ const multiSelections = {
 function selectWondType(btn, type) {
   document.querySelectorAll('#won-type-group .opt-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  document.getElementById('won-istap-blok').style.display = type === 'skintear' ? 'block' : 'none';
-  document.getElementById('won-dec-blok').style.display = type === 'decubitus' ? 'block' : 'none';
-  document.getElementById('won-type-andere').style.display = type === 'andere' ? 'block' : 'none';
-  // Reset classificatie als type verandert
+  document.getElementById('won-istap-blok').style.display = 'none';
+  document.getElementById('won-dec-blok').style.display = 'none';
+  document.getElementById('won-type-andere').style.display = 'none';
+  if (type === 'skintear') document.getElementById('won-istap-blok').style.display = 'block';
+  if (type === 'decubitus') document.getElementById('won-dec-blok').style.display = 'block';
+  if (type === 'andere') document.getElementById('won-type-andere').style.display = 'block';
   document.querySelectorAll('#won-istap-blok .opt-btn, #won-dec-blok .opt-btn').forEach(b => b.classList.remove('selected'));
   refreshGenerateButtons();
 }
@@ -1409,7 +1411,7 @@ function refreshGenerateButtons() {
     overdracht:{ check: () => getField('ov-toestand') !== 'niet ingevuld', missing: 'Kies de huidige toestand.' },
     incident:  { check: isIncidentReady, missing: 'Kies het type incident en vul minstens één detail in.' },
     medicatie: { check: () => getField('med-context') !== 'niet ingevuld' && getField('med-wijziging') !== 'niet ingevuld' && hasValue('med-naam'), missing: 'Vul context, wijziging én medicatienaam in.' },
-    wond:      { check: () => getField('won-type') !== 'niet ingevuld' && getField('won-locatie') !== 'niet ingevuld', missing: 'Kies type wonde én locatie.' },
+    wond:      { check: () => !!document.querySelector('#won-type-group .opt-btn.selected') && getField('won-locatie') !== 'niet ingevuld', missing: 'Kies type wonde én locatie.' },
     gedrag:    { check: () => getField('ged-gedrag') !== 'niet ingevuld' && getField('ged-moment') !== 'niet ingevuld', missing: 'Kies type gedrag én moment.' },
     dokter:    { check: () => getField('dok-contacttype') !== 'niet ingevuld' && getMulti('dok-reden') !== 'niet ingevuld', missing: 'Kies type contact én reden van contact.' }
   };
@@ -1589,7 +1591,7 @@ Extra: ${document.getElementById('med-notities')?.value.trim()||'–'}` };
     const typeBtn = document.querySelector('#won-type-group .opt-btn.selected');
     const typeVal = typeBtn ? typeBtn.dataset.val : '–';
     const typeAndere = document.getElementById('won-type-andere')?.value.trim();
-    const wondType = typeVal === 'andere' && typeAndere ? typeAndere : typeVal;
+    const wondType = (typeVal === 'andere' && typeAndere) ? typeAndere : typeVal;
     const classificatie = getField('won-classificatie') || '–';
     const isISTAP = classificatie.includes('ISTAP');
     const isDecubitus = classificatie.includes('Decubitus');
