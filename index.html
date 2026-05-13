@@ -1294,7 +1294,7 @@ const multiSelections = {
   'ov-obs': new Set(['geen bijzonderheden']),
   'ov-actie': new Set(['geen extra actie']),
   'ov-opvolging': new Set(['geen bijzondere opvolging']),
-  'inc-letsel': new Set(), 'inc-actie': new Set(), 'inc-klachten': new Set(), 'inc-agressie-naar': new Set(),
+  'inc-letsel': new Set(), 'inc-actie': new Set(), 'inc-agressie-naar': new Set(),
   'dok-reden': new Set(), 'dok-beslissing': new Set(), 'dok-actie': new Set(),
   'ged-actie': new Set(), 'won-alarm': new Set(), 'won-infectie': new Set(), 'won-handeling': new Set(),
   'kort-opname-redenen': new Set(), 'kort-terug-beslissing': new Set(),
@@ -1570,14 +1570,14 @@ Medicijn: ${document.getElementById('inc-med-naam')?.value||'–'}`;
     }
     return { prompt: `${base}
 
+Schrijf een korte, feitelijke incidentnotitie. Max 3 zinnen. Nooit "ik". Geen "observatie opgestart".
+
 Voorbeeld:
-Kamer: 9 | Type: val | Locatie: badkamer | Letsel: schaafwonde, pijn | Acties: wondverzorging, arts verwittigd
-→ Kamer 9 gevallen in de badkamer. Schaafwonde en pijn vastgesteld. Wonde verzorgd, arts verwittigd. Observatie opgestart.
+Val badkamer, gevonden op de grond. Pijn ter hoogte van de linkerheup, geen hoofdimpact. Arts verwittigd, verdere opvolging voorzien.
 
 Kamer: ${getField('inc-kamer')||'–'}
 Type incident: ${type}
 ${details}
-Fysieke klachten: ${getMulti('inc-klachten')}
 Acties: ${getMulti('inc-actie')}
 Opvolging: ${getField('inc-opvolging')}
 Extra: ${document.getElementById('inc-notities')?.value.trim()||'–'}` };
@@ -1592,7 +1592,7 @@ REGELS:
 - Naam + dosis + frequentie correct (bv. "Furadantine 50 mg 3x/dag").
 - Duur alleen als relevant (bv. "gedurende 7 dagen", "eenmalig").
 - VERBODEN: "Medicatie toegediend", "verpleegkundige gaf", "werd geregistreerd", "zoals voorgeschreven".
-- Opvolging als infinitief: "effect evalueren", "pijn opvolgen", "temperatuur opvolgen".
+- Opvolging als infinitief: "effect verder opvolgen", "pijn opvolgen", "temperatuur opvolgen".
 
 VOORBEELDEN:
 Aanleiding: infectie | Wijziging: nieuw opgestart | Medicatie: Furadantine 50 mg 3x/dag | Duur: 7 dagen
@@ -1673,10 +1673,18 @@ Extra: ${document.getElementById('won-notities')?.value.trim()||'–'}` };
 
   if (mod === 'gedrag') {
     return { prompt: `${base}
+Schrijf een korte gedragsnotitie voor een Belgisch woonzorgcentrum. Max 2-3 zinnen. Nooit "ik". Neutraal en respectvol — geen oordeel over de bewoner.
 
-Voorbeeld:
-Kamer: 18 | Gedrag: agitatie | Intensiteit: matig | Moment: namiddag om 14:30 | Context: tijdens zorgmoment | Interventie: gerustgesteld, afleiding | Resultaat: verbetering
-→ Kamer 18 matige agitatie tijdens zorgmoment namiddag (14:30). Gerustgesteld en afleiding aangeboden. Verbetering vastgesteld.
+REGELS:
+- Beschrijf het gedrag feitelijk en kort.
+- Vermeld moment, context en interventie beknopt.
+- Vermeld resultaat alleen als duidelijk.
+- VERBODEN: "herhaald gedrag", "patroon vastgesteld", "gedrag genoteerd".
+- Gebruik liever: "gedrag reeds vaker vastgesteld", "toestand verder observeren".
+
+VOORBEELDEN:
+Matige agitatie tijdens zorgmoment namiddag. Gerustgesteld en afleiding aangeboden, lichte verbetering vastgesteld.
+Verbaal agressief gedrag 's avonds, reeds vaker vastgesteld. Rustige omgeving gecreëerd. Gedrag verder observeren.
 
 Kamer: ${getField('ged-kamer')||'–'}
 Gedrag: ${getField('ged-gedrag')}
