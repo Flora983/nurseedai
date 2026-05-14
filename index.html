@@ -258,6 +258,9 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn" data-val="slaperig">😴 Slaperig</button>
         <button class="opt-btn" data-val="agressief">😠 Agressief</button>
         <button class="opt-btn" data-val="verslechterd">📉 Verslechterd</button>
+        <button class="opt-btn" data-val="klinisch verbeterd">📈 Verbeterd</button>
+        <button class="opt-btn" data-val="klinisch stabiel">😊 Stabiel</button>
+        <button class="opt-btn" data-val="koortsvrij">🌡️ Koortsvrij</button>
       </div>
     </div>
     <div class="block">
@@ -283,8 +286,11 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn multi selected" data-val="geen extra actie" onclick="toggleMulti(this,'ov-actie',true)">✅ Geen bijzondere acties</button>
         <button class="opt-btn multi" data-val="matig gegeten" onclick="toggleMulti(this,'ov-actie',false)">🍽️ Matig gegeten</button>
         <button class="opt-btn multi" data-val="slecht gegeten" onclick="toggleMulti(this,'ov-actie',false)">⚠️ Slecht gegeten</button>
+        <button class="opt-btn multi" data-val="betere intake" onclick="toggleMulti(this,'ov-actie',false)">✅ Betere intake</button>
         <button class="opt-btn multi" data-val="weinig gedronken" onclick="toggleMulti(this,'ov-actie',false)">💧 Weinig gedronken</button>
         <button class="opt-btn multi" data-val="nachtelijk dwalen" onclick="toggleMulti(this,'ov-actie',false)">🚶 Nachtelijk dwalen</button>
+        <button class="opt-btn multi" data-val="nacht rustig verlopen" onclick="toggleMulti(this,'ov-actie',false)">😌 Nacht rustig</button>
+        <button class="opt-btn multi" data-val="minder pijnklachten" onclick="toggleMulti(this,'ov-actie',false)">😊 Minder pijn</button>
         <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'ov-actie',false)">📞 Arts verwittigd</button>
         <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'ov-actie',false)">👨‍👩‍👧 Familie verwittigd</button>
         <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🩹 Wondzorg uitgevoerd</button>
@@ -747,6 +753,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn" data-val="zorgweigering">🚫 Zorgweigering</button>
         <button class="opt-btn" data-val="apathie / terugtrekking">😶 Apathie</button>
         <button class="opt-btn" data-val="verwardheid">🧠 Verwardheid</button>
+        <button class="opt-btn" data-val="rustiger dan vorige shift">😌 Rustiger</button>
+        <button class="opt-btn" data-val="positieve evolutie">📈 Positieve evolutie</button>
       </div>
     </div>
     <div class="block">
@@ -926,9 +934,37 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn" data-val="bewoner terug uit ziekenhuis" onclick="selectKortScenario(this,'terug')">🔙 Terug uit ziekenhuis</button>
         <button class="opt-btn" data-val="telefonische goedkeuring" onclick="selectKortScenario(this,'goedkeuring')">📞 Telefonische goedkeuring</button>
         <button class="opt-btn" data-val="andere korte communicatie" onclick="selectKortScenario(this,'algemeen')">📝 Andere</button>
+        <button class="opt-btn" data-val="overlijden" onclick="selectKortScenario(this,'overlijden')" style="border-color:var(--ink-light);color:var(--ink-mid);">🕊️ Overlijden</button>
       </div>
     </div>
 
+    <!-- SCENARIO: OVERLIJDEN -->
+    <div id="kort-overlijden" class="kort-section">
+      <div class="block">
+        <span class="block-label">Vastgesteld (meerdere mogelijk)</span>
+        <div class="btn-group" id="kort-overl-vaststelling-group">
+          <button class="opt-btn multi" data-val="overlijden vastgesteld" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">✅ Overlijden vastgesteld</button>
+          <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">📞 Arts verwittigd</button>
+          <button class="opt-btn multi" data-val="huisarts ter plaatse" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">🏥 Huisarts ter plaatse</button>
+          <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">👨‍👩‍👧 Familie verwittigd</button>
+          <button class="opt-btn multi" data-val="familie aanwezig" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">🫂 Familie aanwezig</button>
+          <button class="opt-btn multi" data-val="funerarium verwittigd" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">🕊️ Funerarium verwittigd</button>
+        </div>
+      </div>
+      <div class="block">
+        <span class="block-label">Context</span>
+        <div class="btn-group" data-field="kort-overl-context">
+          <button class="opt-btn" data-val="rustig en vredig">😌 Rustig en vredig</button>
+          <button class="opt-btn" data-val="palliatief traject">🌿 Palliatief traject</button>
+          <button class="opt-btn" data-val="onverwacht">⚠️ Onverwacht</button>
+          <button class="opt-btn" data-val="tijdens de nacht">🌙 Tijdens de nacht</button>
+          <button class="opt-btn" data-val="in aanwezigheid van familie">🫂 In aanwezigheid van familie</button>
+        </div>
+      </div>
+      <div class="block"><span class="block-label">Extra (optioneel)</span>
+        <input type="text" class="field" id="kort-overl-detail" placeholder="Korte aanvulling indien nodig...">
+      </div>
+    </div>
     <!-- SCENARIO: HUISARTS GECONTACTEERD -->
     <div id="kort-arts-gecontacteerd" class="kort-section">
       <div class="block">
@@ -1289,7 +1325,8 @@ const multiSelections = {
   'ged-actie': new Set(), 'won-alarm': new Set(), 'won-infectie': new Set(), 'won-handeling': new Set(),
   'kort-opname-redenen': new Set(), 'kort-terug-beslissing': new Set(),
   'kort-klachten': new Set(), 'kort-symptomen': new Set(),
-  'kort-arts-antwoord': new Set(), 'kort-advies-beleid': new Set()
+  'kort-arts-antwoord': new Set(), 'kort-advies-beleid': new Set(),
+  'kort-overl-vaststelling': new Set()
 };
 
 function selectWondLocatie(btn, showDetail) {
@@ -1405,6 +1442,7 @@ function isKortReady() {
   if (!scenarioBtn) return false;
   const s = scenarioBtn.dataset.val;
   if (s === 'andere korte communicatie') return hasValue('kort-algemeen-inhoud');
+  if (s === 'overlijden') return getMulti('kort-overl-vaststelling') !== 'niet ingevuld';
   if (s === 'bewoner terug uit ziekenhuis') return true;
   if (s === 'huisarts gecontacteerd') return getMulti('kort-klachten') !== 'niet ingevuld' || getMulti('kort-arts-antwoord') !== 'niet ingevuld' || hasValue('kort-arts-medicatie') || hasValue('kort-notities');
   if (s === 'huisartsadvies / laboresultaten') return getField('kort-advies-onderwerp') !== 'niet ingevuld' || getMulti('kort-advies-beleid') !== 'niet ingevuld' || hasValue('kort-notities');
@@ -1752,6 +1790,10 @@ Beleid: ${getMulti('kort-terug-beslissing')}`;
       details = `Reden: ${getField('kort-goedkeuring-reden')}
 Antwoord arts: ${getField('kort-goedkeuring-akkoord')}
 Actie verpleegkundige: ${getField('kort-goedkeuring-actie')}`;
+    } else if (scenario === 'overlijden') {
+      details = `Vastgesteld / acties: ${getMulti('kort-overl-vaststelling')}
+Context: ${getField('kort-overl-context')||'–'}
+Detail: ${document.getElementById('kort-overl-detail')?.value.trim()||'–'}`;
     } else if (scenario === 'andere korte communicatie') {
       details = `Type: ${getField('kort-algemeen-type')}
 Inhoud: ${document.getElementById('kort-algemeen-inhoud')?.value.trim()||'–'}`;
@@ -1765,6 +1807,7 @@ REGELS:
 - Geen AI-zinnen zoals "informatie ontbreekt", "niet ingevuld".
 - Structuur: aanleiding → beslissing → actie → opvolging.
 - Verpleegkundige contacteert huisarts, niet omgekeerd.
+- Bij overlijden: schrijf respectvol, kalm en kort. Geen dramatische woorden. Max 2 zinnen.
 - Medicatie specifiek indien beschikbaar: naam + dosis + frequentie + duur.
 - Vermeld huisarts NOOIT automatisch bij "bewoner terug uit ziekenhuis". Gebruik in de plaats: "Nieuwe medicatie overgenomen volgens ontslagbrief" tenzij de gebruiker expliciet iets anders heeft ingevuld bij actie.
 - Geen tijdstippen tenzij relevant. Geen opsommingstekens.
