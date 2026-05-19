@@ -267,7 +267,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <span class="block-label">Belangrijk aandachtspunt (meerdere mogelijk)</span>
       <div class="btn-group" id="ov-obs-group">
         <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this,'ov-obs',true)">✅ Geen</button>
-        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'ov-obs',false);document.getElementById('ov-pijn-loc-wrap').style.display=multiSelections['ov-obs']?.has('pijnklachten')?'none':'block'">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'ov-obs',false);setTimeout(()=>{document.getElementById('ov-pijn-loc-wrap').style.display=multiSelections['ov-obs']?.has('pijnklachten')?'block':'none'},0)">😣 Pijn</button>
         <button class="opt-btn multi" data-val="voeding" onclick="toggleMulti(this,'ov-obs',false)">🍽️ Voeding</button>
         <button class="opt-btn multi" data-val="gedrag" onclick="toggleMulti(this,'ov-obs',false)">🧠 Gedrag</button>
         <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this,'ov-obs',false)">🌡️ Koorts</button>
@@ -295,7 +295,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'ov-actie',false)">👨‍👩‍👧 Familie verwittigd</button>
         <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🩹 Wondzorg uitgevoerd</button>
         <button class="opt-btn multi" data-val="parameters afwijkend" onclick="toggleMulti(this,'ov-actie',false)">📊 Parameters afwijkend</button>
-        <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this,'ov-actie',false);document.getElementById('ov-med-wrap').style.display=multiSelections['ov-actie']?.has('medicatie gewijzigd')?'none':'block'">💊 Medicatie gewijzigd</button>
+        <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this,'ov-actie',false);setTimeout(()=>{document.getElementById('ov-med-wrap').style.display=multiSelections['ov-actie']?.has('medicatie gewijzigd')?'block':'none'},0)">💊 Medicatie gewijzigd</button>
       </div>
       <div id="ov-med-wrap" style="display:none;margin-top:8px;">
         <input type="text" class="field" id="ov-med-detail" placeholder="📍 Welke wijziging? (bijv. antibiotica gestart, pijnmedicatie aangepast)">
@@ -386,10 +386,10 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn multi" data-val="beperkte mobiliteit" onclick="toggleMulti(this,'inc-letsel',false)">🤝 Beperkte mobiliteit</button>
           <button class="opt-btn multi" data-val="kan niet bewegen" onclick="toggleMulti(this,'inc-letsel',false)">🛑 Kan niet bewegen</button>
           <button class="opt-btn multi" data-val="geen zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',true);toggleIncLocatie('all',false)">🙌 Geen letsel</button>
-          <button class="opt-btn multi" data-val="pijn aanwezig" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('pijn',this.classList.contains('selected'))">😣 Pijn</button>
-          <button class="opt-btn multi" data-val="zwelling aanwezig" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('zwelling',this.classList.contains('selected'))">🫧 Zwelling</button>
-          <button class="opt-btn multi" data-val="vermoeden fractuur" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('fractuur',this.classList.contains('selected'))">🦴 Vermoeden fractuur</button>
-          <button class="opt-btn multi" data-val="zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',false);toggleIncLocatie('letsel',this.classList.contains('selected'))">🩹 Zichtbaar letsel</button>
+          <button class="opt-btn multi" data-val="pijn aanwezig" onclick="toggleMulti(this,'inc-letsel',false);deselectNone('inc-letsel','geen zichtbaar letsel');toggleIncLocatie('pijn',this.classList.contains('selected'))">😣 Pijn</button>
+          <button class="opt-btn multi" data-val="zwelling aanwezig" onclick="toggleMulti(this,'inc-letsel',false);deselectNone('inc-letsel','geen zichtbaar letsel');toggleIncLocatie('zwelling',this.classList.contains('selected'))">🫧 Zwelling</button>
+          <button class="opt-btn multi" data-val="vermoeden fractuur" onclick="toggleMulti(this,'inc-letsel',false);deselectNone('inc-letsel','geen zichtbaar letsel');toggleIncLocatie('fractuur',this.classList.contains('selected'))">🦴 Vermoeden fractuur</button>
+          <button class="opt-btn multi" data-val="zichtbaar letsel" onclick="toggleMulti(this,'inc-letsel',false);deselectNone('inc-letsel','geen zichtbaar letsel');toggleIncLocatie('letsel',this.classList.contains('selected'))">🩹 Zichtbaar letsel</button>
           <button class="opt-btn multi" data-val="misselijkheid" onclick="toggleMulti(this,'inc-letsel',false)">🤢 Misselijkheid</button>
           <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'inc-letsel',false)">😮‍💨 Ademhaling</button>
         </div>
@@ -693,13 +693,13 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <div class="btn-group" id="won-infectie-group">
         <button class="opt-btn multi" data-val="geen tekenen van infectie" onclick="toggleMulti(this,'won-infectie',true)">✅ Geen infectie</button>
         <button class="opt-btn multi" data-val="normaal wondaspect" onclick="toggleMulti(this,'won-infectie',false)">🟢 Normaal aspect</button>
-        <button class="opt-btn multi" data-val="roodheid" onclick="toggleMulti(this,'won-infectie',false)">🔴 Roodheid</button>
-        <button class="opt-btn multi" data-val="vochtig aspect" onclick="toggleMulti(this,'won-infectie',false)">💧 Vochtig</button>
-        <button class="opt-btn multi" data-val="droog aspect" onclick="toggleMulti(this,'won-infectie',false)">🏜️ Droog</button>
-        <button class="opt-btn multi" data-val="etter" onclick="toggleMulti(this,'won-infectie',false)">🟡 Etter</button>
-        <button class="opt-btn multi" data-val="geur" onclick="toggleMulti(this,'won-infectie',false)">👃 Geur</button>
-        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'won-infectie',false)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="necrose" onclick="toggleMulti(this,'won-infectie',false)">⚫ Necrose</button>
+        <button class="opt-btn multi" data-val="roodheid" onclick="toggleMulti(this,'won-infectie',false);deselectNone('won-infectie','geen tekenen van infectie')">🔴 Roodheid</button>
+        <button class="opt-btn multi" data-val="vochtig aspect" onclick="toggleMulti(this,'won-infectie',false);deselectNone('won-infectie','geen tekenen van infectie')">💧 Vochtig</button>
+        <button class="opt-btn multi" data-val="droog aspect" onclick="toggleMulti(this,'won-infectie',false);deselectNone('won-infectie','geen tekenen van infectie')">🏜️ Droog</button>
+        <button class="opt-btn multi" data-val="etter" onclick="toggleMulti(this,'won-infectie',false);deselectNone('won-infectie','geen tekenen van infectie')">🟡 Etter</button>
+        <button class="opt-btn multi" data-val="geur" onclick="toggleMulti(this,'won-infectie',false);deselectNone('won-infectie','geen tekenen van infectie')">👃 Geur</button>
+        <button class="opt-btn multi" data-val="pijn" onclick="toggleMulti(this,'won-infectie',false);deselectNone('won-infectie','geen tekenen van infectie')">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="necrose" onclick="toggleMulti(this,'won-infectie',false);deselectNone('won-infectie','geen tekenen van infectie')">⚫ Necrose</button>
       </div>
     </div>
     <div class="block">
@@ -946,6 +946,9 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="opt-btn multi" data-val="overlijden vastgesteld" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">✅ Overlijden vastgesteld</button>
           <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">📞 Arts verwittigd</button>
           <button class="opt-btn multi" data-val="huisarts ter plaatse" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">🏥 Huisarts ter plaatse</button>
+          <button class="opt-btn multi" data-val="wachtarts verwittigd" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">📞 Wachtarts verwittigd</button>
+          <button class="opt-btn multi" data-val="wachtarts kwam langs voor vaststelling" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">🏥 Wachtarts ter plaatse</button>
+          <button class="opt-btn multi" data-val="overlijden vastgesteld door wachtarts" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">✅ Vastgesteld door wachtarts</button>
           <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">👨‍👩‍👧 Familie verwittigd</button>
           <button class="opt-btn multi" data-val="familie aanwezig" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">🫂 Familie aanwezig</button>
           <button class="opt-btn multi" data-val="funerarium verwittigd" onclick="toggleMulti(this,'kort-overl-vaststelling',false)">🕊️ Funerarium verwittigd</button>
@@ -1127,6 +1130,21 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
           <button class="toggle-btn no" data-val="familie nog niet verwittigd">❌ Nee</button>
         </div>
       </div>
+      <div class="block">
+        <span class="block-label">Meegenomen / meegegeven (optioneel, meerdere mogelijk)</span>
+        <div class="btn-group" id="kort-opname-mee-group">
+          <button class="opt-btn multi" data-val="identiteitskaart" onclick="toggleMulti(this,'kort-opname-mee',false)">🪪 Identiteitskaart</button>
+          <button class="opt-btn multi" data-val="hospitalisatiefiche" onclick="toggleMulti(this,'kort-opname-mee',false)">📋 Hospitalisatiefiche</button>
+          <button class="opt-btn multi" data-val="medicatielijst" onclick="toggleMulti(this,'kort-opname-mee',false)">💊 Medicatielijst</button>
+          <button class="opt-btn multi" data-val="verwijsbrief" onclick="toggleMulti(this,'kort-opname-mee',false)">📄 Verwijsbrief</button>
+          <button class="opt-btn multi" data-val="tandprothese" onclick="toggleMulti(this,'kort-opname-mee',false)">🦷 Tandprothese</button>
+          <button class="opt-btn multi" data-val="bril" onclick="toggleMulti(this,'kort-opname-mee',false)">👓 Bril</button>
+          <button class="opt-btn multi" data-val="hoorapparaat" onclick="toggleMulti(this,'kort-opname-mee',false)">👂 Hoorapparaat</button>
+          <button class="opt-btn multi" data-val="kledij" onclick="toggleMulti(this,'kort-opname-mee',false)">👕 Kledij</button>
+          <button class="opt-btn multi" data-val="andere" onclick="toggleMulti(this,'kort-opname-mee',false);document.getElementById('kort-opname-mee-andere').style.display='block'">📍 Andere</button>
+        </div>
+        <input type="text" class="field" id="kort-opname-mee-andere" placeholder="Specificeer..." style="display:none;margin-top:8px;">
+      </div>
     </div>
 
     <!-- SCENARIO: TERUG UIT ZIEKENHUIS -->
@@ -1210,10 +1228,14 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
 
-    <div class="block"><span class="block-label">Extra notitie (optioneel)</span>
-      <div class="voice-row"><textarea class="field" id="kort-notities" placeholder="Aanvullende info..."></textarea><button class="voice-btn" onclick="toggleVoice(this,'kort-notities')">🎤</button></div>
+    <div class="block">
+      <span class="block-label">Doorgegeven door (optioneel)</span>
+      <div class="btn-group" data-field="kort-bron">
+        <button class="opt-btn" data-val="zorgkundige">👩‍⚕️ Zorgkundige</button>
+        <button class="opt-btn" data-val="collega-verpleegkundige">👥 Collega VP</button>
+      </div>
     </div>
-    <button class="btn-generate" onclick="generate('kort')" disabled>⚡ Maak communicatienota</button>
+    <div class="block"><span class="block-label">Extra notitie (optioneel)</span>
     <div class="loader" id="kort-loader"><div class="spinner"></div> Verslag wordt aangemaakt...</div>
     <div class="error-box" id="kort-error"></div>
   </div>
@@ -1326,8 +1348,17 @@ const multiSelections = {
   'kort-opname-redenen': new Set(), 'kort-terug-beslissing': new Set(),
   'kort-klachten': new Set(), 'kort-symptomen': new Set(),
   'kort-arts-antwoord': new Set(), 'kort-advies-beleid': new Set(),
-  'kort-overl-vaststelling': new Set()
+  'kort-overl-vaststelling': new Set(), 'kort-opname-mee': new Set()
 };
+
+function deselectNone(group, noneVal) {
+  if (multiSelections[group]?.has(noneVal)) {
+    multiSelections[group].delete(noneVal);
+    document.querySelectorAll(`#${group}-group .multi`).forEach(b => {
+      if (b.dataset.val === noneVal) b.classList.remove('selected');
+    });
+  }
+}
 
 function selectWondLocatie(btn, showDetail) {
   document.querySelectorAll('#won-locatie-group .opt-btn').forEach(b => b.classList.remove('selected'));
@@ -1455,7 +1486,7 @@ function isIncidentReady() {
   if (!currentIncidentType) return false;
   if (currentIncidentType === 'val') return getMulti('inc-letsel') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
   if (currentIncidentType === 'agressie') return getMulti('inc-agressie-naar') !== 'niet ingevuld' || getField('inc-agressie-aanleiding') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
-  if (currentIncidentType === 'dwaling') return getField('inc-dwaling-gevonden') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
+  if (currentIncidentType === 'dwaling') return getField('inc-dwaling-locatie') !== 'niet ingevuld' || getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
   return getMulti('inc-actie') !== 'niet ingevuld' || hasValue('inc-notities');
 }
 
@@ -1777,10 +1808,13 @@ Beleid / beslissing: ${getMulti('kort-advies-beleid')}
 Medicatie: ${[document.getElementById('kort-advies-med-naam')?.value.trim(), document.getElementById('kort-advies-med-dosis')?.value.trim(), getField('kort-advies-med-freq') === 'andere' ? document.getElementById('kort-advies-med-andere')?.value.trim() : getField('kort-advies-med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}`;
     } else if (scenario === 'bewoner opgenomen') {
       const andereReden = document.getElementById('kort-opname-andere')?.value.trim();
+      const meeMee = getMulti('kort-opname-mee');
+      const meeAndere = document.getElementById('kort-opname-mee-andere')?.value.trim();
       details = `Reden opname: ${getMulti('kort-opname-redenen')}${andereReden ? ' ('+andereReden+')' : ''}
 Beslist door: ${getField('kort-opname-beslist')||'–'}
 Ziekenhuis: ${document.getElementById('kort-opname-ziekenhuis')?.value.trim()||'–'}
-Familie: ${getField('kort-opname-familie')}`;
+Familie: ${getField('kort-opname-familie')}
+Meegegeven: ${meeMee !== 'niet ingevuld' ? meeMee + (meeAndere ? ', ' + meeAndere : '') : '–'}`;
     } else if (scenario === 'bewoner terug uit ziekenhuis') {
       details = `Reden / specialisatie: ${getField('kort-terug-van')||'–'}
 Nieuwe medicatie / afspraken: ${document.getElementById('kort-terug-medicatie')?.value.trim()||'–'}
@@ -1808,6 +1842,8 @@ REGELS:
 - Structuur: aanleiding → beslissing → actie → opvolging.
 - Verpleegkundige contacteert huisarts, niet omgekeerd.
 - Bij overlijden: schrijf respectvol, kalm en kort. Geen dramatische woorden. Max 2 zinnen.
+- Als "Meegegeven" ingevuld: vermeld dit kort aan het einde (bijv. "Identiteitskaart en medicatielijst meegegeven.").
+- Als doorgegeven door zorgkundige: begin met "Doorgegeven door zorgkundige:" of verwerk dit natuurlijk.
 - Medicatie specifiek indien beschikbaar: naam + dosis + frequentie + duur.
 - Vermeld huisarts NOOIT automatisch bij "bewoner terug uit ziekenhuis". Gebruik in de plaats: "Nieuwe medicatie overgenomen volgens ontslagbrief" tenzij de gebruiker expliciet iets anders heeft ingevuld bij actie.
 - Geen tijdstippen tenzij relevant. Geen opsommingstekens.
@@ -1821,6 +1857,7 @@ Bewoner terug uit het ziekenhuis na controle. Nieuwe afspraken over medicatie en
 Kamer: ${getField('kort-kamer')||'–'}
 Scenario: ${scenario}
 ${details}
+Doorgegeven door: ${getField('kort-bron')||'–'}
 Extra notitie: ${document.getElementById('kort-notities')?.value.trim()||'–'}` };
   }
 
@@ -1949,19 +1986,8 @@ async function quickNote() {
     btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;filter:brightness(10)"></div> <div><div>Verslag aanmaken...</div></div>';
     btn.disabled = true;
     try {
-      const promptTekst = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct Nederlands een korte, feitelijke en professionele notitie voor het zorgdossier. Maximaal 2-3 zinnen. Directe actieve taal. Verzin niets bij.
-Kamer: ${kamer}
-Ingesproken notitie: "${transcript}"`;
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ module: 'kort', formData: { prompt: promptTekst } })
-      });
-      const rawText = await response.text();
-      let data;
-      try { data = JSON.parse(rawText); } catch(e) { throw new Error('Server fout: ' + rawText.substring(0, 100)); }
-      if (!response.ok) throw new Error(data?.error || `HTTP ${response.status}`);
-      const text = data?.output || 'Geen output ontvangen.';
+      const promptTekst = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct Nederlands een korte, feitelijke en professionele notitie voor het zorgdossier. Maximaal 2-3 zinnen. Directe actieve taal. Nooit "ik". Verzin niets bij.\nKamer: ${kamer}\nIngesproken notitie: "${transcript}"`;
+      const text = await callAPI(promptTekst);
       document.getElementById('result-output').value = text;
       document.getElementById('result-module-name').textContent = '⚡ Snelle Notitie — Kamer ' + kamer;
       showPage('page-result');
