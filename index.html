@@ -1236,9 +1236,6 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block"><span class="block-label">Extra notitie (optioneel)</span>
-      <div class="voice-row"><textarea class="field" id="kort-notities" placeholder="Aanvullende info..."></textarea><button class="voice-btn" onclick="toggleVoice(this,'kort-notities')">🎤</button></div>
-    </div>
-    <button class="btn-generate" onclick="generate('kort')" disabled>⚡ Maak communicatienota</button>
     <div class="loader" id="kort-loader"><div class="spinner"></div> Verslag wordt aangemaakt...</div>
     <div class="error-box" id="kort-error"></div>
   </div>
@@ -1519,9 +1516,175 @@ function refreshGenerateButtons() {
   });
 }
 
+// ── AUTOSAVE / STORAGE ──
+const DRAFT_KEY = 'nurseedai-draft-v1';
+
+function getSelectedButtonStates() {
+  const states = [];
+  document.querySelectorAll('.opt-btn.selected, .toggle-btn.selected, .lang-btn.active, .shift-btn.active').forEach(btn => {
+    const group = btn.closest('.btn-group, .toggle-group, #shift-group') || btn.parentElement;
+    states.push({
+      page: btn.closest('.page')?.id || '',
+      groupId: group?.id || '',
+      field: group?.dataset?.field || '',
+      value: btn.dataset.val || btn.dataset.shift || btn.textContent.trim(),
+      classes: btn.className
+    });
+  });
+  return states;
+}
+
+function saveDraft() {
+  try {
+    const fields = {};
+    document.querySelectorAll('input.field, textarea.field, select.field').forEach(el => {
+      if (el.id) fields[el.id] = el.value;
+    });
+
+    const multi = {};
+    Object.entries(multiSelections || {}).forEach(([key, set]) => {
+      multi[key] = [...set];
+    });
+
+    const draft = {
+      savedAt: new Date().toISOString(),
+      currentModule,
+      currentShift,
+      currentLang,
+      currentIncidentType,
+      fields,
+      selectedButtons: getSelectedButtonStates(),
+      multi
+    };
+
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  } catch (e) {
+    console.warn('Autosave mislukt:', e);
+  }
+}
+
+function restoreDraft() {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return;
+    const draft = JSON.parse(raw);
+
+    Object.entries(draft.fields || {}).forEach(([id, value]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = value;
+    });
+
+    document.querySelectorAll('.opt-btn.selected, .toggle-btn.selected, .lang-btn.active, .shift-btn.active')
+      .forEach(btn => btn.classList.remove('selected', 'active'));
+
+    (draft.selectedButtons || []).forEach(state => {
+      let selector = '';
+      if (state.groupId) selector = `#${CSS.escape(state.groupId)} button`;
+      else if (state.field) selector = `[data-field="${CSS.escape(state.field)}"] button`;
+      if (!selector) return;
+      const btn = [...document.querySelectorAll(selector)].find(b =>
+        (b.dataset.val || b.dataset.shift || b.textContent.trim()) === state.value
+      );
+      if (btn) {
+        if (btn.classList.contains('lang-btn') || btn.classList.contains('shift-btn')) btn.classList.add('active');
+        else btn.classList.add('selected');
+      }
+    });
+
+    Object.entries(draft.multi || {}).forEach(([key, arr]) => {
+      multiSelections[key] = new Set(arr);
+    });
+
+    currentModule = draft.currentModule || currentModule;
+    currentShift = draft.currentShift || currentShift;
+    currentLang = draft.currentLang || currentLang || 'nl';
+    currentIncidentType = draft.currentIncidentType || currentIncidentType;
+
+    restoreConditionalSections();
+    refreshGenerateButtons();
+  } catch (e) {
+    console.warn('Autosave herstellen mislukt:', e);
+  }
+}
+
+function restoreConditionalSections() {
+  // Korte communicatie: toon gekozen scenario
+  document.querySelectorAll('.kort-section').forEach(el => el.style.display = 'none');
+  const kortScenario = document.querySelector('#kort-scenario-group .opt-btn.selected');
+  if (kortScenario) {
+    const map = {
+      'huisarts gecontacteerd': 'arts',
+      'huisartsadvies / laboresultaten': 'advies',
+      'bewoner opgenomen': 'opname',
+      'bewoner terug uit ziekenhuis': 'terug',
+      'overlijden': 'overlijden',
+      'telefonische goedkeuring': 'goedkeuring',
+      'andere korte communicatie': 'algemeen'
+    };
+    const section = document.getElementById('kort-' + map[kortScenario.dataset.val]);
+    if (section) section.style.display = 'block';
+  }
+
+  // Incident: toon juiste scenariosectie
+  document.querySelectorAll('.scenario-section').forEach(s => s.classList.remove('active'));
+  const incBtn = document.querySelector('#inc-type-group .opt-btn.selected');
+  if (incBtn) {
+    const val = incBtn.dataset.val;
+    const section = val === 'val' || val === 'bijna-val' ? 'val' : val;
+    const target = document.getElementById('inc-section-' + section);
+    if (target) target.classList.add('active');
+    currentIncidentType = val;
+  }
+
+  // Dynamische detailvelden
+  const show = (id, visible) => { const el = document.getElementById(id); if (el) el.style.display = visible ? 'block' : 'none'; };
+  show('ov-pijn-loc-wrap', multiSelections['ov-obs']?.has('pijnklachten'));
+  show('ov-med-wrap', multiSelections['ov-actie']?.has('medicatie gewijzigd'));
+  show('inc-loc-pijn', multiSelections['inc-letsel']?.has('pijn aanwezig'));
+  show('inc-loc-zwelling', multiSelections['inc-letsel']?.has('zwelling aanwezig'));
+  show('inc-loc-fractuur', multiSelections['inc-letsel']?.has('vermoeden fractuur'));
+  show('inc-loc-letsel', multiSelections['inc-letsel']?.has('zichtbaar letsel'));
+
+  const wonType = document.querySelector('#won-type-group .opt-btn.selected')?.dataset.val;
+  show('won-istap-blok', wonType === 'skintear');
+  show('won-dec-blok', wonType === 'decubitus');
+  show('won-type-andere', wonType === 'andere');
+  show('won-locatie-detail-wrap', !!document.querySelector('#won-locatie-group .opt-btn.selected'));
+}
+
+function clearModuleDraft(mod) {
+  const page = document.getElementById('page-' + mod);
+  if (!page) return;
+
+  page.querySelectorAll('input.field, textarea.field, select.field').forEach(el => { el.value = ''; });
+  page.querySelectorAll('.opt-btn.selected, .toggle-btn.selected').forEach(btn => btn.classList.remove('selected'));
+
+  const prefixMap = { kort:'kort', overdracht:'ov', incident:'inc', medicatie:'med', wond:'won', gedrag:'ged', dokter:'dok' };
+  const prefix = prefixMap[mod];
+  Object.keys(multiSelections).forEach(key => {
+    if (key.startsWith(prefix + '-') || key === prefix) delete multiSelections[key];
+  });
+
+  if (mod === 'incident') {
+    currentIncidentType = null;
+    page.querySelectorAll('.scenario-section').forEach(s => s.classList.remove('active'));
+  }
+  if (mod === 'kort') page.querySelectorAll('.kort-section').forEach(el => el.style.display = 'none');
+
+  restoreConditionalSections();
+  refreshGenerateButtons();
+  saveDraft();
+}
+
 document.querySelectorAll('input.field, textarea.field, select.field').forEach(el => {
-  el.addEventListener('input', refreshGenerateButtons);
-  el.addEventListener('change', refreshGenerateButtons);
+  el.addEventListener('input', () => { refreshGenerateButtons(); saveDraft(); });
+  el.addEventListener('change', () => { refreshGenerateButtons(); saveDraft(); });
+});
+
+document.addEventListener('click', e => {
+  if (e.target.closest('.opt-btn, .toggle-btn, .lang-btn, .shift-btn')) {
+    setTimeout(saveDraft, 0);
+  }
 });
 
 // ── SHIFT ──
@@ -1529,6 +1692,7 @@ let currentShift = null;
 function selectShift(btn) {
   document.querySelectorAll('.shift-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active'); currentShift = btn.dataset.shift;
+  saveDraft();
 }
 (function() {
   const h = new Date().getHours();
@@ -1543,6 +1707,7 @@ function setLang(lang, btn) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  saveDraft();
 }
 
 // ── API ──
@@ -1890,6 +2055,7 @@ async function generate(mod) {
     document.getElementById('result-module-name').textContent = moduleNames[mod] || mod;
     showPage('page-result');
     document.getElementById('back-btn').classList.add('visible');
+    clearModuleDraft(mod);
   } catch(err) {
     errorEl.textContent = '❌ Fout: ' + err.message;
     errorEl.classList.add('visible');
@@ -2056,6 +2222,7 @@ window.addEventListener('offline', updateOnlineStatus);
   const p = document.getElementById('popup');
   if (!p) return;
   if (sessionStorage.getItem('disclaimer-seen')) p.style.display = 'none';
+  restoreDraft();
   refreshGenerateButtons();
   initVoice();
   updateOnlineStatus();
