@@ -1236,6 +1236,9 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       </div>
     </div>
     <div class="block"><span class="block-label">Extra notitie (optioneel)</span>
+      <div class="voice-row"><textarea class="field" id="kort-notities" placeholder="Korte extra info..."></textarea><button class="voice-btn" onclick="toggleVoice(this,'kort-notities')">🎤</button></div>
+    </div>
+    <button class="btn-generate" onclick="generate('kort')" disabled>✨ Maak kort verslag</button>
     <div class="loader" id="kort-loader"><div class="spinner"></div> Verslag wordt aangemaakt...</div>
     <div class="error-box" id="kort-error"></div>
   </div>
