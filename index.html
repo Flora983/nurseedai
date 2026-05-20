@@ -1362,7 +1362,7 @@ function hasValue(id) { const el = document.getElementById(id); return !!(el && 
 // ── MULTI-SELECT ──
 const multiSelections = {
   'ov-obs': new Set(['geen bijzonderheden']),
-  'ov-actie': new Set(['geen extra actie']),
+  'ov-actie': new Set(['geen extra actie', 'geen bijzondere actie']),
   'ov-opvolging': new Set(['geen bijzondere opvolging']),
   'inc-letsel': new Set(), 'inc-actie': new Set(), 'inc-agressie-naar': new Set(),
   'dok-reden': new Set(), 'dok-beslissing': new Set(), 'dok-actie': new Set(),
@@ -1661,7 +1661,8 @@ function restoreConditionalSections() {
   // Dynamische detailvelden
   const show = (id, visible) => { const el = document.getElementById(id); if (el) el.style.display = visible ? 'block' : 'none'; };
   show('ov-pijn-loc-wrap', multiSelections['ov-obs']?.has('pijnklachten'));
-  show('ov-med-wrap', multiSelections['ov-actie']?.has('medicatie gewijzigd'));
+  show('ov-med-wrap', multiSelections['ov-actie']?.has('medicatie gegeven'));
+  show('ov-urine-wrap', multiSelections['ov-actie']?.has('urine getest'));
   show('inc-loc-pijn', multiSelections['inc-letsel']?.has('pijn aanwezig'));
   show('inc-loc-zwelling', multiSelections['inc-letsel']?.has('zwelling aanwezig'));
   show('inc-loc-fractuur', multiSelections['inc-letsel']?.has('vermoeden fractuur'));
@@ -1803,7 +1804,7 @@ Wat werd gedaan: ${acties}${medDetail ? ' — ' + medDetail : ''}${urineResultaa
 Opvolging: ${opvolging}
 Extra nuance: ${extra || '–'}
 
-Schrijf alleen de shift briefing.\`
+Schrijf alleen de shift briefing.`
   };
 }
 
