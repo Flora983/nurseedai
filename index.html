@@ -245,78 +245,89 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 <div id="page-overdracht" class="page">
   <div class="module-page">
     <div class="module-title">🔄 Shift Briefing</div>
-    <div class="module-desc">Wat moet de volgende shift weten?</div>
+    <div class="module-desc">Collega-overdracht — snel, praktisch, naturel</div>
     <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="ov-kamer" placeholder="bijv. Kamer 12"></div>
+    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="ov-kamer" placeholder="bijv. Kamer 5"></div>
+
     <div class="block">
       <span class="block-label">Algemene toestand ⚠️ verplicht</span>
       <div class="btn-group" data-field="ov-toestand">
-        <button class="opt-btn" data-val="geen bijzonderheden">✅ Geen bijzonderheden</button>
         <button class="opt-btn" data-val="rustig">😌 Rustig</button>
-        <button class="opt-btn" data-val="onrustig">😟 Onrustig</button>
-        <button class="opt-btn" data-val="verward">🧠 Verward</button>
-        <button class="opt-btn" data-val="slaperig">😴 Slaperig</button>
-        <button class="opt-btn" data-val="agressief">😠 Agressief</button>
+        <button class="opt-btn" data-val="stabiel">✅ Stabiel</button>
+        <button class="opt-btn" data-val="lichte zorgen">🟡 Lichte zorgen</button>
+        <button class="opt-btn" data-val="aandacht nodig">🟠 Aandacht nodig</button>
         <button class="opt-btn" data-val="verslechterd">📉 Verslechterd</button>
-        <button class="opt-btn" data-val="klinisch verbeterd">📈 Verbeterd</button>
-        <button class="opt-btn" data-val="klinisch stabiel">😊 Stabiel</button>
-        <button class="opt-btn" data-val="koortsvrij">🌡️ Koortsvrij</button>
+        <button class="opt-btn" data-val="verbeterd">📈 Verbeterd</button>
       </div>
     </div>
+
     <div class="block">
-      <span class="block-label">Belangrijk aandachtspunt (meerdere mogelijk)</span>
+      <span class="block-label">Wat viel op? (meerdere mogelijk)</span>
       <div class="btn-group" id="ov-obs-group">
-        <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this,'ov-obs',true)">✅ Geen</button>
+        <button class="opt-btn multi selected" data-val="geen bijzonderheden" onclick="toggleMulti(this,'ov-obs',true)">✅ Niets bijzonders</button>
         <button class="opt-btn multi" data-val="pijnklachten" onclick="toggleMulti(this,'ov-obs',false);setTimeout(()=>{document.getElementById('ov-pijn-loc-wrap').style.display=multiSelections['ov-obs']?.has('pijnklachten')?'block':'none'},0)">😣 Pijn</button>
-        <button class="opt-btn multi" data-val="voeding" onclick="toggleMulti(this,'ov-obs',false)">🍽️ Voeding</button>
-        <button class="opt-btn multi" data-val="gedrag" onclick="toggleMulti(this,'ov-obs',false)">🧠 Gedrag</button>
+        <button class="opt-btn multi" data-val="weinig gedronken" onclick="toggleMulti(this,'ov-obs',false)">💧 Weinig gedronken</button>
+        <button class="opt-btn multi" data-val="matige intake" onclick="toggleMulti(this,'ov-obs',false)">🍽️ Matige intake</button>
+        <button class="opt-btn multi" data-val="goede intake" onclick="toggleMulti(this,'ov-obs',false)">✅ Goede intake</button>
+        <button class="opt-btn multi" data-val="stoelgangprobleem" onclick="toggleMulti(this,'ov-obs',false)">🚽 Stoelgang</button>
+        <button class="opt-btn multi" data-val="onrustig gedrag" onclick="toggleMulti(this,'ov-obs',false)">😟 Onrustig</button>
+        <button class="opt-btn multi" data-val="verward" onclick="toggleMulti(this,'ov-obs',false)">🧠 Verward</button>
+        <button class="opt-btn multi" data-val="angstig / nerveus" onclick="toggleMulti(this,'ov-obs',false)">😰 Angstig</button>
+        <button class="opt-btn multi" data-val="nachtelijk dwalen" onclick="toggleMulti(this,'ov-obs',false)">🌙 Dwalen</button>
         <button class="opt-btn multi" data-val="koorts" onclick="toggleMulti(this,'ov-obs',false)">🌡️ Koorts</button>
-        <button class="opt-btn multi" data-val="wond" onclick="toggleMulti(this,'ov-obs',false)">🩹 Wond</button>
-        <button class="opt-btn multi" data-val="ademhaling" onclick="toggleMulti(this,'ov-obs',false)">🫁 Ademhaling</button>
-        <button class="opt-btn multi" data-val="glycemie" onclick="toggleMulti(this,'ov-obs',false)">🩸 Glycemie</button>
-        <button class="opt-btn multi" data-val="mobiliteit" onclick="toggleMulti(this,'ov-obs',false)">🚶 Mobiliteit</button>
+        <button class="opt-btn multi" data-val="ademhalingsproblemen" onclick="toggleMulti(this,'ov-obs',false)">🫁 Ademhaling</button>
+        <button class="opt-btn multi" data-val="parameters afwijkend" onclick="toggleMulti(this,'ov-obs',false)">📊 Parameters afwijkend</button>
+        <button class="opt-btn multi" data-val="glycemieprobleem" onclick="toggleMulti(this,'ov-obs',false)">🩸 Glycemie</button>
+        <button class="opt-btn multi" data-val="wondprobleem" onclick="toggleMulti(this,'ov-obs',false)">🩹 Wond</button>
+        <button class="opt-btn multi" data-val="verslikte zich" onclick="toggleMulti(this,'ov-obs',false)">🍽️ Verslikking</button>
+        <button class="opt-btn multi" data-val="urinewegklachten" onclick="toggleMulti(this,'ov-obs',false)">🧫 Urineweg</button>
+        <button class="opt-btn multi" data-val="moeilijk wakker te krijgen" onclick="toggleMulti(this,'ov-obs',false)">😴 Moeilijk wakker</button>
       </div>
       <div id="ov-pijn-loc-wrap" style="display:none;margin-top:8px;">
         <input type="text" class="field" id="ov-pijn-locatie" placeholder="📍 Pijn — waar? (bijv. linkerheup, rug)">
       </div>
     </div>
+
     <div class="block">
-      <span class="block-label">Praktische details (meerdere mogelijk)</span>
+      <span class="block-label">Wat werd gedaan? (meerdere mogelijk)</span>
       <div class="btn-group" id="ov-actie-group">
-        <button class="opt-btn multi selected" data-val="geen extra actie" onclick="toggleMulti(this,'ov-actie',true)">✅ Geen bijzondere acties</button>
-        <button class="opt-btn multi" data-val="matig gegeten" onclick="toggleMulti(this,'ov-actie',false)">🍽️ Matig gegeten</button>
-        <button class="opt-btn multi" data-val="slecht gegeten" onclick="toggleMulti(this,'ov-actie',false)">⚠️ Slecht gegeten</button>
-        <button class="opt-btn multi" data-val="betere intake" onclick="toggleMulti(this,'ov-actie',false)">✅ Betere intake</button>
-        <button class="opt-btn multi" data-val="weinig gedronken" onclick="toggleMulti(this,'ov-actie',false)">💧 Weinig gedronken</button>
-        <button class="opt-btn multi" data-val="nachtelijk dwalen" onclick="toggleMulti(this,'ov-actie',false)">🚶 Nachtelijk dwalen</button>
-        <button class="opt-btn multi" data-val="nacht rustig verlopen" onclick="toggleMulti(this,'ov-actie',false)">😌 Nacht rustig</button>
-        <button class="opt-btn multi" data-val="minder pijnklachten" onclick="toggleMulti(this,'ov-actie',false)">😊 Minder pijn</button>
-        <button class="opt-btn multi" data-val="arts verwittigd" onclick="toggleMulti(this,'ov-actie',false)">📞 Arts verwittigd</button>
-        <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'ov-actie',false)">👨‍👩‍👧 Familie verwittigd</button>
-        <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🩹 Wondzorg uitgevoerd</button>
-        <button class="opt-btn multi" data-val="parameters afwijkend" onclick="toggleMulti(this,'ov-actie',false)">📊 Parameters afwijkend</button>
-        <button class="opt-btn multi" data-val="medicatie gewijzigd" onclick="toggleMulti(this,'ov-actie',false);setTimeout(()=>{document.getElementById('ov-med-wrap').style.display=multiSelections['ov-actie']?.has('medicatie gewijzigd')?'block':'none'},0)">💊 Medicatie gewijzigd</button>
+        <button class="opt-btn multi selected" data-val="geen extra actie" onclick="toggleMulti(this,'ov-actie',true)">✅ Geen bijzondere actie</button>
+        <button class="opt-btn multi" data-val="arts gebeld" onclick="toggleMulti(this,'ov-actie',false)">📞 Arts gebeld</button>
+        <button class="opt-btn multi" data-val="familie gebeld" onclick="toggleMulti(this,'ov-actie',false)">👨‍👩‍👧 Familie gebeld</button>
+        <button class="opt-btn multi" data-val="parameters genomen" onclick="toggleMulti(this,'ov-actie',false)">📊 Parameters genomen</button>
+        <button class="opt-btn multi" data-val="medicatie gegeven" onclick="toggleMulti(this,'ov-actie',false);setTimeout(()=>{document.getElementById('ov-med-wrap').style.display=multiSelections['ov-actie']?.has('medicatie gegeven')?'block':'none'},0)">💊 Medicatie gegeven</button>
+        <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🩹 Wondzorg</button>
+        <button class="opt-btn multi" data-val="urine getest" onclick="toggleMulti(this,'ov-actie',false)">🧫 Urine getest</button>
+        <button class="opt-btn multi" data-val="staal klaargelegd voor labo" onclick="toggleMulti(this,'ov-actie',false)">🧪 Staal klaargelegd</button>
+        <button class="opt-btn multi" data-val="bewoner gerustgesteld" onclick="toggleMulti(this,'ov-actie',false)">🤝 Gerustgesteld</button>
+        <button class="opt-btn multi" data-val="in bed begeleid" onclick="toggleMulti(this,'ov-actie',false)">🛏️ In bed begeleid</button>
+        <button class="opt-btn multi" data-val="wisselhouding uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🔄 Wisselhouding</button>
       </div>
       <div id="ov-med-wrap" style="display:none;margin-top:8px;">
-        <input type="text" class="field" id="ov-med-detail" placeholder="📍 Welke wijziging? (bijv. antibiotica gestart, pijnmedicatie aangepast)">
+        <input type="text" class="field" id="ov-med-detail" placeholder="📍 Welke medicatie? (bijv. Litican 50 mg, Haldol 5 druppels)">
       </div>
     </div>
+
     <div class="block">
       <span class="block-label">Opvolging volgende shift (meerdere mogelijk)</span>
       <div class="btn-group" id="ov-opvolging-group">
-        <button class="opt-btn multi selected" data-val="geen bijzondere opvolging" onclick="toggleMulti(this,'ov-opvolging',true)">✅ Geen bijzondere opvolging</button>
-        <button class="opt-btn multi" data-val="pijn opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">😣 Pijn opvolgen</button>
+        <button class="opt-btn multi selected" data-val="geen bijzondere opvolging" onclick="toggleMulti(this,'ov-opvolging',true)">✅ Geen</button>
         <button class="opt-btn multi" data-val="temperatuur opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">🌡️ Temperatuur</button>
-        <button class="opt-btn multi" data-val="parameters controleren" onclick="toggleMulti(this,'ov-opvolging',false)">📊 Parameters</button>
+        <button class="opt-btn multi" data-val="glycemie opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">🩸 Glycemie</button>
         <button class="opt-btn multi" data-val="gedrag observeren" onclick="toggleMulti(this,'ov-opvolging',false)">🧠 Gedrag</button>
         <button class="opt-btn multi" data-val="vochtinname opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">💧 Vochtinname</button>
         <button class="opt-btn multi" data-val="wondzorg verderzetten" onclick="toggleMulti(this,'ov-opvolging',false)">🩹 Wondzorg</button>
-        <button class="opt-btn multi" data-val="arts contacteren bij verslechtering" onclick="toggleMulti(this,'ov-opvolging',false)">📞 Arts bij verslechtering</button>
-        <button class="opt-btn multi" data-val="mobiliteit observeren" onclick="toggleMulti(this,'ov-opvolging',false)">🚶 Mobiliteit</button>
+        <button class="opt-btn multi" data-val="pijn opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">😣 Pijn</button>
+        <button class="opt-btn multi" data-val="klinische toestand observeren" onclick="toggleMulti(this,'ov-opvolging',false)">👁️ Toestand</button>
+        <button class="opt-btn multi" data-val="arts contacteren indien nodig" onclick="toggleMulti(this,'ov-opvolging',false)">📞 Arts indien nodig</button>
+        <button class="opt-btn multi" data-val="staal naar labo sturen" onclick="toggleMulti(this,'ov-opvolging',false)">🧪 Staal naar labo</button>
+        <button class="opt-btn multi" data-val="intake opvolgen" onclick="toggleMulti(this,'ov-opvolging',false)">🍽️ Intake</button>
       </div>
     </div>
-    <div class="block"><span class="block-label">Extra notitie (optioneel)</span>
-      <div class="voice-row"><textarea class="field" id="ov-notities" placeholder="Korte extra info voor de volgende shift..."></textarea><button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'ov-notities')">🎤</button></div>
+
+    <div class="block">
+      <span class="block-label">Extra dat collega moet weten (optioneel)</span>
+      <div class="voice-row"><textarea class="field" id="ov-notities" placeholder="Kort en praktisch — bijv. 'Staal staat in frigo.' of 'Kinderen op vakantie, bewoner emotioneel.'" style="min-height:70px;"></textarea><button class="voice-btn" title="Inspreken" onclick="toggleVoice(this,'ov-notities')">🎤</button></div>
     </div>
     <button class="btn-generate" onclick="generate('overdracht')" disabled>✨ Maak shift briefing</button>
     <div class="loader" id="ov-loader"><div class="spinner"></div> Bezig...</div>
@@ -1735,32 +1746,86 @@ function buildPrompt(mod) {
   const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie", "verdere opvolging gepland". Gebruik "verdere opvolging voorzien" of "verder opvolgen". Schrijf lichaamszijden aaneengesloten: "linkerheup", "rechterheup", "linkerknie", "rechterpols", "linkerschouder". Schrijf kort en praktisch — max 2-3 zinnen.`;
 
   if (mod === 'overdracht') {
-    const medDetail = document.getElementById('ov-med-detail')?.value.trim();
-    const pijnLoc = document.getElementById('ov-pijn-locatie')?.value.trim();
-    return { prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, directe shift briefing. Geen "ik". Compact en praktisch.
+  const kamer = getField('ov-kamer') || '–';
+  const shift = currentShift
+    ? currentShift.charAt(0).toUpperCase() + currentShift.slice(1)
+    : '';
+
+  const toestand = getField('ov-toestand') || '';
+  const observaties = getMulti('ov-obs');
+  const pijnLoc = document.getElementById('ov-pijn-locatie')?.value.trim() || '';
+  const acties = getMulti('ov-actie');
+  const medDetail = document.getElementById('ov-med-detail')?.value.trim() || '';  const opvolging = getMulti('ov-opvolging');
+  const extra = document.getElementById('ov-notities')?.value.trim() || '';
+
+  return {
+    prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, natuurlijke shift briefing zoals een overdracht tussen collega’s op de afdeling.
 
 STIJL:
-- 2 tot 3 korte zinnen maximum
-- Shift als intro indien beschikbaar
-- Opvolging impliciet schrijven — geen "volgende shift moet", geen "verpleegkundige volgt"
-- Gebruik infinitief: "temperatuur opvolgen", "gedrag observeren", "klinische toestand opvolgen"
-- Medicatiewijziging specifiek benoemen indien ingevuld
-- VERBODEN: "volgende shift parameters controleren", "verpleegkundige volgt op", "observatie opgestart", "in het zorgdossier"
+- Maximaal 2 tot 4 korte zinnen.
+- Direct, praktisch en natuurlijk.
+- Schrijf zoals een ervaren collega praat tijdens overdracht.
+- Geen titel.
+- Geen opsomming.
+- Geen AI-taal.
+- Geen overdreven verpleegkundige of academische taal.
 
-VOORBEELDEN:
-Nachtdienst: toestand verslechterd met koorts en ademhalingsproblemen. Parameters afwijkend, arts verwittigd. Klinische toestand verder opvolgen.
-Bewoner onrustig tijdens avondzorg. Gedrag verder observeren.
-Koorts en verminderde intake tijdens nachtdienst. Temperatuur en vochtinname opvolgen.
-Avonddienst rustig verlopen. Antibiotica gestart wegens urineweginfectie. Temperatuur opvolgen.
+GEBRUIK NATUURLIJKE WZC-TAAL:
+- "arts gebeld"
+- "urine getest"
+- "gerustgesteld"
+- "moeilijk wakker"
+- "staal klaar voor labo"
+- "parameters genomen"
+- "verder observeren"
 
-Shift: ${currentShift || '–'}
-Kamer: ${getField('ov-kamer')||'–'}
-Toestand: ${getField('ov-toestand')}
-Aandachtspunten: ${getMulti('ov-obs')}${pijnLoc ? ' (pijn ter hoogte van ' + pijnLoc + ')' : ''}
-Praktische details: ${getMulti('ov-actie')}${medDetail ? ' — medicatiewijziging: ' + medDetail : ''}
-Opvolging: ${getMulti('ov-opvolging')}
-Extra: ${document.getElementById('ov-notities')?.value.trim()||'–'}` };
-  }
+BELANGRIJKE REGELS:
+- Vermeld alleen wat expliciet geselecteerd of ingevuld is.
+- Verzín geen details.
+- Vermijd herhaling.
+- Als arts al gebeld werd, schrijf niet opnieuw "arts contacteren bij verslechtering".
+- Als de shift rustig verliep zonder bijzonderheden:
+  schrijf gewoon:
+  "Nachtdienst rustig verlopen."
+- Opvolging kort en natuurlijk houden.
+- Niet elke briefing moet opvolging bevatten.
+- Gebruik geen zinnen zoals:
+  "verdere observatie voorzien"
+  "klinische toestand monitoren"
+  "geen bijzonderheden vastgesteld"
+
+STRUCTUUR:
+1. Wat viel op?
+2. Wat werd gedaan?
+3. Wat moet eventueel opgevolgd worden?
+
+VOORBEELDEN VAN GOEDE SHIFT BRIEFING:
+
+"Kamer 5 deze avond meer verward dan gewoonlijk met frequente mictieklachten. Urine getest en positief, staal klaar voor labo morgen. Arts contacteren voor eventueel opstarten."
+
+"Kamer 2 rond 20u misselijk en overgeven bij aankomst. Parameters genomen: BD hoog en temp 37.5°C. Litican 50 mg gegeven."
+
+"Kamer 116 moeilijk wakker te krijgen en reageerde niet op pijnprikkel. Parameters normaal. Arts gebeld en samen met collega terug in bed geholpen."
+
+"Bewoner angstig omdat kinderen op vakantie vertrekken. Gerustgesteld."
+
+"Bewoner verslikte zich tijdens het eten maar herstelde snel. Verder observeren tijdens maaltijden."
+
+"Nachtdienst rustig verlopen."
+
+GEGEVENS:
+Shift: ${shift}
+Kamer: ${kamer}
+Toestand: ${toestand}
+Wat viel op: ${observaties}${pijnLoc ? ' — pijn ter hoogte van ' + pijnLoc : ''}
+Wat werd gedaan: ${acties}${medDetail ? ' — ' + medDetail : ''}
+Opvolging: ${opvolging}
+Extra nuance: ${extra || '–'}
+
+Schrijf alleen de shift briefing.`
+  };
+}
+
 
   if (mod === 'incident') {
     const type = currentIncidentType || '–';
@@ -2231,5 +2296,109 @@ window.addEventListener('offline', updateOnlineStatus);
   updateOnlineStatus();
 })();
 </script>
+
+<!-- KORTE COMMUNICATIE PILOT REFINEMENT PROMPT -->
+<script>
+window.KORTE_COMMUNICATIE_PILOT_REFINEMENT = `
+NurseEdAI — Korte Communicatie final pilot refinement
+
+IMPORTANT:
+Keep Korte Communicatie different from Shift Briefing.
+
+Difference:
+- Shift Briefing:
+  More detailed.
+  Focus on evolution, observations and follow-up for the next shift.
+
+- Korte Communicatie:
+  Very short.
+  Fast practical update.
+  No long follow-up sentences.
+
+Generated text must remain:
+- short
+- realistic
+- WZC-oriented
+- natural Dutch
+- human-written
+
+Avoid:
+- AI wording
+- overexplaining
+- academic tone
+- long summaries
+
+CRITICAL UX RULE:
+Korte Communicatie must never feel like a full report.
+Maximum goal: 1–3 short sentences.
+`;
+</script>
+
+
+<!-- SHIFT BRIEFING PILOT REFINEMENT -->
+<script>
+window.SHIFT_BRIEFING_PILOT_REFINEMENT = `
+Shift Briefing refinement — reduce AI-like repetition
+
+Problem:
+Current Shift Briefing output still sounds too repetitive and AI-generated.
+
+Required:
+- Avoid duplicate meaning
+- Avoid repeating “arts” twice in the same report
+- Reduce generic follow-up sentences
+- Make reports sound like real WZC handover
+
+Preferred style:
+- concise
+- natural
+- practical
+- flowing
+- less robotic
+
+Examples:
+- “Nachtdienst rustig verlopen.”
+- “Bewoner agressief gedrag vertoond. Arts gecontacteerd; Haldol 5 druppels 2x/dag opgestart.”
+- “Koorts en ademhalingsproblemen vastgesteld. Parameters afwijkend; arts verwittigd.”
+
+IMPORTANT:
+Do not automatically add:
+- “geen bijzonderheden”
+- “klinische toestand opvolgen”
+- “parameters opvolgen”
+unless clinically relevant.
+
+Shift Briefing — final clinical logic refinement
+
+IMPORTANT:
+Do not invent clinical interpretation.
+
+Example:
+If user selects “glycemie”:
+do NOT assume high or low glycemia.
+
+Only mention:
+- hoge glycemie
+- lage glycemie
+- wisselende glycemie
+if explicitly selected or typed by the nurse.
+
+If no details are provided:
+write:
+- “glycemie opvolgen”
+or
+- “glycemiecontrole nodig”
+
+Apply same principle to:
+- parameters afwijkend
+- ademhaling
+- pijn
+- koorts
+
+Never invent details.
+Only use information selected or typed by the nurse.
+`;
+</script>
+
 </body>
 </html>
