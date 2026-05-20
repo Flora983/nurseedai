@@ -1765,7 +1765,8 @@ function buildPrompt(mod) {
   const acties = getMulti('ov-actie');
   const urineResultaat = getField('ov-urine-resultaat') || '';
   const urineDetail = document.getElementById('ov-urine-detail')?.value.trim() || '';
-  const medDetail = document.getElementById('ov-med-detail')?.value.trim() || '';  const opvolging = getMulti('ov-opvolging');
+  const medDetail = document.getElementById('ov-med-detail')?.value.trim() || '';
+  const opvolging = getMulti('ov-opvolging');
   const extra = document.getElementById('ov-notities')?.value.trim() || '';
 
   return {
