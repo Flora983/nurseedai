@@ -297,11 +297,19 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn multi" data-val="parameters genomen" onclick="toggleMulti(this,'ov-actie',false)">📊 Parameters genomen</button>
         <button class="opt-btn multi" data-val="medicatie gegeven" onclick="toggleMulti(this,'ov-actie',false);setTimeout(()=>{document.getElementById('ov-med-wrap').style.display=multiSelections['ov-actie']?.has('medicatie gegeven')?'block':'none'},0)">💊 Medicatie gegeven</button>
         <button class="opt-btn multi" data-val="wondzorg uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🩹 Wondzorg</button>
-        <button class="opt-btn multi" data-val="urine getest" onclick="toggleMulti(this,'ov-actie',false)">🧫 Urine getest</button>
+        <button class="opt-btn multi" data-val="urine getest" onclick="toggleMulti(this,'ov-actie',false);setTimeout(()=>{document.getElementById('ov-urine-wrap').style.display=multiSelections['ov-actie']?.has('urine getest')?'block':'none'},0)">🧫 Urine getest</button>
         <button class="opt-btn multi" data-val="staal klaargelegd voor labo" onclick="toggleMulti(this,'ov-actie',false)">🧪 Staal klaargelegd</button>
         <button class="opt-btn multi" data-val="bewoner gerustgesteld" onclick="toggleMulti(this,'ov-actie',false)">🤝 Gerustgesteld</button>
         <button class="opt-btn multi" data-val="in bed begeleid" onclick="toggleMulti(this,'ov-actie',false)">🛏️ In bed begeleid</button>
         <button class="opt-btn multi" data-val="wisselhouding uitgevoerd" onclick="toggleMulti(this,'ov-actie',false)">🔄 Wisselhouding</button>
+      </div>
+      <div id="ov-urine-wrap" style="display:none;margin-top:8px;">
+        <div class="btn-group" data-field="ov-urine-resultaat" style="margin-bottom:6px;">
+          <button class="opt-btn" data-val="positief">🔴 Positief</button>
+          <button class="opt-btn" data-val="negatief">✅ Negatief</button>
+          <button class="opt-btn" data-val="twijfelachtig">🟡 Twijfelachtig</button>
+        </div>
+        <input type="text" class="field" id="ov-urine-detail" placeholder="📍 Detail (bijv. positief op WBC, nitriet, eiwit)">
       </div>
       <div id="ov-med-wrap" style="display:none;margin-top:8px;">
         <input type="text" class="field" id="ov-med-detail" placeholder="📍 Welke medicatie? (bijv. Litican 50 mg, Haldol 5 druppels)">
@@ -1755,6 +1763,8 @@ function buildPrompt(mod) {
   const observaties = getMulti('ov-obs');
   const pijnLoc = document.getElementById('ov-pijn-locatie')?.value.trim() || '';
   const acties = getMulti('ov-actie');
+  const urineResultaat = getField('ov-urine-resultaat') || '';
+  const urineDetail = document.getElementById('ov-urine-detail')?.value.trim() || '';
   const medDetail = document.getElementById('ov-med-detail')?.value.trim() || '';  const opvolging = getMulti('ov-opvolging');
   const extra = document.getElementById('ov-notities')?.value.trim() || '';
 
@@ -1818,7 +1828,7 @@ Shift: ${shift}
 Kamer: ${kamer}
 Toestand: ${toestand}
 Wat viel op: ${observaties}${pijnLoc ? ' — pijn ter hoogte van ' + pijnLoc : ''}
-Wat werd gedaan: ${acties}${medDetail ? ' — ' + medDetail : ''}
+Wat werd gedaan: ${acties}${medDetail ? ' — ' + medDetail : ''}${urineResultaat ? ' — urine ' + urineResultaat + (urineDetail ? ' (' + urineDetail + ')' : '') : ''}
 Opvolging: ${opvolging}
 Extra nuance: ${extra || '–'}
 
