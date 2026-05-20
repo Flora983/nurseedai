@@ -1769,59 +1769,29 @@ function buildPrompt(mod) {
   const extra = document.getElementById('ov-notities')?.value.trim() || '';
 
   return {
-    prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, natuurlijke shift briefing zoals een overdracht tussen collega’s op de afdeling.
+    prompt: `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf een korte, natuurlijke shift briefing zoals een overdracht tussen collega's op de afdeling.
 
 STIJL:
-- Maximaal 2 tot 4 korte zinnen.
-- Direct, praktisch en natuurlijk.
+- Maximaal 2 tot 4 korte zinnen. Geen titel. Geen opsomming. Geen AI-taal.
 - Schrijf zoals een ervaren collega praat tijdens overdracht.
-- Geen titel.
-- Geen opsomming.
-- Geen AI-taal.
-- Geen overdreven verpleegkundige of academische taal.
 
-GEBRUIK NATUURLIJKE WZC-TAAL:
-- "arts gebeld"
-- "urine getest"
-- "gerustgesteld"
-- "moeilijk wakker"
-- "staal klaar voor labo"
-- "parameters genomen"
-- "verder observeren"
+GEBRUIK: "arts gebeld", "urine getest", "gerustgesteld", "moeilijk wakker", "staal klaar voor labo", "parameters normaal", "parameters afwijkend", "AB opgestart", "verder observeren"
 
-BELANGRIJKE REGELS:
-- Vermeld alleen wat expliciet geselecteerd of ingevuld is.
-- Verzín geen details.
-- Vermijd herhaling.
-- Als arts al gebeld werd, schrijf niet opnieuw "arts contacteren bij verslechtering".
-- Als de shift rustig verliep zonder bijzonderheden:
-  schrijf gewoon:
-  "Nachtdienst rustig verlopen."
-- Opvolging kort en natuurlijk houden.
-- Niet elke briefing moet opvolging bevatten.
-- Gebruik geen zinnen zoals:
-  "verdere observatie voorzien"
-  "klinische toestand monitoren"
-  "geen bijzonderheden vastgesteld"
+REGELS:
+- Vermeld ALLEEN wat expliciet geselecteerd of ingevuld is. Verzin NOOIT details of tijdstippen.
+- Als arts al gebeld: schrijf NIET "arts contacteren indien nodig" of "arts contacteren bij verslechtering".
+- Gebruik "parameters normaal" of "parameters afwijkend" — niet "parameters genomen" alleen.
+- Shift rustig zonder bijzonderheden: schrijf enkel "Nachtdienst rustig verlopen."
+- Niet elke briefing heeft opvolging nodig.
+- NOOIT: "verdere observatie voorzien", "klinische toestand monitoren", "geen bijzonderheden vastgesteld"
 
-STRUCTUUR:
-1. Wat viel op?
-2. Wat werd gedaan?
-3. Wat moet eventueel opgevolgd worden?
-
-VOORBEELDEN VAN GOEDE SHIFT BRIEFING:
-
-"Kamer 5 deze avond meer verward dan gewoonlijk met frequente mictieklachten. Urine getest en positief, staal klaar voor labo morgen. Arts contacteren voor eventueel opstarten."
-
-"Kamer 2 rond 20u misselijk en overgeven bij aankomst. Parameters genomen: BD hoog en temp 37.5°C. Litican 50 mg gegeven."
-
-"Kamer 116 moeilijk wakker te krijgen en reageerde niet op pijnprikkel. Parameters normaal. Arts gebeld en samen met collega terug in bed geholpen."
-
-"Bewoner angstig omdat kinderen op vakantie vertrekken. Gerustgesteld."
-
-"Bewoner verslikte zich tijdens het eten maar herstelde snel. Verder observeren tijdens maaltijden."
-
+VOORBEELDEN:
 "Nachtdienst rustig verlopen."
+"Kamer 5 deze avond meer verward dan gewoonlijk met frequente mictieklachten. Urine getest en positief, staal klaar voor labo morgen. Arts gebeld voor eventueel opstarten."
+"Kamer 2 misselijk en overgeven bij aankomst. Parameters afwijkend: BD hoog en temp 37.5. Litican 50 mg gegeven."
+"Kamer 116 moeilijk wakker te krijgen en reageerde niet op pijnprikkel. Parameters normaal. Arts gebeld en samen met collega terug in bed geholpen."
+"Bewoner angstig omdat kinderen op vakantie vertrekken. Gerustgesteld."
+"Bewoner verslikte zich tijdens het eten maar herstelde snel. Verder observeren tijdens maaltijden."
 
 GEGEVENS:
 Shift: ${shift}
@@ -1832,7 +1802,7 @@ Wat werd gedaan: ${acties}${medDetail ? ' — ' + medDetail : ''}${urineResultaa
 Opvolging: ${opvolging}
 Extra nuance: ${extra || '–'}
 
-Schrijf alleen de shift briefing.`
+Schrijf alleen de shift briefing.\`
   };
 }
 
