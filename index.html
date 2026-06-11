@@ -1917,11 +1917,23 @@ Medicijn: ${document.getElementById('inc-med-naam')?.value||'–'}`;
     }
     return { prompt: `${base}
 
-Schrijf een korte, feitelijke incidentnotitie. Max 3 zinnen. Nooit "ik". Geen "observatie opgestart".
+Schrijf een korte, feitelijke incidentnotitie. Max 3 zinnen. Nooit "ik".
 
-Voorbeeld:
-Val badkamer, gevonden op de grond. Pijn ter hoogte van de linkerheup, geen hoofdimpact. Arts verwittigd, verdere opvolging voorzien.
+REGELS:
+- Vermeld ALLEEN wat ingevuld is. Velden met "–" of lege velden: volledig negeren, nooit vermelden.
+- Begin direct met de feiten, geen titel, geen "Incident:".
+- Tijdstip in de zin verwerken (bv. "Om 22:58 ...").
+- Bij agressie: feitelijk en neutraal, zonder oordeel over de bewoner. Aanleiding benoemen indien gekend.
+- Verzin nooit details, letsel of parameters die niet zijn opgegeven.
 
+VOORBEELDEN:
+Val: "Om 14:30 gevonden op de grond in de badkamer. Pijn ter hoogte van de linkerheup, geen hoofdimpact. Arts verwittigd."
+Agressie: "Om 22:58 verbale en fysieke agressie naar verpleegkundige en collega tijdens verzorging, vermoedelijk uitgelokt door pijn. Letsel vastgesteld en verzorgd. Bewoner gerustgesteld, verder observeren."
+Agressie zonder letsel: "Bewoner reageerde verbaal agressief tijdens ochtendzorg, aanleiding onduidelijk. Geen letsel. Rustig benaderd en gerustgesteld."
+Dwaling: "Bewoner om 03:15 teruggevonden in de gang van afdeling 2, rustig en ongedeerd. Terug naar kamer begeleid."
+Medicatiefout: "Dubbele dosis paracetamol toegediend. Arts verwittigd, geen nadelige effecten vastgesteld."
+
+GEGEVENS:
 Kamer: ${getField('inc-kamer')||'–'}
 Type incident: ${type}
 ${details}
