@@ -188,6 +188,26 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   </div>
 </div>
 
+<!-- SNELLE NOTITIE MODAL -->
+<div class="popup-overlay" id="qn-modal" style="display:none;">
+  <div class="popup-box" style="text-align:left;">
+    <h2 style="text-align:center;">⚡ Snelle Notitie</h2>
+    <div class="privacy-note" style="margin-bottom:14px;">🔒 Gebruik kamernummer, geen echte naam</div>
+    <span class="block-label">Kamer</span>
+    <input type="text" class="field" id="qn-kamer" placeholder="bijv. 12" style="margin-bottom:14px;">
+    <span class="block-label">Notitie (spreek in of typ)</span>
+    <div style="display:flex;align-items:flex-start;gap:8px;">
+      <textarea class="field" id="qn-tekst" placeholder='Bijv. "Bewoner onrustig, weinig gegeten, arts verwittigd"' style="min-height:84px;flex:1;"></textarea>
+      <button class="voice-btn" id="qn-voice" title="Inspreken" onclick="toggleVoice(this,'qn-tekst')">🎤</button>
+    </div>
+    <div class="error-box" id="qn-error"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">
+      <button class="result-btn" onclick="closeQuickNote()">Annuleer</button>
+      <button class="result-btn primary" id="qn-generate" onclick="submitQuickNote()">✨ Genereer</button>
+    </div>
+  </div>
+</div>
+
 <!-- HEADER -->
 <div class="header">
   <button class="back-btn" id="back-btn" onclick="goBack()">← Terug</button>
@@ -236,11 +256,55 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
       <div class="module-card" onclick="openModule('wond')"><div class="icon">🩹</div><div class="name">Wondzorg</div><div class="desc">Wondrapport met ISTAP</div></div>
       <div class="module-card" onclick="openModule('gedrag')" style="grid-column: span 2;"><div class="icon">🧠</div><div class="name">Gedrag & Dementie</div><div class="desc">Gedragsnotitie opstellen</div></div>
       <div class="module-card" onclick="openModule('dokter')" style="grid-column: span 2;"><div class="icon">🩺</div><div class="name">Doktersbezoek</div><div class="desc">Bezoek professioneel vastleggen</div></div>
+      <div class="module-card" onclick="openPage('over')" style="grid-column: span 2; background: linear-gradient(135deg, #f0f4ff, #e8eeff); border-color: #6366f1;"><div class="icon">ℹ️</div><div class="name" style="color:#4f46e5;">Over NurseEdAI</div><div class="desc">Privacy, technologie &amp; contact</div></div>
 
     </div>
   </div>
 </div>
 
+
+<!-- OVER NURSEEDAI -->
+<div id="page-over" class="page">
+  <div class="module-page">
+    <div class="module-title">ℹ️ Over NurseEdAI</div>
+    <div class="module-desc">Gebouwd door een verpleegkundige, voor verpleegkundigen</div>
+
+    <div style="background:linear-gradient(135deg,#f0f4ff,#e8eeff);border:1.5px solid #6366f1;border-radius:14px;padding:20px 18px;margin-bottom:18px;">
+      <div style="font-size:1.1rem;font-family:'DM Serif Display',serif;color:#4f46e5;margin-bottom:8px;">Wie maakt NurseEdAI?</div>
+      <p style="font-size:0.88rem;color:#374151;line-height:1.7;">NurseEdAI werd ontwikkeld door <strong>Flora Munthali</strong>, zelfstandig verpleegkundige in Vlaamse woonzorgcentra. Vanuit haar dagelijkse ervaring op de werkvloer zag ze hoeveel tijd verpleegkundigen verliezen aan administratie — tijd die beter besteed wordt aan bewoners.<br><br>NurseEdAI is gebouwd <em>door</em> een verpleegkundige, <em>voor</em> verpleegkundigen. Elke module is gebaseerd op echte situaties uit het WZC.</p>
+    </div>
+
+    <div style="background:#f0fdf9;border:1.5px solid #0d6e7a;border-radius:14px;padding:20px 18px;margin-bottom:18px;">
+      <div style="font-size:1.1rem;font-family:'DM Serif Display',serif;color:#0d6e7a;margin-bottom:10px;">🔒 Privacy &amp; GDPR</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Geen patiëntgegevens</strong><br>Verpleegkundigen voeren uitsluitend anonieme informatie in — kamernummers, geen namen. Er worden nooit persoonsgegevens van bewoners verwerkt.</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Geen opslag op servers</strong><br>NurseEdAI slaat geen gegevens op servers op en heeft geen database met bewonersinformatie. Concepten worden tijdens het invullen uitsluitend lokaal op uw eigen toestel bewaard en automatisch gewist na het genereren.</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Beveiligde verbinding</strong><br>Alle communicatie verloopt via een beveiligde HTTPS-verbinding. De AI-verwerking gebeurt via de API van een professionele AI-provider; gegevens die via deze API verwerkt worden, worden niet gebruikt om AI-modellen te trainen.</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Ondersteunend, niet vervangend</strong><br>NurseEdAI genereert een voorstel. De verpleegkundige blijft altijd verantwoordelijk voor de inhoud van het zorgdossier.</div></div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:20px 18px;margin-bottom:18px;">
+      <div style="font-size:1.1rem;font-family:'DM Serif Display',serif;color:#0f1923;margin-bottom:10px;">⚙️ Hoe werkt het?</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:center;"><div style="width:28px;height:28px;border-radius:50%;background:#0d6e7a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">1</div><div style="font-size:0.85rem;color:#374151;">Verpleegkundige vult anonieme gegevens in via knoppen of spraak</div></div>
+        <div style="display:flex;gap:10px;align-items:center;"><div style="width:28px;height:28px;border-radius:50%;background:#0d6e7a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">2</div><div style="font-size:0.85rem;color:#374151;">AI genereert een professionele nota in correct WZC-Nederlands</div></div>
+        <div style="display:flex;gap:10px;align-items:center;"><div style="width:28px;height:28px;border-radius:50%;background:#0d6e7a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">3</div><div style="font-size:0.85rem;color:#374151;">Verpleegkundige kopieert de nota naar het zorgdossier</div></div>
+        <div style="display:flex;gap:10px;align-items:center;"><div style="width:28px;height:28px;border-radius:50%;background:#0d6e7a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">4</div><div style="font-size:0.85rem;color:#374151;">Tijdwinst: gemiddeld 3–5 minuten per nota</div></div>
+      </div>
+    </div>
+
+    <div style="background:#fef3c7;border:1.5px solid #f59e0b;border-radius:14px;padding:16px 18px;margin-bottom:18px;">
+      <div style="font-size:0.85rem;color:#78350f;line-height:1.7;"><strong>⚠️ Disclaimer</strong><br>NurseEdAI is een ondersteunend hulpmiddel. De gegenereerde tekst is een voorstel en vervangt het professioneel oordeel van de verpleegkundige niet. De verpleegkundige blijft verantwoordelijk voor de juistheid van de documentatie.</div>
+    </div>
+
+    <div style="background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:16px 18px;">
+      <div style="font-size:1rem;font-family:'DM Serif Display',serif;color:#0f1923;margin-bottom:10px;">📬 Contact</div>
+      <div style="font-size:0.85rem;color:#374151;line-height:1.7;">Vragen of interesse in een pilootproject?<br><strong>Flora Munthali</strong><br>Zelfstandig verpleegkundige &amp; oprichter NurseEdAI<br>🌐 nurseedai-app.vercel.app</div>
+    </div>
+
+  </div>
+</div>
 <!-- OVERDRACHT -->
 <div id="page-overdracht" class="page">
   <div class="module-page">
@@ -1295,6 +1359,10 @@ function openModule(mod) {
   document.getElementById('back-btn').classList.add('visible');
   refreshGenerateButtons();
 }
+function openPage(pageName) {
+  showPage('page-' + pageName);
+  document.getElementById('back-btn').classList.add('visible');
+}
 function goBack() {
   if (document.getElementById('page-result').classList.contains('active')) { showPage('page-' + currentModule); }
   else { showPage('page-dashboard'); document.getElementById('back-btn').classList.remove('visible'); }
@@ -1752,7 +1820,7 @@ async function callAPI(prompt) {
 // ── BUILD PROMPTS MET FEW-SHOT VOORBEELDEN ──
 function buildPrompt(mod) {
   const taal = currentLang === 'fr' ? 'Frans' : currentLang === 'en' ? 'Engels' : 'Nederlands';
-  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie", "verdere opvolging gepland". Gebruik "verdere opvolging voorzien" of "verder opvolgen". Schrijf lichaamszijden aaneengesloten: "linkerheup", "rechterheup", "linkerknie", "rechterpols", "linkerschouder". Schrijf kort en praktisch — max 2-3 zinnen.`;
+  const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie", "verdere opvolging gepland", "wordt aandachtig gevolgd", "werd verder geobserveerd", "verdere observatie voorzien", "wordt opgevolgd". Gebruik korte actieve taal: "verder opvolgen", "verzorgd", "gerustgesteld", "arts gebeld". Schrijf lichaamszijden aaneengesloten: "linkerheup", "rechterheup", "linkerknie", "rechterpols", "linkerschouder". Schrijf kort en praktisch — max 2-3 zinnen.`;
 
   if (mod === 'overdracht') {
   const kamer = getField('ov-kamer') || '–';
@@ -1781,17 +1849,18 @@ GEBRUIK: "arts gebeld", "urine getest", "gerustgesteld", "moeilijk wakker", "sta
 
 REGELS:
 - Vermeld ALLEEN wat expliciet geselecteerd of ingevuld is. Verzin NOOIT details of tijdstippen.
-- Als arts al gebeld: schrijf NIET "arts contacteren indien nodig" of "arts contacteren bij verslechtering".
-- Gebruik "parameters normaal" of "parameters afwijkend" — niet "parameters genomen" alleen.
+- NOOIT parameters zoals "BD hoog", "temp 37.5", "saturatie laag" invullen tenzij de verpleegkundige die zelf heeft ingetypt in het extra veld.
+- Als arts al gebeld én beslissing genomen: schrijf NIET opnieuw "arts contacteren". Als arts gebeld maar nog geen beslissing: mag je wel "arts terugbellen voor instructies" of "arts opvolgen" schrijven.
+- Gebruik "parameters normaal" of "parameters afwijkend" — nooit specifieke waarden verzinnen.
 - Shift rustig zonder bijzonderheden: schrijf enkel "Nachtdienst rustig verlopen."
 - Niet elke briefing heeft opvolging nodig.
-- NOOIT: "verdere observatie voorzien", "klinische toestand monitoren", "geen bijzonderheden vastgesteld"
+- NOOIT: "verdere observatie voorzien", "klinische toestand monitoren", "geen bijzonderheden vastgesteld", "voor verdere instructies"
 
 VOORBEELDEN:
 "Nachtdienst rustig verlopen."
-"Kamer 5 deze avond meer verward dan gewoonlijk met frequente mictieklachten. Urine getest en positief, staal klaar voor labo morgen. Arts gebeld voor eventueel opstarten."
-"Kamer 2 misselijk en overgeven bij aankomst. Parameters afwijkend: BD hoog en temp 37.5. Litican 50 mg gegeven."
-"Kamer 116 moeilijk wakker te krijgen en reageerde niet op pijnprikkel. Parameters normaal. Arts gebeld en samen met collega terug in bed geholpen."
+"Kamer 5 vanavond meer verward met urinewegklachten. Urine getest en positief, staal klaar voor labo morgen. Arts gebeld voor eventueel opstarten."
+"Kamer 2 misselijk en overgeven. Parameters afwijkend. Litican 50 mg gegeven."
+"Kamer 116 moeilijk wakker te krijgen. Parameters afwijkend. Arts gebeld, instructies afwachten."
 "Bewoner angstig omdat kinderen op vakantie vertrekken. Gerustgesteld."
 "Bewoner verslikte zich tijdens het eten maar herstelde snel. Verder observeren tijdens maaltijden."
 
@@ -2101,6 +2170,7 @@ async function generate(mod) {
   btn.disabled = true;
   try {
     const text = await callAPI(result.prompt);
+    lastQuickNote = null;
     document.getElementById('result-output').value = text;
     document.getElementById('result-module-name').textContent = moduleNames[mod] || mod;
     showPage('page-result');
@@ -2154,14 +2224,21 @@ function copyResult(event) {
 
 // ── REGENERATE ──
 async function regenerateResult() {
-  if (!currentModule) return;
+  const isQuickNote = lastQuickNote && document.getElementById('result-module-name').textContent.startsWith('⚡');
+  if (!currentModule && !isQuickNote) return;
   const loader = document.getElementById('result-loader');
   const errorEl = document.getElementById('result-error');
   errorEl.classList.remove('visible'); loader.classList.add('visible');
   try {
-    const result = buildPrompt(currentModule);
-    if (result.error) throw new Error(result.error);
-    const text = await callAPI(result.prompt);
+    let promptText;
+    if (isQuickNote) {
+      promptText = buildQuickNotePrompt(lastQuickNote.kamer, lastQuickNote.tekst);
+    } else {
+      const result = buildPrompt(currentModule);
+      if (result.error) throw new Error(result.error);
+      promptText = result.prompt;
+    }
+    const text = await callAPI(promptText);
     document.getElementById('result-output').value = text;
   } catch(err) { errorEl.textContent = '❌ ' + err.message; errorEl.classList.add('visible'); }
   finally { loader.classList.remove('visible'); }
@@ -2173,7 +2250,7 @@ function initVoice() {
   if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) return;
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SR();
-  recognition.lang = 'nl-NL'; recognition.interimResults = false;
+  recognition.lang = 'nl-BE'; recognition.interimResults = false;
   recognition.onresult = (e) => {
     const t = e.results[0][0].transcript;
     if (currentVoiceTextarea) { currentVoiceTextarea.value += (currentVoiceTextarea.value ? ' ' : '') + t; currentVoiceTextarea.dispatchEvent(new Event('input')); }
@@ -2195,38 +2272,53 @@ function stopListening() {
 }
 
 // ── SNELLE NOTITIE ──
-async function quickNote() {
-  const kamer = prompt('Voor welke kamer? (bijv. 12)');
-  if (!kamer) return;
-  const btn = document.querySelector('.quick-note-btn');
-  const origHTML = btn.innerHTML;
+let lastQuickNote = null;
 
-  async function verwerkEnGenereer(transcript) {
-    btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;filter:brightness(10)"></div> <div><div>Verslag aanmaken...</div></div>';
-    btn.disabled = true;
-    try {
-      const promptTekst = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct Nederlands een korte, feitelijke en professionele notitie voor het zorgdossier. Maximaal 2-3 zinnen. Directe actieve taal. Nooit "ik". Verzin niets bij.\nKamer: ${kamer}\nIngesproken notitie: "${transcript}"`;
-      const text = await callAPI(promptTekst);
-      document.getElementById('result-output').value = text;
-      document.getElementById('result-module-name').textContent = '⚡ Snelle Notitie — Kamer ' + kamer;
-      showPage('page-result');
-      document.getElementById('back-btn').classList.add('visible');
-    } catch(err) { alert('Fout: ' + err.message); }
-    finally { btn.innerHTML = origHTML; btn.disabled = false; }
-  }
+function quickNote() {
+  document.getElementById('qn-kamer').value = '';
+  document.getElementById('qn-tekst').value = '';
+  document.getElementById('qn-error').classList.remove('visible');
+  document.getElementById('qn-voice').style.display = recognition ? 'inline-flex' : 'none';
+  document.getElementById('qn-modal').style.display = 'flex';
+  document.getElementById('qn-kamer').focus();
+}
 
-  if (recognition) {
-    alert('🎤 Klik OK en spreek direct uw notitie in.\n\nBijv: "Bewoner onrustig, weinig gegeten, arts verwittigd"');
-    return new Promise(resolve => {
-      const tmp = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      tmp.lang = 'nl-NL'; tmp.interimResults = false;
-      tmp.onresult = async (e) => { await verwerkEnGenereer(e.results[0][0].transcript); resolve(); };
-      tmp.onerror = () => { const t = prompt('Stem mislukt. Typ uw notitie:'); if (t) verwerkEnGenereer(t).then(resolve); else resolve(); };
-      tmp.start();
-    });
-  } else {
-    const tekst = prompt('Typ uw snelle notitie:');
-    if (tekst) await verwerkEnGenereer(tekst);
+function closeQuickNote() {
+  if (isListening) stopListening();
+  document.getElementById('qn-modal').style.display = 'none';
+}
+
+function buildQuickNotePrompt(kamer, tekst) {
+  return `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct Nederlands een korte, feitelijke en professionele notitie voor het zorgdossier. Maximaal 2-3 zinnen. Directe actieve taal. Nooit "ik". Verzin niets bij.\nKamer: ${kamer}\nIngesproken notitie: "${tekst}"`;
+}
+
+async function submitQuickNote() {
+  const kamer = document.getElementById('qn-kamer').value.trim();
+  const tekst = document.getElementById('qn-tekst').value.trim();
+  const errorEl = document.getElementById('qn-error');
+  errorEl.classList.remove('visible');
+  if (!kamer) { errorEl.textContent = 'Vul eerst een kamernummer in.'; errorEl.classList.add('visible'); return; }
+  if (!tekst) { errorEl.textContent = 'Spreek of typ eerst een notitie.'; errorEl.classList.add('visible'); return; }
+  if (isListening) stopListening();
+
+  const btn = document.getElementById('qn-generate');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<div class="spinner" style="width:16px;height:16px;border-width:2px;filter:brightness(10)"></div> Bezig...';
+  btn.disabled = true;
+  try {
+    const text = await callAPI(buildQuickNotePrompt(kamer, tekst));
+    lastQuickNote = { kamer: kamer, tekst: tekst };
+    closeQuickNote();
+    document.getElementById('result-output').value = text;
+    document.getElementById('result-module-name').textContent = '⚡ Snelle Notitie — Kamer ' + kamer;
+    showPage('page-result');
+    document.getElementById('back-btn').classList.add('visible');
+  } catch(err) {
+    errorEl.textContent = '❌ Fout: ' + err.message;
+    errorEl.classList.add('visible');
+  } finally {
+    btn.innerHTML = orig;
+    btn.disabled = false;
   }
 }
 
