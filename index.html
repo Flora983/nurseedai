@@ -901,7 +901,14 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
         <button class="opt-btn multi" data-val="familie verwittigd" onclick="toggleMulti(this,'ged-actie',false)">👨‍👩‍👧 Familie</button>
         <button class="opt-btn multi" data-val="medewerker kon situatie de-escaleren" onclick="toggleMulti(this,'ged-actie',false)">✅ De-escalatie</button>
         <button class="opt-btn multi" data-val="geen letsel vastgesteld" onclick="toggleMulti(this,'ged-actie',false)">🙌 Geen letsel</button>
+        <button class="opt-btn multi" data-val="medicatie toegediend op voorschrift arts" onclick="toggleMulti(this,'ged-actie',false); toggleGedMed(this)">💊 Medicatie (op voorschrift)</button>
       </div>
+      <div id="ged-med-section" style="display:none;margin-top:12px;">
+        <div class="privacy-note" style="margin-bottom:10px;">💊 Enkel volgens staand order. Vul naam + dosis in.</div>
+        <span class="block-label">Medicatie (naam + dosis)</span>
+        <input type="text" class="field" id="ged-med-naam" placeholder="bv. haloperidol 1 mg, of lorazepam 1 mg">
+        <span class="block-label" style="margin-top:10px;">Kader</span>
+        <input type="text" class="field" id="ged-med-arts" placeholder="bv. volgens staand order">
     </div>
     <div class="block"><span class="block-label">Extra detail (optioneel)</span>
       <div class="voice-row"><textarea class="field" id="ged-notities" placeholder="Kort feitelijk detail..."></textarea><button class="voice-btn" onclick="toggleVoice(this,'ged-notities')">🎤</button></div>
@@ -1780,6 +1787,11 @@ document.addEventListener('click', e => {
 
 // ── SHIFT ──
 let currentShift = null;
+function toggleGedMed(btn) {
+  const sec = document.getElementById('ged-med-section');
+  if (sec) sec.style.display = btn.classList.contains('selected') ? 'block' : 'none';
+  saveDraft();
+}
 function selectShift(btn) {
   document.querySelectorAll('.shift-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active'); currentShift = btn.dataset.shift;
@@ -1995,7 +2007,7 @@ ${isDecubitus ? 'Vermeld de decubitusgraad.' : ''}
 
 EVOLUTIELOGICA — pas de taal aan op basis van evolutie:
 - "eerste verzorging" → geen "bestaande", gewoon beschrijven
-- "verslechterd" → begin met "Bestaande [type]..." en gebruik "toegenomen roodheid", "meer wondvocht", "verslechtering vastgesteld"
+- "verslechterd" → schrijf "Gekende [type]..." OF beschrijf direct met "toegenomen roodheid", "meer wondvocht", "toegenomen geur". NOOIT "Bestaande [type]" — dat klinkt onnatuurlijk.
 - "verbeterd" → gebruik "wonde in herstel", "verbeterd aspect", "minder exsudaat"
 - "stabiel" → gebruik "stabiel", "ongewijzigd aspect"
 
@@ -2008,7 +2020,10 @@ VERBODEN:
 
 VOORBEELDEN:
 Type: decubitus | Locatie: stuit | Evolutie: verslechterd | Aspect: roodheid, pijn, geur, etter
-Output: Bestaande decubitus ter hoogte van de stuit met toegenomen roodheid, pijn, geur en etter. Wonde gereinigd, ontsmet en afgedekt. Arts verwittigd.
+Output: Gekende decubitus ter hoogte van de stuit, toegenomen roodheid, pijn, geur en etter. Gereinigd, ontsmet en afgedekt. Arts verwittigd.
+
+Type: schaafwonde | Locatie: rechter bovenbeen | Evolutie: verslechterd | Aspect: toegenomen roodheid, vochtig, geur
+Output: Schaafwonde rechter bovenbeen met toegenomen roodheid, vochtig aspect en geur, mogelijke infectie. Gereinigd, ontsmet en afgedekt. Arts verwittigd.
 
 Type: skintear | Locatie: linker onderarm | Evolutie: stabiel | Aspect: vochtig aspect
 Output: Skintear linker onderarm met vochtig aspect, stabiel. Verband vernieuwd.
@@ -2040,12 +2055,14 @@ TAALREGELS:
 - Context altijd vermelden (tijdens zorgmoment, nachtelijk, enz.)
 - Reactie op benadering kort vermelden als relevant
 - Patroon vermelden als het gedrag reeds vaker was
+- Bij medicatie: vermeld ALTIJD het kader. Medicatie bij onrust wordt gegeven volgens staand order — schrijf "volgens staand order" tenzij de gebruiker een ander kader invulde. Schrijf naam + dosis. Nooit suggereren dat de verpleegkundige zelf besliste. Voorbeeld: "Volgens staand order haloperidol 1 mg toegediend."
 
 VOORBEELDEN:
 Bewoner onrustig tijdens avondzorg. Moeilijk gerust te stellen. Gedrag reeds vaker vastgesteld.
 Verbale agitatie tijdens maaltijdmoment. Afleiding hielp gedeeltelijk.
 Nachtelijk dwalen met verwardheid. Bewoner rustig begeleid naar kamer.
 Bewoner reageerde verbaal agressief tijdens transferzorg. Medewerker kon de-escaleren. Geen letsel vastgesteld.
+Ernstige onrust en roepen tijdens transfer door pijn, gedrag reeds vaker vastgesteld. Geruststelling hielp gedeeltelijk; volgens staand order lorazepam 1 mg toegediend.
 
 Kamer: ${getField('ged-kamer')||'–'}
 Gedrag: ${getField('ged-gedrag')}
@@ -2055,6 +2072,7 @@ Aanleiding: ${getField('ged-aanleiding')||'–'}
 Reactie op benadering: ${getField('ged-reactie')||'–'}
 Patroon: ${getField('ged-patroon')||'–'}
 Acties: ${getMulti('ged-actie')}
+Medicatie: ${document.getElementById('ged-med-naam')?.value.trim() ? document.getElementById('ged-med-naam').value.trim()+' — '+(document.getElementById('ged-med-arts')?.value.trim()||'volgens staand order') : '–'}
 Extra: ${document.getElementById('ged-notities')?.value.trim()||'–'}` };
   }
 
@@ -2146,12 +2164,15 @@ REGELS:
 - Medicatie specifiek indien beschikbaar: naam + dosis + frequentie + duur.
 - Vermeld huisarts NOOIT automatisch bij "bewoner terug uit ziekenhuis". Gebruik in de plaats: "Nieuwe medicatie overgenomen volgens ontslagbrief" tenzij de gebruiker expliciet iets anders heeft ingevuld bij actie.
 - Geen tijdstippen tenzij relevant. Geen opsommingstekens.
+- Velden met "–" of "niet ingevuld": volledig negeren, nooit vermelden of omschrijven.
 
 VOORBEELDEN:
-Huisarts gecontacteerd wegens koorts en verwardheid. Arts komt vandaag langs, verdere observatie voorzien.
-Resultaten van bloedname besproken met de huisarts. Geen wijziging van beleid, verdere opvolging voorzien.
-Bewoner opgenomen wegens dyspneu en lage saturatie. Familie werd verwittigd.
-Bewoner terug uit het ziekenhuis na controle. Nieuwe afspraken over medicatie en observatie werden overgenomen.
+Huisarts gecontacteerd: "Huisarts gecontacteerd wegens koorts en verwardheid. Arts komt vandaag nog langs."
+Laboresultaten: "Bloedresultaten besproken met huisarts. Geen wijziging van beleid."
+Telefonische goedkeuring: "Telefonisch akkoord huisarts voor opstart Dafalgan 1 g 3x/dag wegens pijnklachten. Eerste gift gegeven."
+Opname: "Bewoner opgenomen wegens dyspneu en lage saturatie. Familie verwittigd, identiteitskaart en medicatielijst meegegeven."
+Terug uit ziekenhuis: "Bewoner terug uit ziekenhuis na cardiologische controle. Nieuwe medicatie overgenomen volgens ontslagbrief."
+Overlijden: "Overlijden vastgesteld om 06:40. Huisarts en familie verwittigd, zorg uitgevoerd volgens afspraken."
 
 Kamer: ${getField('kort-kamer')||'–'}
 Scenario: ${scenario}
