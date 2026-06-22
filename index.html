@@ -179,7 +179,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <p>NurseEdAI is een persoonlijk documentatiehulpmiddel. AI-gegenereerde inhoud vervangt nooit professioneel medisch oordeel.</p>
     <div class="popup-rules">
       <strong>⚠️ Verplichte regels:</strong><br>
-      🔒 Gebruik NOOIT echte namen — gebruik kamernummer<br>
+      🔒 Gebruik NOOIT namen of identificerende gegevens<br>
       📋 Kopieer en plak handmatig in uw EHR<br>
       🚫 Geen directe koppeling met ziekenhuissystemen<br>
       👁️ Controleer altijd voor gebruik
@@ -192,9 +192,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 <div class="popup-overlay" id="qn-modal" style="display:none;">
   <div class="popup-box" style="text-align:left;">
     <h2 style="text-align:center;">⚡ Snelle Notitie</h2>
-    <div class="privacy-note" style="margin-bottom:14px;">🔒 Gebruik kamernummer, geen echte naam</div>
-    <span class="block-label">Kamer</span>
-    <input type="text" class="field" id="qn-kamer" placeholder="bijv. 12" style="margin-bottom:14px;">
+    <div class="privacy-note" style="margin-bottom:14px;">🔒 Voer geen namen of identificerende gegevens in</div>
+    
     <span class="block-label">Notitie (spreek in of typ)</span>
     <div style="display:flex;align-items:flex-start;gap:8px;">
       <textarea class="field" id="qn-tekst" placeholder='Bijv. "Bewoner onrustig, weinig gegeten, arts verwittigd"' style="min-height:84px;flex:1;"></textarea>
@@ -215,7 +214,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
 </div>
 
 <!-- DISCLAIMER -->
-<div class="disclaimer-bar">⚠️ Persoonlijk hulpmiddel — gebruik kamernummer, geen echte naam. Kopieer handmatig naar EHR.</div>
+<div class="disclaimer-bar">⚠️ Persoonlijk hulpmiddel — gebruik geen namen of identificerende gegevens. Kopieer handmatig naar EHR.</div>
 <div class="offline-banner" id="offline-banner">📵 Geen internetverbinding — AI-generatie niet beschikbaar. De interface werkt wel offline.</div>
 
 <!-- DASHBOARD -->
@@ -277,7 +276,7 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
     <div style="background:#f0fdf9;border:1.5px solid #0d6e7a;border-radius:14px;padding:20px 18px;margin-bottom:18px;">
       <div style="font-size:1.1rem;font-family:'DM Serif Display',serif;color:#0d6e7a;margin-bottom:10px;">🔒 Privacy &amp; GDPR</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Geen patiëntgegevens</strong><br>Verpleegkundigen voeren uitsluitend anonieme informatie in — kamernummers, geen namen. Er worden nooit persoonsgegevens van bewoners verwerkt.</div></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Geen patiëntgegevens</strong><br>Verpleegkundigen voeren uitsluitend anonieme informatie in — geen namen of identificerende gegevens. Er worden nooit persoonsgegevens van bewoners verwerkt.</div></div>
         <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Geen opslag op servers</strong><br>NurseEdAI slaat geen gegevens op servers op en heeft geen database met bewonersinformatie. Concepten worden tijdens het invullen uitsluitend lokaal op uw eigen toestel bewaard en automatisch gewist na het genereren.</div></div>
         <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Beveiligde verbinding</strong><br>Alle communicatie verloopt via een beveiligde HTTPS-verbinding. De AI-verwerking gebeurt via de API van een professionele AI-provider; gegevens die via deze API verwerkt worden, worden niet gebruikt om AI-modellen te trainen.</div></div>
         <div style="display:flex;gap:10px;align-items:flex-start;"><span style="font-size:1.1rem;">✅</span><div style="font-size:0.85rem;color:#374151;line-height:1.6;"><strong>Ondersteunend, niet vervangend</strong><br>NurseEdAI genereert een voorstel. De verpleegkundige blijft altijd verantwoordelijk voor de inhoud van het zorgdossier.</div></div>
@@ -310,8 +309,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   <div class="module-page">
     <div class="module-title">🔄 Shift Briefing</div>
     <div class="module-desc">Collega-overdracht — snel, praktisch, naturel</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="ov-kamer" placeholder="bijv. Kamer 5"></div>
+    <div class="privacy-note">🔒 Voer geen namen of identificerende gegevens in</div>
+    
 
     <div class="block">
       <span class="block-label">Algemene toestand ⚠️ verplicht</span>
@@ -412,8 +411,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   <div class="module-page">
     <div class="module-title">⚠️ Incidentrapport</div>
     <div class="module-desc">Documenteer een incident snel en volledig</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="inc-kamer" placeholder="bijv. Kamer 5"></div>
+    <div class="privacy-note">🔒 Voer geen namen of identificerende gegevens in</div>
+    
     <div class="block">
       <span class="block-label">Type incident ⚠️ verplicht</span>
       <div class="btn-group" id="inc-type-group">
@@ -617,8 +616,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   <div class="module-page">
     <div class="module-title">💊 Medicatiewijziging</div>
     <div class="module-desc">Nieuwe medicatie, wijzigingen en behandelbeslissingen vastleggen</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="med-kamer" placeholder="bijv. Kamer 7"></div>
+    <div class="privacy-note">🔒 Voer geen namen of identificerende gegevens in</div>
+    
     <div class="block">
       <span class="block-label">Aanleiding ⚠️ verplicht</span>
       <div class="btn-group" data-field="med-context">
@@ -714,8 +713,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   <div class="module-page">
     <div class="module-title">🩹 Wondzorg</div>
     <div class="module-desc">Snelle wondnotitie voor het dossier</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="won-kamer" placeholder="bijv. Kamer 2"></div>
+    <div class="privacy-note">🔒 Voer geen namen of identificerende gegevens in</div>
+    
     <div class="block">
       <span class="block-label">Type wonde ⚠️ verplicht</span>
       <div class="btn-group" id="won-type-group">
@@ -822,8 +821,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   <div class="module-page">
     <div class="module-title">🧠 Gedrag & Dementiezorg</div>
     <div class="module-desc">Gedragsnotitie — neutraal, contextueel en dementiegevoelig</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="ged-kamer" placeholder="bijv. Kamer 1"></div>
+    <div class="privacy-note">🔒 Voer geen namen of identificerende gegevens in</div>
+    
     <div class="block">
       <span class="block-label">Type gedrag ⚠️ verplicht</span>
       <div class="btn-group" data-field="ged-gedrag">
@@ -925,8 +924,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   <div class="module-page">
     <div class="module-title">🩺 Doktersbezoek</div>
     <div class="module-desc">Snel en professioneel verslag van contact met arts</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="dok-kamer" placeholder="bijv. Kamer 12"></div>
+    <div class="privacy-note">🔒 Voer geen namen of identificerende gegevens in</div>
+    
     <div class="block">
       <span class="block-label">Type contact ⚠️ verplicht</span>
       <div class="btn-group" data-field="dok-contacttype">
@@ -1014,8 +1013,8 @@ select.field:focus, textarea.field:focus, input.field:focus { border-color: var(
   <div class="module-page">
     <div class="module-title">⚡ Korte Communicatie</div>
     <div class="module-desc">Korte, directe communicatienota voor het zorgdossier</div>
-    <div class="privacy-note">🔒 Gebruik kamernummer, geen echte naam</div>
-    <div class="block"><span class="block-label">Kamer / bewoner</span><input type="text" class="field" id="kort-kamer" placeholder="bijv. Kamer 8"></div>
+    <div class="privacy-note">🔒 Voer geen namen of identificerende gegevens in</div>
+    
     <div class="block">
       <span class="block-label">Type communicatie ⚠️ verplicht</span>
       <div class="btn-group" id="kort-scenario-group">
@@ -1836,7 +1835,7 @@ function buildPrompt(mod) {
   const base = `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct ${taal} een korte, feitelijke verpleegkundige notitie. Schrijf zoals een collega het zou opschrijven: kort, direct en menselijk. Gebruik alleen de verstrekte informatie. Verzin niets. Nooit "ik". Altijd onpersoonlijk (dossierstijl). Medicatienamen correct: naam + dosis + frequentie (bv. paracetamol 500 mg 3x/dag). VERBODEN zinsdelen: "in het zorgdossier", "verder genoteerd", "zoals besproken", "ter kennisname", "werd geregistreerd", "verdere opvolging in het zorgdossier", "werd gedocumenteerd", "genoteerd in het dossier", "observatie opgestart", "opvolging nodig", "patroon vastgesteld", "herhaald gedrag", "verpleegkundige gaf medicatie", "verdere opvolging gepland", "wordt aandachtig gevolgd", "werd verder geobserveerd", "verdere observatie voorzien", "wordt opgevolgd". Gebruik korte actieve taal: "verder opvolgen", "verzorgd", "gerustgesteld", "arts gebeld". Schrijf lichaamszijden aaneengesloten: "linkerheup", "rechterheup", "linkerknie", "rechterpols", "linkerschouder". Schrijf kort en praktisch — max 2-3 zinnen.`;
 
   if (mod === 'overdracht') {
-  const kamer = getField('ov-kamer') || '–';
+  const kamer = '';
   const shift = currentShift
     ? currentShift.charAt(0).toUpperCase() + currentShift.slice(1)
     : '';
@@ -1879,7 +1878,6 @@ VOORBEELDEN:
 
 GEGEVENS:
 Shift: ${shift}
-Kamer: ${kamer}
 Toestand: ${toestand}
 Wat viel op: ${observaties}${pijnLoc ? ' — pijn ter hoogte van ' + pijnLoc : ''}
 Wat werd gedaan: ${acties}${medDetail ? ' — ' + medDetail : ''}${urineResultaat ? ' — urine ' + urineResultaat + (urineDetail ? ' (' + urineDetail + ')' : '') : ''}
@@ -1947,7 +1945,6 @@ Dwaling: "Bewoner om 03:15 teruggevonden in de gang van afdeling 2, rustig en on
 Medicatiefout: "Dubbele dosis paracetamol toegediend. Arts verwittigd, geen nadelige effecten vastgesteld."
 
 GEGEVENS:
-Kamer: ${getField('inc-kamer')||'–'}
 Type incident: ${type}
 ${details}
 Acties: ${getMulti('inc-actie')}
@@ -1979,7 +1976,6 @@ Output: Eliquis 5 mg 2x/dag overgenomen volgens ontslagbrief.
 Aanleiding: koorts | Wijziging: tijdelijke kuur | Medicatie: Augmentin 875 mg 2x/dag | Duur: 5 dagen
 Output: Augmentin 875 mg 2x/dag gestart wegens koorts, 5 dagen. Temperatuur opvolgen.
 
-Kamer: ${getField('med-kamer')||'–'}
 Aanleiding: ${getField('med-context')}
 Wijziging: ${getField('med-wijziging')}
 Medicatie: ${[document.getElementById('med-naam')?.value.trim(), document.getElementById('med-dosis')?.value.trim(), getField('med-freq') === 'andere' ? document.getElementById('med-freq-andere')?.value.trim() : getField('med-freq')].filter(v=>v&&v!=='niet ingevuld').join(' ')||'–'}
@@ -2035,7 +2031,6 @@ Output: Wonde linker onderbeen in herstel, zonder tekenen van infectie. Gereinig
 Type: schaafwonde | Locatie: knie | Evolutie: eerste verzorging | Aspect: geen tekenen van infectie
 Output: Schaafwonde ter hoogte van de knie, eerste verzorging. Gereinigd en afgedekt.
 
-Kamer: ${getField('won-kamer')||'–'}
 Type wonde: ${wondType}
 Locatie: ${locatie}
 Classificatie: ${classificatie}
@@ -2065,7 +2060,6 @@ Nachtelijk dwalen met verwardheid. Bewoner rustig begeleid naar kamer.
 Bewoner reageerde verbaal agressief tijdens transferzorg. Medewerker kon de-escaleren. Geen letsel vastgesteld.
 Ernstige onrust en roepen tijdens transfer door pijn, gedrag reeds vaker vastgesteld. Geruststelling hielp gedeeltelijk; volgens staand order lorazepam 1 mg toegediend.
 
-Kamer: ${getField('ged-kamer')||'–'}
 Gedrag: ${getField('ged-gedrag')}
 Context / wanneer: ${getField('ged-context')}
 Intensiteit: ${getField('ged-intensiteit')||'–'}
@@ -2099,7 +2093,6 @@ Telefonisch overleg met huisarts wegens onrust en slaapproblemen. Observatie ver
 Arts langs geweest voor controle/opvolging na ziekenhuisontslag. Huidige medicatie verderzetten, labo plannen.
 Laboresultaten besproken met huisarts. Staalname aangevraagd, verdere opvolging voorzien.
 
-Kamer: ${getField('dok-kamer')||'–'}
 Type contact: ${getField('dok-contacttype')||'–'}
 Reden: ${getMulti('dok-reden')}
 Beslissing arts: ${getMulti('dok-beslissing')}${(() => { const s = document.querySelector('#dok-staal-type-group .opt-btn.selected'); if (!s) return ''; const a = document.getElementById('dok-staal-andere')?.value.trim(); return ' — staaltype: ' + (s.dataset.val === 'andere staal' && a ? a : s.dataset.val); })()}
@@ -2175,7 +2168,6 @@ Opname: "Bewoner opgenomen wegens dyspneu en lage saturatie. Familie verwittigd,
 Terug uit ziekenhuis: "Bewoner terug uit ziekenhuis na cardiologische controle. Nieuwe medicatie overgenomen volgens ontslagbrief."
 Overlijden: "Overlijden vastgesteld om 06:40. Huisarts en familie verwittigd, zorg uitgevoerd volgens afspraken."
 
-Kamer: ${getField('kort-kamer')||'–'}
 Scenario: ${scenario}
 ${details}
 Doorgegeven door: ${getField('kort-bron')||'–'}
@@ -2266,7 +2258,7 @@ async function regenerateResult() {
   try {
     let promptText;
     if (isQuickNote) {
-      promptText = buildQuickNotePrompt(lastQuickNote.kamer, lastQuickNote.tekst);
+      promptText = buildQuickNotePrompt('', lastQuickNote.tekst);
     } else {
       const result = buildPrompt(currentModule);
       if (result.error) throw new Error(result.error);
@@ -2309,12 +2301,12 @@ function stopListening() {
 let lastQuickNote = null;
 
 function quickNote() {
-  document.getElementById('qn-kamer').value = '';
+  
   document.getElementById('qn-tekst').value = '';
   document.getElementById('qn-error').classList.remove('visible');
   document.getElementById('qn-voice').style.display = recognition ? 'inline-flex' : 'none';
   document.getElementById('qn-modal').style.display = 'flex';
-  document.getElementById('qn-kamer').focus();
+  
 }
 
 function closeQuickNote() {
@@ -2323,15 +2315,14 @@ function closeQuickNote() {
 }
 
 function buildQuickNotePrompt(kamer, tekst) {
-  return `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct Nederlands een korte, feitelijke en professionele notitie voor het zorgdossier. Maximaal 2-3 zinnen. Directe actieve taal. Nooit "ik". Verzin niets bij.\nKamer: ${kamer}\nIngesproken notitie: "${tekst}"`;
+  return `Je bent een ervaren verpleegkundige in een Belgisch woonzorgcentrum. Schrijf in correct Nederlands een korte, feitelijke en professionele notitie voor het zorgdossier. Maximaal 2-3 zinnen. Directe actieve taal. Nooit "ik". Verzin niets bij.\nIngesproken notitie: "${tekst}"`;
 }
 
 async function submitQuickNote() {
-  const kamer = document.getElementById('qn-kamer').value.trim();
+  const kamer = '';
   const tekst = document.getElementById('qn-tekst').value.trim();
   const errorEl = document.getElementById('qn-error');
   errorEl.classList.remove('visible');
-  if (!kamer) { errorEl.textContent = 'Vul eerst een kamernummer in.'; errorEl.classList.add('visible'); return; }
   if (!tekst) { errorEl.textContent = 'Spreek of typ eerst een notitie.'; errorEl.classList.add('visible'); return; }
   if (isListening) stopListening();
 
